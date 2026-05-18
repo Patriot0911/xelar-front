@@ -4,13 +4,20 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/store/hooks';
 
-export default function RootPage() {
+interface AuthGuardProps {
+  children: React.ReactNode;
+}
+
+export function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter();
   const isAuthenticated = useAppSelector((s) => s.auth.isAuthenticated);
 
   useEffect(() => {
-    router.replace(isAuthenticated ? '/dashboard' : '/auth');
+    if (!isAuthenticated) {
+      router.replace('/auth');
+    }
   }, [isAuthenticated, router]);
 
-  return null;
+  if (!isAuthenticated) return null;
+  return <>{children}</>;
 }

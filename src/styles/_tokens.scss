@@ -1,0 +1,49 @@
+// Xelar design tokens — extracted from claude-design
+
+:root {
+  // Background scale
+  --bg-0: #06040f;
+  --bg-1: #08051a;
+  --bg-2: #0d0929;
+  --bg-3: #120e33;
+
+  // Surface scale
+  --surface:   rgba(255, 255, 255, 0.04);
+  --surface-2: rgba(255, 255, 255, 0.07);
+  --surface-3: rgba(255, 255, 255, 0.11);
+
+  // Ink (text) scale
+  --ink-0: rgba(245, 242, 255, 0.97);
+  --ink-1: rgba(210, 205, 240, 0.72);
+  --ink-2: rgba(180, 175, 220, 0.50);
+  --ink-3: rgba(160, 155, 200, 0.30);
+
+  // Lines / borders
+  --line:        rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  // Accent — violet (default)
+  --accent:       #7c5af4;
+  --accent-2:     #a855f7;
+  --accent-glow:  rgba(124, 90, 244, 0.55);
+  --accent-glow-2: rgba(168, 85, 247, 0.35);
+  --accent-soft:  rgba(124, 90, 244, 0.20);
+  --accent-softer: rgba(124, 90, 244, 0.10);
+  --accent-ink:   rgba(180, 155, 255, 0.90);
+
+  // Discord
+  --discord: #5865F2;
+  --discord-dark: #4752C4;
+
+  // Typography
+  --font-display: 'Space Grotesk', 'Syne', system-ui, sans-serif;
+  --font-body:    'DM Sans', 'Manrope', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Mono', monospace;
+
+  // Radius
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-xl:  20px;
+  --radius-full: 999px;
+}

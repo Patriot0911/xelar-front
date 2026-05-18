@@ -1,0 +1,43 @@
+@use '../../styles/tokens';
+
+.root {
+  border-radius: var(--radius-xl);
+  border: 1px dashed var(--line-strong);
+  background: rgba(255, 255, 255, 0.015);
+  padding: 48px 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
+  background: var(--accent-softer);
+  border: 1px solid var(--accent-soft);
+  display: grid;
+  place-items: center;
+  color: var(--accent-ink);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  color: var(--ink-0);
+}
+
+.desc {
+  font-size: 13.5px;
+  color: var(--ink-1);
+  max-width: 340px;
+  line-height: 1.6;
+}
+
+.action {
+  margin-top: 4px;
+}
