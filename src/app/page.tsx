@@ -2,11 +2,11 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppSelector } from '@/store/hooks';
+import { useIsAuthenticated } from '@/hooks/shared/useIsAuthenticated';
 
 export default function RootPage() {
   const router = useRouter();
-  const isAuthenticated = useAppSelector((s) => s.auth.isAuthenticated);
+  const isAuthenticated = useIsAuthenticated();
 
   useEffect(() => {
     router.replace(isAuthenticated ? '/dashboard' : '/auth');

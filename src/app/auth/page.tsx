@@ -4,9 +4,11 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LuArrowRight } from 'react-icons/lu';
 import { SiDiscord } from 'react-icons/si';
-import { useAppSelector } from '@/store/hooks';
 import { Logo } from '@/components/common/logo';
 import styles from './page.module.scss';
+import { useAppSelector } from '@/hooks/redux';
+import { authStatusSelector } from '@/hooks/redux/auth';
+import useMeQuery from '@/hooks/queries/auth/useMeQuery';
 
 const DISCORD_AUTH_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'}/api/auth/discord`;
 
@@ -61,10 +63,15 @@ function AuthVisual() {
 
 export default function AuthPage() {
   const router = useRouter();
-  const isAuthenticated = useAppSelector((s) => s.auth.isAuthenticated);
+  const status = useAppSelector(authStatusSelector);
+  const { isEnabled, } = useMeQuery();
+
+  const isAuthenticated = !isEnabled && status !== 'guest';
 
   useEffect(() => {
-    if (isAuthenticated) router.replace('/dashboard');
+    if (isAuthenticated) {
+      router.replace('/dashboard');
+    }
   }, [isAuthenticated, router]);
 
   return (

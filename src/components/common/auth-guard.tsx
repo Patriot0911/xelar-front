@@ -1,16 +1,15 @@
 'use client';
 
-import { useEffect } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppSelector } from '@/store/hooks';
+import { useAppSelector } from '@/hooks/redux';
+import { authStatusSelector } from '@/hooks/redux/auth';
 
-interface AuthGuardProps {
-  children: React.ReactNode;
-}
-
-export function AuthGuard({ children }: AuthGuardProps) {
+export function AuthGuard({ children }: PropsWithChildren) {
   const router = useRouter();
-  const isAuthenticated = useAppSelector((s) => s.auth.isAuthenticated);
+  const status = useAppSelector(authStatusSelector);
+
+  const isAuthenticated = status !== 'guest';
 
   useEffect(() => {
     if (!isAuthenticated) {

@@ -3,18 +3,18 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { LuCheck, LuX, LuArrowLeft } from 'react-icons/lu';
-import { useAppDispatch } from '@/store/hooks';
-import { setAuth } from '@/store/slices/auth.slice';
-import { authApi } from '@/lib/api/auth.api';
-import { Logo } from '@/components/common/logo';
 import styles from './page.module.scss';
+import { useAppDispatch } from '@/hooks/redux';
+import useDiscordCodeMutation from '@/hooks/mutations/auth/useDiscordCodeMutation';
 
 type Status = 'loading' | 'success' | 'error';
 
 export function DiscordCallbackContent() {
+  const redirectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
+  const discordCodeMutation = useDiscordCodeMutation();
 
   const [status, setStatus] = useState<Status>('loading');
   const [errorMsg, setErrorMsg] = useState('');
@@ -33,18 +33,33 @@ export function DiscordCallbackContent() {
       return;
     }
 
-    authApi
-      .discordCallback(code)
-      .then((data) => {
-        dispatch(setAuth({ user: data.user, tokens: data.tokens }));
-        setStatus('success');
-        setTimeout(() => router.replace('/dashboard'), 1500);
-      })
-      .catch((err) => {
-        setStatus('error');
-        setErrorMsg(err?.response?.data?.message ?? 'Authentication failed. Please try again.');
-      });
+    discordCodeMutation.mutate(code);
+
+    //   .catch((err) => {
+    //     setStatus('error');
+    //     setErrorMsg(err?.message ?? 'Authentication failed. Please try again.');
+    //   });
   }, [searchParams, dispatch, router]);
+
+  useEffect(() => {
+    if (!discordCodeMutation.isSuccess) {
+    //     setStatus('error');
+    //     setErrorMsg(err?.message ?? 'Authentication failed. Please try again.');
+      console.log({ err: discordCodeMutation.error });
+      return;
+    }
+    setStatus('success');
+
+    redirectTimer.current = setTimeout(
+      () => router.replace('/dashboard'), 1500
+    );
+    return () => {
+      if (redirectTimer.current) {
+        clearTimeout(redirectTimer.current);
+        redirectTimer.current = null;
+      }
+    };
+  }, [discordCodeMutation.isSuccess]);
 
   return (
     <div className={styles.page}>
@@ -54,8 +69,6 @@ export function DiscordCallbackContent() {
       </div>
 
       <div className={styles.card}>
-        <Logo size={28} className={styles.logo} />
-
         {status === 'loading' && (
           <div className={styles.loading}>
             <div className={styles.spinner} />

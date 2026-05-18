@@ -9,16 +9,14 @@ import {
   LuZap,
   LuArrowRight,
 } from 'react-icons/lu';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { clearAuth } from '@/store/slices/auth.slice';
-import { useMe } from '@/hooks/queries/use-me';
 import { Logo } from '@/components/common/logo';
 import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/ui/avatar';
 import { StatCard } from '@/components/ui/stat-card';
 import { EmptyState } from '@/components/ui/empty-state';
-import { authApi } from '@/lib/api/auth.api';
 import styles from './page.module.scss';
+import useLogoutMutation from '@/hooks/mutations/auth/useLogoutMutation';
+import useMeQuery from '@/hooks/queries/auth/useMeQuery';
 
 const NAV = [
   { label: 'Overview', icon: LuHouse },
@@ -35,19 +33,14 @@ const STATS = [
 ];
 
 export default function DashboardPage() {
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((s) => s.auth.user);
-  const { data: meData } = useMe();
+  const { data: meData } = useMeQuery();
+  const logoutMutation = useLogoutMutation();
 
-  const displayName = meData?.displayName ?? user?.displayName ?? 'User';
+  const displayName = meData?.displayName ?? 'User';
 
-  async function handleLogout() {
-    try {
-      await authApi.logout();
-    } finally {
-      dispatch(clearAuth());
-    }
-  }
+  const handleLogout = () => {
+    logoutMutation.mutate();
+  };
 
   return (
     <div className={styles.page}>
