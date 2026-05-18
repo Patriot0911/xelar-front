@@ -1,0 +1,55 @@
+@use '../../../styles/tokens';
+
+.wrapper {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.005));
+}
+
+.nameCell {
+  font-weight: 500;
+  color: var(--ink-0);
+}
+
+.clientId {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-1);
+  background: var(--surface);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+}
+
+.date {
+  color: var(--ink-2);
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.deleteBtn {
+  color: rgba(248, 113, 113, 0.6) !important;
+
+  &:hover {
+    color: rgb(248, 113, 113) !important;
+    background: rgba(248, 113, 113, 0.08) !important;
+  }
+}
+
+.skeleton {
+  height: 16px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}

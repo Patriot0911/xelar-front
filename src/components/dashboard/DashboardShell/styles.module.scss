@@ -1,0 +1,14 @@
+.shell {
+  display: flex;
+  min-height: 100dvh;
+}
+
+.main {
+  flex: 1;
+  padding: 40px 48px;
+  overflow: auto;
+
+  @media (max-width: 1024px) {
+    padding: 28px 24px;
+  }
+}

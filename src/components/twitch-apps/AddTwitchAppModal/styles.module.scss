@@ -1,0 +1,15 @@
+@use '../../../styles/tokens';
+
+.body {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.placeholder {
+  color: var(--ink-2);
+  font-size: 13.5px;
+  text-align: center;
+  padding: 32px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-lg);
+}
