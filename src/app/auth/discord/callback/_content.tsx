@@ -35,31 +35,36 @@ export function DiscordCallbackContent() {
 
     discordCodeMutation.mutate(code);
 
-    //   .catch((err) => {
-    //     setStatus('error');
-    //     setErrorMsg(err?.message ?? 'Authentication failed. Please try again.');
-    //   });
   }, [searchParams, dispatch, router]);
 
   useEffect(() => {
-    if (!discordCodeMutation.isSuccess) {
-    //     setStatus('error');
-    //     setErrorMsg(err?.message ?? 'Authentication failed. Please try again.');
-      console.log({ err: discordCodeMutation.error });
+    if (discordCodeMutation.isPending || discordCodeMutation.isIdle) {
       return;
     }
-    setStatus('success');
 
-    redirectTimer.current = setTimeout(
-      () => router.replace('/dashboard'), 1500
-    );
-    return () => {
-      if (redirectTimer.current) {
-        clearTimeout(redirectTimer.current);
-        redirectTimer.current = null;
-      }
-    };
-  }, [discordCodeMutation.isSuccess]);
+    if (discordCodeMutation.isError) {
+      setStatus('error');
+      setErrorMsg(
+        discordCodeMutation.error?.message ?? 'Internal server error. Please try again later'
+      );
+      return;
+    }
+
+    if (discordCodeMutation.isSuccess) {
+      setStatus('success');
+
+      redirectTimer.current = setTimeout(
+        () => router.replace('/dashboard'), 1500
+      );
+
+      return () => {
+        if (redirectTimer.current) {
+          clearTimeout(redirectTimer.current);
+          redirectTimer.current = null;
+        }
+      };
+    }
+  }, [discordCodeMutation.status]);
 
   return (
     <div className={styles.page}>

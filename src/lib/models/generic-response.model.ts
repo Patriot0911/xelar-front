@@ -6,4 +6,10 @@ export interface IGenericResponseModel<T = unknown> {
   data: T;
 };
 
+export interface IGenericErrorResponseModel<T = unknown> {
+  status: false;
+  message: string;
+  data?: T;
+};
+
 export interface IGenericAxiosResponse<T> extends AxiosResponse<IGenericResponseModel<T>> {};
