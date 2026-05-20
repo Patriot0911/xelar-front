@@ -1,16 +1,7 @@
 'use client';
 
-import { LuPencil, LuTrash2 } from 'react-icons/lu';
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
-} from '@/components/shadcn/table';
-import { Button } from '@/components/ui/button';
-import { ITwitchAppShortModel } from '@/lib/models/twitch/twitch-app.model';
+import { LuTv, LuEllipsis, LuZap, LuShield, LuLock } from 'react-icons/lu';
+import { ITwitchAppShortModel, TwitchAppType, TwitchAppHealth } from '@/lib/models/twitch/twitch-app.model';
 import styles from './styles.module.scss';
 
 interface TwitchAppsTableProps {
@@ -20,60 +11,119 @@ interface TwitchAppsTableProps {
 
 function SkeletonRow() {
   return (
-    <TableRow>
-      {[1, 2, 3, 4].map((i) => (
-        <TableCell key={i}>
-          <div className={styles.skeleton} />
-        </TableCell>
-      ))}
-    </TableRow>
+    <div className={styles.skeletonRow}>
+      <div className={styles.skeletonNameCell}>
+        <div className={styles.skeletonMark} />
+        <div className={styles.skeletonLines}>
+          <div className={styles.skeletonText} style={{ width: '55%' }} />
+          <div className={styles.skeletonText} style={{ width: '40%', height: '10px' }} />
+        </div>
+      </div>
+      <div className={styles.skeletonText} style={{ width: '75%' }} />
+      <div className={styles.skeletonBadge} />
+      <div className={styles.skeletonBadge} />
+      <div className={styles.skeletonText} style={{ width: '40%' }} />
+      <div className={styles.skeletonText} style={{ width: '60%' }} />
+      <div />
+    </div>
+  );
+}
+
+const TYPE_ICON: Record<TwitchAppType, React.ElementType> = {
+  active:   LuZap,
+  internal: LuShield,
+  locked:   LuLock,
+};
+
+const TYPE_LABEL: Record<TwitchAppType, string> = {
+  active:   'Active',
+  internal: 'Internal',
+  locked:   'Locked',
+};
+
+function TypeBadge({ type }: { type?: TwitchAppType }) {
+  if (!type) return <span className={styles.cellMuted}>—</span>;
+  const Icon = TYPE_ICON[type];
+  return (
+    <span className={`${styles.typeBadge} ${styles[type]}`}>
+      <Icon size={11} />
+      {TYPE_LABEL[type]}
+    </span>
+  );
+}
+
+function HealthDot({ health }: { health?: TwitchAppHealth }) {
+  if (!health) return <span className={styles.cellMuted}>—</span>;
+  return (
+    <span className={`${styles.healthBadge} ${styles[`health_${health}`]}`}>
+      <span className={styles.healthDot} />
+      {health === 'healthy' ? 'Healthy' : 'Degraded'}
+    </span>
   );
 }
 
 export function TwitchAppsTable({ apps, isLoading }: TwitchAppsTableProps) {
   return (
     <div className={styles.wrapper}>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Client ID</TableHead>
-            <TableHead>Created</TableHead>
-            <TableHead className="w-[96px]" />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isLoading ? (
-            <>
-              <SkeletonRow />
-              <SkeletonRow />
-              <SkeletonRow />
-            </>
-          ) : (
-            apps.map((app) => (
-              <TableRow key={app.id}>
-                <TableCell className={styles.nameCell}>{app.name}</TableCell>
-                <TableCell>
-                  <code className={styles.clientId}>{app.clientId}</code>
-                </TableCell>
-                <TableCell className={styles.date}>
-                  {new Date(app.createdAt).toLocaleDateString('uk-UA')}
-                </TableCell>
-                <TableCell>
-                  <div className={styles.actions}>
-                    <Button variant="ghost" size="sm" aria-label="Edit">
-                      <LuPencil size={14} />
-                    </Button>
-                    <Button variant="ghost" size="sm" aria-label="Delete" className={styles.deleteBtn}>
-                      <LuTrash2 size={14} />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+      <div className={styles.thead}>
+        <span>Name</span>
+        <span>Client ID</span>
+        <span>Type</span>
+        <span>Health</span>
+        <span>Load</span>
+        <span>Last event</span>
+        <span />
+      </div>
+
+      {isLoading ? (
+        <>
+          <SkeletonRow />
+          <SkeletonRow />
+          <SkeletonRow />
+        </>
+      ) : (
+        apps.map((app) => (
+          <div key={app.id} className={styles.trow}>
+            <div className={styles.nameCell}>
+              <div className={styles.nameMark}>
+                <LuTv size={15} />
+              </div>
+              <div className={styles.nameStack}>
+                <span className={styles.nameText}>{app.name}</span>
+                {app.scope && (
+                  <span className={styles.nameScope}>{app.scope}</span>
+                )}
+              </div>
+            </div>
+
+            <span className={styles.clientIdCell}>{app.clientId}</span>
+
+            <TypeBadge type={app.type} />
+
+            <HealthDot health={app.health} />
+
+            <span className={styles.loadCell}>
+              {app.load !== undefined ? `${app.load}%` : <span className={styles.cellMuted}>—</span>}
+            </span>
+
+            <span className={styles.dateCell}>
+              {app.lastEvent
+                ? app.lastEvent
+                : new Date(app.createdAt).toLocaleDateString('uk-UA')}
+            </span>
+
+            <div className={styles.actions}>
+              <button
+                type="button"
+                className={styles.menuBtn}
+                aria-label="More"
+              >
+                <LuEllipsis size={14} />
+              </button>
+            </div>
+          </div>
+        ))
+      )}
     </div>
   );
 }

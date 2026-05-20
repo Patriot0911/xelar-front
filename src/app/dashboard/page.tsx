@@ -4,7 +4,7 @@ import { LuZap, LuArrowRight } from 'react-icons/lu';
 import { Button } from '@/components/ui/button';
 import { StatCard } from '@/components/ui/stat-card';
 import { EmptyState } from '@/components/ui/empty-state';
-import { DashboardTopBar } from '@/components/dashboard/DashboardTopBar';
+import { PageHeader } from '@/components/ui/PageHeader';
 import styles from './page.module.scss';
 
 const STATS = [
@@ -17,7 +17,7 @@ const STATS = [
 export default function DashboardPage() {
   return (
     <>
-      <DashboardTopBar title="Overview" />
+      <PageHeader eyebrow="Dashboard" title="Overview" />
 
       <div className={styles.statsGrid}>
         {STATS.map((s) => (
