@@ -1,12 +1,12 @@
-'use client';
-
 import { AuthWrapper } from '@/components/modules/auth/AuthWrapper';
+import { AuthDiscordPageContent } from './_content';
 
-export default function AuthPage() {
+export default function AuthDiscordPage() {
   return (
     <AuthWrapper>
       <AuthWrapper.Content>
-        <h1>Test goes here</h1>
+        <AuthWrapper.DiscordHeadline />
+        <AuthDiscordPageContent />
       </AuthWrapper.Content>
     </AuthWrapper>
   );

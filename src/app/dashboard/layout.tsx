@@ -1,7 +1,8 @@
-import { AuthGuard } from '@/components/common/auth-guard';
-import { DashboardShell } from '@/components/dashboard/DashboardShell';
+import AuthGuard from '@/components/common/AuthGuard';
+import { DashboardShell } from '@/components/modules/dashboard/DashboardShell';
+import { PropsWithChildren } from 'react';
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ children }: PropsWithChildren) {
   return (
     <AuthGuard>
       <DashboardShell>{children}</DashboardShell>

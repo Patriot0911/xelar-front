@@ -15,7 +15,6 @@ import {
   LuWebhook,
   LuTriangleAlert,
 } from 'react-icons/lu';
-import { Logo } from '@/components/common/logo';
 import useMeQuery from '@/hooks/queries/auth/useMeQuery';
 import styles from './styles.module.scss';
 
@@ -53,10 +52,6 @@ export function DashboardSidebar() {
 
   return (
     <aside className={styles.sidebar}>
-      <div className={styles.brand}>
-        <Logo size={22} />
-      </div>
-
       <div className={styles.org}>
         <div className={styles.orgMark}>X</div>
         <div className={styles.orgMeta}>

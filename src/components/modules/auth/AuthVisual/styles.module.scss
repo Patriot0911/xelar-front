@@ -1,0 +1,146 @@
+.visual {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.visualCard {
+  position: relative;
+  max-width: 480px;
+  width: 100%;
+}
+
+.visualKicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  background: var(--accent-softer);
+  border: 1px solid var(--accent-soft);
+  margin-bottom: 28px;
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+    animation: pulse 2s ease-in-out infinite;
+  }
+}
+
+.tile {
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.005));
+  backdrop-filter: blur(8px);
+  padding: 16px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.tilePlatform {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink-2);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+
+  .platformDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+
+    &.discord {
+      background: #5865f2;
+      box-shadow: 0 0 8px rgba(88, 101, 242, 0.7);
+    }
+
+    &.twitch {
+      background: #9146ff;
+      box-shadow: 0 0 8px rgba(145, 70, 255, 0.7);
+    }
+  }
+}
+
+.tileUser {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tileAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.tileName {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink-0);
+}
+
+.tileSub {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-2);
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.pipe {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  position: relative;
+
+  .pipeLine {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+
+  .pipeChip {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--accent-ink);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    background: var(--accent-softer);
+    border: 1px solid var(--accent-soft);
+    white-space: nowrap;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

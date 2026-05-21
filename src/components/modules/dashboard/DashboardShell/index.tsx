@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar';
-import { DashboardTopBar } from '@/components/dashboard/DashboardTopBar';
 import styles from './styles.module.scss';
+import { DashboardSidebar } from '../DashboardSidebar';
+import { DashboardTopBar } from '../DashboardTopBar';
 
 interface DashboardShellProps {
   children: ReactNode;

@@ -1,0 +1,41 @@
+.bgAura {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.aura {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+
+  &:nth-child(1) {
+    top: -200px;
+    left: -150px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle at 30% 30%, var(--accent) 0%, transparent 60%);
+  }
+
+  &:nth-child(2) {
+    bottom: -240px;
+    right: -180px;
+    width: 680px;
+    height: 680px;
+    background: radial-gradient(circle at 60% 40%, var(--accent-2) 0%, transparent 60%);
+    opacity: 0.45;
+  }
+
+  &:nth-child(3) {
+    top: 40%;
+    left: 30%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, var(--discord) 0%, transparent 65%);
+    opacity: 0.12;
+  }
+}
