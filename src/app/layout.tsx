@@ -1,7 +1,9 @@
+import { dmSans, jetbrainsMono, manrope, spaceGrotesk, syne } from '@/fonts';
 import type { Metadata } from 'next';
-import './tailwind.css';
-import './globals.scss';
 import { Providers } from './providers';
+import { cn } from '@/lib/utils';
+
+import '@/styles/global.scss';
 
 export const metadata: Metadata = {
   title: 'Xelar',
@@ -10,7 +12,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={
+        cn(
+          spaceGrotesk.variable,
+          syne.variable,
+          dmSans.variable,
+          manrope.variable,
+          jetbrainsMono.variable,
+        )
+      }
+    >
       <body>
         <Providers>{children}</Providers>
       </body>

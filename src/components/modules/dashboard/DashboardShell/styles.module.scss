@@ -1,14 +1,48 @@
 .shell {
-  display: flex;
-  min-height: 100dvh;
+  position: relative;
+  display: grid;
+  grid-template-columns: 256px 1fr;
+  height: 100dvh;
+  overflow: hidden;
+
+  background:
+    radial-gradient(120% 80% at 0% 0%, rgba(154, 107, 255, 0.05), transparent 55%),
+    radial-gradient(80% 60% at 100% 100%, rgba(107, 134, 255, 0.04), transparent 60%),
+    var(--bg-0);
+
+  // Laptop — compact sidebar
+  @media (max-width: 1440px) {
+    grid-template-columns: 220px 1fr;
+  }
+
+  // Tablet — icon rail
+  @media (max-width: 1180px) {
+    grid-template-columns: 76px 1fr;
+  }
+
+  // Mobile — no sidebar column
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
 }
 
+// ── Content column ────────────────────────────────────────────────
 .content {
-  flex: 1;
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0;
   overflow: hidden;
+
+  // Make room for fixed mobile top bar
+  @media (max-width: 900px) {
+    padding-top: 62px;
+  }
+
+  // Make room for fixed bottom tab bar
+  @media (max-width: 640px) {
+    padding-bottom: 64px;
+  }
 }
 
 .main {

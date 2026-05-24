@@ -6,7 +6,7 @@ const AuthBgEffects = () => {
       <div className={styles.aura} />
       <div className={styles.aura} />
       <div className={styles.aura} />
-      <div className={styles.grid} />
+      <div className={styles.gridbg} />
     </div>
   );
 }

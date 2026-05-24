@@ -1,0 +1,80 @@
+.aura {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.a {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  mix-blend-mode: screen;
+}
+
+.a1 {
+  top: -160px;
+  left: -120px;
+  width: 720px;
+  height: 720px;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 60%);
+  opacity: 0.28;
+  animation: drift1 26s ease-in-out infinite;
+}
+
+.a2 {
+  bottom: -220px;
+  right: -120px;
+  width: 700px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-2) 0%, transparent 60%);
+  opacity: 0.20;
+  animation: drift2 32s ease-in-out infinite;
+}
+
+.a3 {
+  top: 35%;
+  left: 45%;
+  width: 540px;
+  height: 540px;
+  background: radial-gradient(circle, #6b86ff 0%, transparent 60%);
+  opacity: 0.14;
+  animation: drift3 38s ease-in-out infinite;
+}
+
+.gridbg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.014) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 0%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 0%, transparent 85%);
+}
+
+@keyframes drift1 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(40px, 30px);
+  }
+}
+@keyframes drift2 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-30px, -40px);
+  }
+}
+@keyframes drift3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(20px, -20px) scale(1.05);
+  }
+}

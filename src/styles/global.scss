@@ -1,10 +1,8 @@
-@use '../styles/tokens';
+@use './abstracts/mixins';
+@use './abstracts/variables';
+@use './base/reset';
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@use 'tailwindcss';
 
 html {
   scroll-behavior: smooth;

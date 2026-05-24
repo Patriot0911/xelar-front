@@ -1,0 +1,312 @@
+// @use '../../../../styles/tokens';
+
+// ── Sidebar ──────────────────────────────────────────────────────
+.sidebar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 14px 14px;
+  gap: 16px;
+  height: 100%;
+  overflow: hidden;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(8, 11, 26, 0.72);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 24%);
+  }
+
+  // ── Tablet / icon rail (900–1180px) ──────────────────────────
+  @media (max-width: 1180px) and (min-width: 900px) {
+    padding: 18px 0 14px;
+    gap: 8px;
+    align-items: center;
+
+    .serverMeta  { display: none; }
+    .serverChev  { display: none; }
+    .server {
+      padding: 0;
+      background: transparent;
+      border: transparent;
+      width: 44px;
+      height: 44px;
+      justify-content: center;
+    }
+    .serverMark {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    .navGroupHead { display: none; }
+    .navSection   { gap: 4px; }
+    .navItem {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      justify-content: center;
+      gap: 0;
+      border-radius: 12px;
+    }
+    .navLabel { display: none; }
+
+    .navItem.active {
+      &::before {
+        left: -4px;
+        top: 28%;
+        bottom: 28%;
+        width: 3px;
+      }
+    }
+
+    // Show tooltip on hover
+    .tooltip { display: block; }
+    .navItem:hover .tooltip {
+      opacity: 1;
+      transform: translate(14px, -50%);
+    }
+
+    .alertMeta { display: none; }
+    .alert {
+      padding: 0;
+      background: transparent;
+      border-color: transparent;
+      width: 44px;
+      height: 44px;
+      justify-content: center;
+      border-radius: 12px;
+    }
+  }
+
+  // ── Mobile — hidden ───────────────────────────────────────────
+  @media (max-width: 900px) {
+    display: none;
+  }
+}
+
+// ── Server / workspace pill ───────────────────────────────────────
+.server {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px 9px 10px;
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(135deg, rgba(88, 101, 242, 0.10), rgba(155, 92, 255, 0.04)),
+    rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(88, 101, 242, 0.20);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+
+  &:hover {
+    border-color: rgba(88, 101, 242, 0.35);
+    background:
+      linear-gradient(135deg, rgba(88, 101, 242, 0.14), rgba(155, 92, 255, 0.06)),
+      rgba(255, 255, 255, 0.02);
+  }
+}
+
+.serverMark {
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #eceeff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 4px 10px rgba(154, 107, 255, 0.25);
+}
+
+.serverMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.serverEyebrow {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(173, 182, 255, 0.85);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.serverLive {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--status-ok);
+  box-shadow: 0 0 6px rgba(93, 211, 158, 0.7);
+  flex-shrink: 0;
+}
+
+.serverName {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--ink-0);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  margin-top: 1px;
+}
+
+.serverChev {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  color: var(--ink-2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.12s, color 0.12s;
+
+  .server:hover & {
+    color: var(--ink-0);
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+// ── Nav sections ─────────────────────────────────────────────────
+.navSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navGroupHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 6px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.roleDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  flex-shrink: 0;
+}
+
+.groupLabel {
+}
+
+.groupLine {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, currentColor, transparent);
+  opacity: 0.2;
+}
+
+.navItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--ink-1);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+
+  svg {
+    flex-shrink: 0;
+    opacity: 0.88;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.035);
+    color: var(--ink-0);
+  }
+
+  // Active — block style with gradient fill and left accent bar
+  &.active {
+    color: var(--ink-0);
+    background:
+      linear-gradient(90deg, rgba(154, 107, 255, 0.18) 0%, rgba(154, 107, 255, 0.06) 100%);
+    box-shadow:
+      inset 0 0 0 1px rgba(154, 107, 255, 0.22),
+      0 0 24px rgba(154, 107, 255, 0.14);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -1px;
+      top: 6px;
+      bottom: 6px;
+      width: 4px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    svg {
+      color: var(--accent);
+      opacity: 1;
+      filter: drop-shadow(0 0 4px var(--accent-glow));
+    }
+  }
+}
+
+.navLabel {
+  flex: 1;
+}
+
+// Tooltip — hidden in full mode, visible in rail mode via .sidebar media query
+.tooltip {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translate(10px, -50%);
+  padding: 6px 10px;
+  border-radius: 7px;
+  background: rgba(15, 18, 40, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  font-family: var(--font-body);
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--ink-0);
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+  transition: opacity 0.15s, transform 0.15s;
+  z-index: 30;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.spacer {
+  flex: 1;
+  min-height: 8px;
+}

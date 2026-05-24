@@ -1,0 +1,15 @@
+:root {
+  --font-display: var(--font-space-grotesk), var(--font-syne), system-ui, sans-serif;
+  --font-body:    var(--font-dm-sans), var(--font-manrope), system-ui, sans-serif;
+  --font-mono:    var(--font-jetbrains-mono), 'Fira Mono', monospace;
+
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl:  1.75rem;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
