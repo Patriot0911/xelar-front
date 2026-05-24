@@ -1,14 +1,9 @@
 import { cn } from '@/lib/utils';
-import styles from './stat-card.module.scss';
+import { StatCardProps } from './StatCard';
 
-interface StatCardProps {
-  label: string;
-  value: string | number;
-  sub?: string;
-  className?: string;
-}
+import styles from './styles.module.scss';
 
-export function StatCard({ label, value, sub, className }: StatCardProps) {
+const StatCard = ({ label, value, sub, className }: StatCardProps) => {
   return (
     <div className={cn(styles.card, className)}>
       <span className={styles.label}>{label}</span>
@@ -17,3 +12,5 @@ export function StatCard({ label, value, sub, className }: StatCardProps) {
     </div>
   );
 }
+
+export default StatCard;

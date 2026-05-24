@@ -1,15 +1,8 @@
-import type { ReactNode } from 'react';
+import { IPageHeaderProps } from './PageHeader';
+
 import styles from './styles.module.scss';
 
-interface PageHeaderProps {
-  eyebrow?: string;
-  title: string;
-  count?: number;
-  description?: string;
-  actions?: ReactNode;
-}
-
-export function PageHeader({ eyebrow, title, count, description, actions }: PageHeaderProps) {
+const PageHeader = ({ eyebrow, title, count, description, actions, children }: IPageHeaderProps) => {
   return (
     <div className={styles.root}>
       <div className={styles.left}>
@@ -26,6 +19,9 @@ export function PageHeader({ eyebrow, title, count, description, actions }: Page
         {description && <p className={styles.description}>{description}</p>}
       </div>
       {actions && <div className={styles.actions}>{actions}</div>}
+      {children}
     </div>
   );
 }
+
+export default PageHeader;
