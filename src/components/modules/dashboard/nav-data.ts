@@ -6,6 +6,7 @@ import {
   LuTv,
   LuActivity,
   LuWebhook,
+  LuShieldCheck,
 } from 'react-icons/lu';
 import type { IconType } from 'react-icons';
 
@@ -24,6 +25,7 @@ export const NAV_MAIN: NavItem[] = [
 ];
 
 export const NAV_CONFIGURE: NavItem[] = [
+  { label: 'Roles',    href: '/dashboard/roles',    icon: LuShieldCheck },
   { label: 'Webhooks', href: '/dashboard/webhooks', icon: LuWebhook },
   { label: 'Settings', href: '/dashboard/settings', icon: LuSettings },
 ];

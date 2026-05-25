@@ -1,0 +1,47 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  border: 1px solid transparent;
+  white-space: nowrap;
+
+  /* admin */
+  &.admin {
+    color: var(--accent);
+    background: rgba(154, 107, 255, 0.10);
+    border-color: rgba(154, 107, 255, 0.28);
+  }
+
+  /* manage_apps */
+  &.manage-apps {
+    color: #5DD39E;
+    background: rgba(93, 211, 158, 0.08);
+    border-color: rgba(93, 211, 158, 0.22);
+  }
+
+  /* read_apps */
+  &.read-apps {
+    color: #5DD39E;
+    background: rgba(93, 211, 158, 0.05);
+    border-color: rgba(93, 211, 158, 0.14);
+  }
+
+  /* manage_roles */
+  &.manage-roles {
+    color: #7FB6FF;
+    background: rgba(86, 134, 255, 0.10);
+    border-color: rgba(86, 134, 255, 0.26);
+  }
+
+  /* read_roles */
+  &.read-roles {
+    color: #7FB6FF;
+    background: rgba(86, 134, 255, 0.05);
+    border-color: rgba(86, 134, 255, 0.14);
+  }
+}

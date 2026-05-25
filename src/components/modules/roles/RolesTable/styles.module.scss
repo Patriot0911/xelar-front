@@ -1,5 +1,3 @@
-// @use '../../../styles/tokens';
-
 .wrapper {
   margin: 0 28px 28px;
   border-radius: var(--radius-lg);
@@ -14,7 +12,7 @@
 
 .thead {
   display: grid;
-  grid-template-columns: 2.2fr 1.5fr 0.85fr 0.9fr 0.6fr 1fr 36px;
+  grid-template-columns: 2fr 0.6fr 2.5fr 72px;
   align-items: center;
   gap: 14px;
   padding: 10px 18px;
@@ -29,7 +27,7 @@
 
 .trow {
   display: grid;
-  grid-template-columns: 2.2fr 1.5fr 0.85fr 0.9fr 0.6fr 1fr 36px;
+  grid-template-columns: 2fr 0.6fr 2.5fr 72px;
   align-items: center;
   gap: 14px;
   padding: 11px 18px;
@@ -59,17 +57,10 @@
   border-radius: 9px;
   display: grid;
   place-items: center;
-  background: rgba(163, 113, 247, 0.09);
-  color: var(--twitch);
-  border: 1px solid rgba(163, 113, 247, 0.20);
+  background: rgba(154, 107, 255, 0.09);
+  color: var(--accent);
+  border: 1px solid rgba(154, 107, 255, 0.20);
   flex-shrink: 0;
-}
-
-.nameStack {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
 }
 
 .nameText {
@@ -83,113 +74,35 @@
   text-overflow: ellipsis;
 }
 
-.nameScope {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--ink-3);
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.clientIdCell {
+.priorityCell {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--ink-1);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.typeBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 8px;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.04em;
-  font-weight: 500;
-  border: 1px solid transparent;
-  width: fit-content;
-
-  &.active {
-    color: #5DD39E;
-    background: rgba(93, 211, 158, 0.08);
-    border-color: rgba(93, 211, 158, 0.22);
-  }
-
-  &.internal {
-    color: #7FB6FF;
-    background: rgba(86, 134, 255, 0.08);
-    border-color: rgba(86, 134, 255, 0.22);
-  }
-
-  &.locked {
-    color: #E0B864;
-    background: rgba(220, 180, 90, 0.08);
-    border-color: rgba(220, 180, 90, 0.22);
-  }
-}
-
-.healthBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12.5px;
-  font-weight: 500;
-  font-family: var(--font-body);
-
-  &.health_healthy { color: var(--status-ok); }
-  &.health_degraded { color: var(--status-error); }
-}
-
-.healthDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-
-  .health_healthy & {
-    background: var(--status-ok);
-    box-shadow: 0 0 6px rgba(93, 211, 158, 0.5);
-  }
-
-  .health_degraded & {
-    background: var(--status-error);
-    box-shadow: 0 0 6px rgba(255, 107, 149, 0.5);
-  }
-}
-
-.loadCell {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--ink-1);
-  letter-spacing: 0.03em;
-}
-
-.dateCell {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
   color: var(--ink-2);
   letter-spacing: 0.03em;
 }
 
-.cellMuted {
-  color: var(--ink-3);
+.permsList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+.permsOverflow {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 10.5px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
 }
 
 .actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 4px;
 }
 
-.menuBtn {
+.actionBtn {
   width: 28px;
   height: 28px;
   border-radius: 8px;
@@ -205,12 +118,17 @@
     background: var(--surface-2);
     color: var(--ink-0);
   }
+
+  &.actionBtnDanger:hover {
+    background: rgba(255, 80, 80, 0.10);
+    color: var(--status-error);
+  }
 }
 
-/* Skeleton loading */
+/* Skeleton */
 .skeletonRow {
   display: grid;
-  grid-template-columns: 2.2fr 1.5fr 0.85fr 0.9fr 0.6fr 1fr 36px;
+  grid-template-columns: 2fr 0.6fr 2.5fr 72px;
   align-items: center;
   gap: 14px;
   padding: 13px 18px;
@@ -238,8 +156,8 @@
 }
 
 .skeletonBadge {
-  height: 22px;
-  width: 64px;
+  height: 20px;
+  width: 72px;
   border-radius: var(--radius-sm);
   background: var(--surface-2);
   animation: pulse 1.5s ease-in-out infinite;
@@ -256,6 +174,11 @@
   flex-direction: column;
   gap: 4px;
   flex: 1;
+}
+
+.skeletonPerms {
+  display: flex;
+  gap: 5px;
 }
 
 @keyframes pulse {

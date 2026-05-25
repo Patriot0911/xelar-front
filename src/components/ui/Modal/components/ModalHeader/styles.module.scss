@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 22px 24px 8px;
+}
+
+.headerEyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+
+.headerTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.018em;
+  color: var(--ink-0);
+}
+
+.headerSub {
+  font-size: 13.5px;
+  color: var(--ink-1);
+  margin: 0;
+  line-height: 1.5;
+}

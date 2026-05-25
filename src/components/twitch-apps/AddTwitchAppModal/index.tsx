@@ -117,8 +117,7 @@ export function AddTwitchAppModal() {
         >
           {/* Header */}
           <header className={styles.header}>
-            <div className={styles.headerMark}><LuTv size={20} /></div>
-            <div className={styles.headerMeta}>
+            {/* <div className={styles.headerMeta}> */}
               <div className={styles.headerEyebrow}>Integration · Twitch</div>
               <DialogPrimitive.Title className={styles.headerTitle}>
                 Add Twitch App
@@ -127,15 +126,7 @@ export function AddTwitchAppModal() {
                 Paste credentials from your Twitch Developer Console. Xelar uses them to route
                 EventSub webhooks into your bridges.
               </p>
-            </div>
-            <button
-              type="button"
-              className={styles.closeBtn}
-              onClick={() => setOpen(false)}
-              aria-label="Close"
-            >
-              <LuX size={16} />
-            </button>
+            {/* </div> */}
           </header>
 
           {/* Body */}
