@@ -35,15 +35,20 @@
       -ms-user-select: none;
     }
   }
-  .controller-input {
+  .controller-select {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     padding: 10px 12px;
     border-radius: var(--radius-sm);
     background: #08091B;
     border: 1px solid rgba(255, 255, 255, 0.08);
     transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    font-size: 13px;
+    color: var(--ink-0);
+    cursor: pointer;
+    user-select: none;
+    position: relative;
 
     &:focus-within {
       border-color: var(--accent);
@@ -61,23 +66,6 @@
       box-shadow: 0px 0px 2px 1px var(--status-error-2);
     }
 
-    input {
-      flex: 1;
-      background: transparent;
-      border: 0;
-      outline: 0;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      color: var(--ink-0);
-      letter-spacing: 0.02em;
-      min-width: 0;
-
-      &::placeholder {
-        color: var(--ink-3);
-        letter-spacing: 0.04em;
-      }
-    }
-
     &__disabled {
       border-color: transparent;
       box-shadow: none;
@@ -86,6 +74,10 @@
       }
     }
 
+    .placeholder {
+      color: var(--ink-3);
+      letter-spacing: 0.04em;
+    }
     .icon-button {
       width: 22px;
       height: 22px;

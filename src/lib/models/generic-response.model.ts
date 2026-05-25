@@ -13,3 +13,12 @@ export interface IGenericErrorResponseModel<T = unknown> {
 };
 
 export interface IGenericAxiosResponse<T> extends AxiosResponse<IGenericResponseModel<T>> {};
+
+export interface IGenericListMeta {
+  count: number;
+};
+
+export interface IGenericList<T, D = IGenericListMeta> {
+  items: T;
+  meta: D;
+};

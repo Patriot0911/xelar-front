@@ -1,11 +1,11 @@
 import { cn } from '@/lib/utils';
-import { IButtonProps } from '../buttons';
+import { IBaseButtonProps } from '../buttons';
 import { LuArrowRight } from 'react-icons/lu';
 import { SiDiscord } from 'react-icons/si';
 
 import styles from './styles.module.scss';
 
-const DiscordButton = (props: IButtonProps) => {
+const DiscordButton = (props: IBaseButtonProps) => {
   return (
     <button
       {...props}

@@ -2,7 +2,8 @@
   --bg-0: #07091A;
   --bg-1: #0B0F22;
   --bg-2: #11162E;
-  --bg-3: #1A2040;
+  --bg-3: #1c2455;
+  --bg-4: #1A2040;
 
   // Surface scale (semi-transparent overlays)
   --surface:   rgba(255, 255, 255, 0.04);
@@ -41,11 +42,7 @@
   --status-ok:    #5DD39E;
   --status-warn:  #F2C94C;
   --status-error: #FF6B95;
-
-  // Typography
-  --font-display: 'Space Grotesk', 'Syne', system-ui, sans-serif;
-  --font-body:    'DM Sans', 'Manrope', system-ui, sans-serif;
-  --font-mono:    'JetBrains Mono', 'Fira Mono', monospace;
+  --status-error-2: #ff2929;
 
   // Service colors (extended)
   --telegram:     #29B6F6;

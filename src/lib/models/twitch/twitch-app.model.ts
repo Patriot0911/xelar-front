@@ -1,24 +1,24 @@
-export type TwitchAppType   = 'active' | 'internal' | 'locked';
-export type TwitchAppHealth = 'healthy' | 'degraded';
+import { IGenericList } from '../generic-response.model';
 
 export interface ITwitchAppShortModel {
   id: string;
   clientId: string;
   name: string;
-  createdAt: string;
-  // Extended fields returned by API v2
-  type?: TwitchAppType;
-  health?: TwitchAppHealth;
-  load?: number;
-  scope?: string;
-  lastEvent?: string;
-}
+  createdAt: Date;
+};
 
-export interface ITwitchAppsListMeta {
-  count: number;
-}
+export interface ICreateTwitchAppModel {
+  name: string;
+  clientId: string;
+  clientSecret: string;
+  webhookSecret?: string;
+};
 
-export interface ITwitchAppsListResponse {
-  items: ITwitchAppShortModel[];
-  meta: ITwitchAppsListMeta;
-}
+export interface IEditTwitchAppModel {
+  appId: string;
+  name?: string;
+  clientSecret?: string;
+  webhookSecret?: string;
+};
+
+export type TTwitchAppsListModel = IGenericList<ITwitchAppShortModel>;

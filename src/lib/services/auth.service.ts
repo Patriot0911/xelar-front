@@ -18,7 +18,6 @@ class AuthService {
   static updateTokens(accessToken: string, refreshToken?: string) {
     AuthService.setToken(accessToken);
     localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-    console.log({ accessToken, refreshToken, })
     if (refreshToken) {
       localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
     }

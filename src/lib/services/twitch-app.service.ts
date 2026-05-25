@@ -1,19 +1,30 @@
 import { apiClient } from '@/lib/api-client';
-import { IGenericResponseModel } from '@/lib/models/generic-response.model';
-import { ITwitchAppsListResponse } from '@/lib/models/twitch/twitch-app.model';
+import { ICreateTwitchAppModel, IEditTwitchAppModel, TTwitchAppsListModel } from '@/lib/models/twitch/twitch-app.model';
 
-export const TwitchAppsQueryKey = {
-  List: 'twitch-apps-list',
-} as const;
-
-const TwitchAppService = {
-  getApps: async (params?: { page?: number; pageSize?: number }): Promise<ITwitchAppsListResponse> => {
-    const res = await apiClient.get<never, IGenericResponseModel<ITwitchAppsListResponse>>(
-      '/api/admin/twitch/apps',
-      { params },
-    );
-    return res.data;
-  },
+export enum TwitchAppsQueryKey {
+  List = 'twitch-apps-list',
 };
+
+class TwitchAppService {
+  static createTwitchApp(data: ICreateTwitchAppModel) {
+    return apiClient.post('/api/twitch/apps', data);
+  }
+
+  static editTwitchApp({ appId, ...data }: IEditTwitchAppModel) {
+    return apiClient.patch(`/api/twitch/apps/${appId}`, data);
+  }
+
+  static deleteTwitchApp(appId: string) {
+    return apiClient.delete(`/api/twitch/apps/${appId}`);
+  }
+
+  static getTwitchApps(): Promise<TTwitchAppsListModel> {
+    return apiClient.get(`/api/twitch/apps`);
+  }
+
+  static getTwitchApp(appId: string) {
+    return apiClient.get(`/api/twitch/apps/${appId}`);
+  }
+}
 
 export default TwitchAppService;

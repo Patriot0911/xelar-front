@@ -9,6 +9,8 @@ const FormInput = <T extends FieldValues>({
   name,
   className,
   hint,
+  icon,
+  onIconClick,
   hideErrorMessage,
   ...props
 }: IFormInputProps<T>) => {
@@ -24,8 +26,12 @@ const FormInput = <T extends FieldValues>({
 
   return (
     <div className={styles['controller']}>
-      <label htmlFor={name}>{label}</label>
-      {/* todo: add optional badge for !props.required */}
+      <div className={styles['label-wrapper']}>
+        <label htmlFor={name}>{label}</label>
+        {!props.required && (
+          <span className={styles['flag-optional']}>Optional</span>
+        )}
+      </div>
       <div
         className={
           cn(
@@ -45,6 +51,15 @@ const FormInput = <T extends FieldValues>({
           aria-describedby={`${name}-error`}
           value={field.value ?? ''}
         />
+        {icon && (
+          <button
+            type={'button'}
+            className={styles['icon-button']}
+            onClick={onIconClick}
+          >
+            {icon}
+          </button>
+        )}
       </div>
       {hint && (<span className={styles.hint}>{hint}</span>)}
 
