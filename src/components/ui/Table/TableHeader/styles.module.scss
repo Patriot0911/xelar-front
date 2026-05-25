@@ -1,0 +1,25 @@
+.table-header-row {
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.18);
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+
+  &:first-child {
+    border-radius: var(--border-radius-lg) 0 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 var(--border-radius-lg) 0 0;
+  }
+}

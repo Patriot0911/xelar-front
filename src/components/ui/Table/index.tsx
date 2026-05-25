@@ -3,62 +3,45 @@ import { cn } from '@/lib/utils';
 import styles from './styles.module.scss';
 
 import { ITableProps } from './Table';
-import TablePagination from './TablePagination';
+import { TableContext } from './context';
+import { TableHeader } from './TableHeader';
+import { TableBody } from './TableBody';
 
-const Table = <T,>({ columns, isLoading, data, emptyText, pagination, rowKey, onRowClick }: ITableProps<T>) => {
-  const getRowKey = (row: T, index: number) =>
-    typeof rowKey === 'function'
-      ? rowKey(row)
-      : String(row[rowKey] ?? index);
-
+const Table = <T,>({
+  columns,
+  data,
+  rowKey,
+  isLoading = false,
+  emptyText,
+  emptyComponent,
+  loadingComponent,
+  onRowClick,
+  className,
+  children,
+}: ITableProps<T>) => {
   return (
-    <div className={styles['table-wrapper']}>
-      <table className={styles['table']}>
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th key={column.name} className={styles['table-header']}>
-                {column.title}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {isLoading && (
-            <tr>
-              <td colSpan={columns.length} className={styles['state']}>
-                Loading...
-              </td>
-            </tr>
-          )}
-          {!isLoading && data.length === 0 && (
-            <tr>
-              <td colSpan={columns.length} className={styles['state']}>
-                {emptyText ?? 'Cannot find any data'}
-              </td>
-            </tr>
-          )}
-          {!isLoading &&
-            data.map((row, index) => (
-              <tr
-                key={getRowKey(row, index)}
-                onClick={() => onRowClick?.(row)}
-                className={cn(onRowClick && styles['clickable'])}
-              >
-                {columns.map(col => (
-                  <td key={String(col.name)} className={styles['tableCell']}>
-                    {col.render ? col.render(row, index) : (row as any)[col.name]}
-                  </td>
-                ))}
-              </tr>
-            ))}
-        </tbody>
-      </table>
-      {pagination && (
-        <TablePagination {...pagination} />
-      )}
-    </div>
+    <TableContext.Provider
+      value={{
+        columns,
+        data,
+        rowKey,
+        isLoading,
+        emptyText,
+        emptyComponent,
+        loadingComponent,
+        onRowClick,
+      }}
+    >
+      <div className={cn(styles['table-wrapper'], className)}>
+        <table className={styles.table}>
+          {children}
+        </table>
+      </div>
+    </TableContext.Provider>
   );
 }
+
+Table.Header = TableHeader;
+Table.Body = TableBody;
 
 export default Table;

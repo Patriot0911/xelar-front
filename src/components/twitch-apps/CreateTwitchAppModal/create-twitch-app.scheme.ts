@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const twitchAppSchema = z.object({
+export const createTwitchAppSchema = z.object({
   clientId: z.string(),
   name: z.string(),
   clientSecret: z.string(),
@@ -8,4 +8,4 @@ export const twitchAppSchema = z.object({
   type: z.string(),
 });
 
-export type TTwitchAppForm = z.infer<typeof twitchAppSchema>;
+export type TCreateTwitchAppForm = z.infer<typeof createTwitchAppSchema>;

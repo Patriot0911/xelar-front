@@ -1,5 +1,5 @@
 import { IModalBaseProps } from '@/components/ui/Modal/Modal';
 
-export interface ITwitchAppModalProps extends IModalBaseProps {
+export interface IEditTwitchAppModalProps extends IModalBaseProps {
   appId?: string;
 };

@@ -1,16 +1,17 @@
 import { apiClient } from '@/lib/api-client';
-import { ICreateTwitchAppModel, IEditTwitchAppModel, TTwitchAppsListModel } from '@/lib/models/twitch/twitch-app.model';
+import { ICreateTwitchAppModel, IEditTwitchAppModel, ITwitchAppShortModel, TTwitchAppsListModel } from '@/lib/models/twitch/twitch-app.model';
 
 export enum TwitchAppsQueryKey {
   List = 'twitch-apps-list',
+  Selected = 'twitch-selected-app',
 };
 
 class TwitchAppService {
-  static createTwitchApp(data: ICreateTwitchAppModel) {
+  static createTwitchApp(data: ICreateTwitchAppModel): Promise<ITwitchAppShortModel> {
     return apiClient.post('/api/twitch/apps', data);
   }
 
-  static editTwitchApp({ appId, ...data }: IEditTwitchAppModel) {
+  static editTwitchApp({ appId, ...data }: IEditTwitchAppModel): Promise<ITwitchAppShortModel> {
     return apiClient.patch(`/api/twitch/apps/${appId}`, data);
   }
 
@@ -22,7 +23,7 @@ class TwitchAppService {
     return apiClient.get(`/api/twitch/apps`);
   }
 
-  static getTwitchApp(appId: string) {
+  static getTwitchApp(appId: string): Promise<ITwitchAppShortModel> {
     return apiClient.get(`/api/twitch/apps/${appId}`);
   }
 }

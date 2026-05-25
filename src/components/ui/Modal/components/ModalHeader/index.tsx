@@ -1,15 +1,16 @@
+import { IModalHeaderProps } from './ModalHeader';
+
 import styles from './styles.module.scss';
 
-const ModalHeader = () => {
+const ModalHeader = ({ category, description, title, }: IModalHeaderProps) => {
   return (
     <header className={styles.header}>
-      <div className={styles.headerEyebrow}>Integration · Twitch</div>
+      <div className={styles.headerEyebrow}>{category}</div>
       <span className={styles.headerTitle}>
-        Add Twitch App
+        {title}
       </span>
       <p className={styles.headerSub}>
-        Paste credentials from your Twitch Developer Console. Xelar uses them to route
-        EventSub webhooks into your bridges.
+        {description}
       </p>
     </header>
   );

@@ -1,23 +1,39 @@
 import { ReactNode } from 'react';
 
 export interface ITableColumn<T> {
-  title: string;
-  name: string;
+  key: string;
+  title: ReactNode;
+  dataBind?: keyof T;
   render?: (row: T, index: number) => ReactNode;
+  width?: string | number;
+  align?: 'left' | 'center' | 'right';
+  className?: string;
 };
+
 export interface ITablePaginationProps {
   page: number;
   pageSize: number;
   total: number;
   onChange: (page: number) => void;
-}
+};
 
 export interface ITableProps<T> {
   columns: ITableColumn<T>[];
-  isLoading?: boolean;
   data: T[];
-  emptyText?: string
-  pagination?: ITablePaginationProps;
   rowKey: keyof T | ((row: T) => string);
+  isLoading?: boolean;
+  emptyText?: ReactNode;
+  emptyComponent?: ReactNode;
+  loadingComponent?: ReactNode;
   onRowClick?: (row: T) => void;
+  className?: string;
+  children: ReactNode;
+};
+
+export interface ITableBodyProps {
+  className?: string;
+};
+
+export interface ITableHeaderProps {
+  className?: string;
 };

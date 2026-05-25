@@ -1,70 +1,74 @@
 import Modal from '@/components/ui/Modal';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TTwitchAppForm, twitchAppSchema } from './twitch-app.scheme';
+import { TEditTwitchAppForm, editTwitchAppSchema } from './edit-twitch-app.scheme';
 import FormInput from '@/components/ui/FormInput';
 import { LuEye, LuEyeOff } from 'react-icons/lu';
 import FormSelect from '@/components/ui/FormSelect';
 import { ISelectOption } from '@/components/ui/FormSelect/context';
-import { twitchAppStates, TwitchAppStatus } from '@/lib/constants/twitch-app-status';
-import useCreateAppMutation from '@/hooks/mutations/twitch-apps/useCreateAppMutation';
+import { TwitchAppStatus } from '@/lib/constants/twitch-app-status';
 import useEditAppMutation from '@/hooks/mutations/twitch-apps/useEditAppMutation';
+import useGetTwitchAppQuery from '@/hooks/queries/twitch/useGetTwitchAppQuery';
 import Button from '@/components/ui/buttons/Button';
-import { ITwitchAppModalProps } from './TwitchAppModal';
+import { IEditTwitchAppModalProps } from './EditTwitchAppModal';
+import TwitchAppTypeOption from '../TwitchAppTypeOption';
 import { useEffect, useState } from 'react';
 
 import styles from './styles.module.scss';
 
-const TwitchAppStatusMark = ({ val }: { val: string; }) => {
-  const Mark = twitchAppStates[val].icon;
-  return <Mark size={14} />;
-}
-
-const TwitchAppModal = ({ appId, ...props }: ITwitchAppModalProps) => {
+const EditTwitchAppModal = ({ appId, ...props }: IEditTwitchAppModalProps) => {
   const [showClientSecret, setShowClientSecret] = useState(false);
   const [showWebhookSecret, setShowWebhookSecret] = useState(false);
-  const methods = useForm<TTwitchAppForm>({
-    resolver: zodResolver(twitchAppSchema),
+  const editTwitchAppMutation = useEditAppMutation();
+  const { data: selectedApp, isLoading, } = useGetTwitchAppQuery(appId ?? '', !!appId && props.isOpen);
+  const methods = useForm<TEditTwitchAppForm>({
+    resolver: zodResolver(editTwitchAppSchema),
     mode: 'onTouched',
     reValidateMode: 'onChange',
     defaultValues: {
       type: TwitchAppStatus.Active,
     },
   });
-  const createTwitchAppMutation = useCreateAppMutation();
-  const editAppMutation = useEditAppMutation();
 
-  const isPending = createTwitchAppMutation.isPending || editAppMutation.isPending;
-  const isSuccess = createTwitchAppMutation.isSuccess || editAppMutation.isSuccess;
-
-  const submitHandler = ({ type, ...data}: TTwitchAppForm) => {
-    console.log({ data });
-    if (appId) {
-      return editAppMutation.mutate({
-        appId,
-        ...data
-      });
+  const submitHandler = ({ type, ...data}: TEditTwitchAppForm) => {
+    if (!appId) {
+      return;
     }
-    createTwitchAppMutation.mutate(data);
+    editTwitchAppMutation.mutate({
+      appId,
+      ...data,
+    });
   };
 
   useEffect(() => {
     if (!props.isOpen) {
-      createTwitchAppMutation.reset();
-      editAppMutation.reset();
+      editTwitchAppMutation.reset();
       methods.reset();
     }
   }, [props.isOpen]);
 
+  useEffect(() => {
+    if (selectedApp) {
+      methods.reset({
+        name: selectedApp.name,
+        // type: selectedApp.type,
+      });
+    }
+  }, [selectedApp]);
+
   return (
     <Modal
       {...props}
-      isLoading={isPending}
+      isLoading={editTwitchAppMutation.isPending || isLoading}
     >
-      <Modal.ModalHeader></Modal.ModalHeader>
+      <Modal.ModalHeader
+        category={'Integration · Twitch'}
+        title={'Edit Twitch App'}
+        description={'Change credentials based on your Twitch Developer Console.'}
+      />
       <FormProvider {...methods}>
         <Modal.ModalBody>
-          <FormInput<TTwitchAppForm>
+          <FormInput<TEditTwitchAppForm>
             name={'name'}
             label={'Name'}
             required
@@ -73,7 +77,7 @@ const TwitchAppModal = ({ appId, ...props }: ITwitchAppModalProps) => {
             hint={'Shown across the dashboard. Use a short, descriptive label.'}
             hideErrorMessage
           />
-          <FormSelect<TTwitchAppForm, ISelectOption>
+          <FormSelect<TEditTwitchAppForm, ISelectOption>
             name={'type'}
             label={'Type'}
             hideErrorMessage
@@ -89,44 +93,15 @@ const TwitchAppModal = ({ appId, ...props }: ITwitchAppModalProps) => {
             }
           >
             <FormSelect.Selected>
-              {(item) => (
-                <div className={styles['type-item']}>
-                  <span className={`${styles['type-mark']} ${styles[item.value]}`}>
-                    <TwitchAppStatusMark val={item.value} />
-                  </span>
-                  <div>
-                    <span className={styles['name']}>{item.label}</span>
-                    <span className={styles['desc']}>{twitchAppStates[item.value].description}</span>
-                  </div>
-                </div>
-              )}
+              {(item) => <TwitchAppTypeOption item={item} />}
             </FormSelect.Selected>
             <FormSelect.Area>
               <FormSelect.Option>
-                {(item) => (
-                  <div className={styles['type-item']}>
-                    <span className={`${styles['type-mark']} ${styles[item.value]}`}>
-                      <TwitchAppStatusMark val={item.value} />
-                    </span>
-                    <div>
-                      <span className={styles['name']}>{item.label}</span>
-                      <span className={styles['desc']}>{twitchAppStates[item.value].description}</span>
-                    </div>
-                  </div>
-                )}
+                {(item) => <TwitchAppTypeOption item={item} />}
               </FormSelect.Option>
             </FormSelect.Area>
           </FormSelect>
-          <FormInput<TTwitchAppForm>
-            name={'clientId'}
-            label={'Client ID'}
-            required
-            autoComplete={'app-client-id'}
-            placeholder={'Paste from Twitch Dev Console'}
-            hint={'From your Twitch app · Manage · Client ID.'}
-            hideErrorMessage
-          />
-          <FormInput<TTwitchAppForm>
+          <FormInput<TEditTwitchAppForm>
             name={'clientSecret'}
             label={'Client Secret'}
             required
@@ -138,7 +113,7 @@ const TwitchAppModal = ({ appId, ...props }: ITwitchAppModalProps) => {
             onIconClick={() => setShowClientSecret((state) => !state)}
             hideErrorMessage
           />
-          <FormInput<TTwitchAppForm>
+          <FormInput<TEditTwitchAppForm>
             name={'webhookSecret'}
             label={'Webhook Secret'}
             type={showWebhookSecret ? 'text' : 'password'}
@@ -158,10 +133,10 @@ const TwitchAppModal = ({ appId, ...props }: ITwitchAppModalProps) => {
             type='submit'
             className={styles.btnPrimary}
             onClick={methods.handleSubmit(submitHandler)}
-            disabled={!methods.formState.isValid || isSuccess}
-            isLoading={isPending}
+            disabled={!methods.formState.isValid || editTwitchAppMutation.isSuccess}
+            isLoading={editTwitchAppMutation.isPending}
           >
-            {appId ? 'Save Changes' : 'Create'}
+            Save Changes
           </Button>
         </Modal.ModalFooter>
       </FormProvider>
@@ -169,4 +144,4 @@ const TwitchAppModal = ({ appId, ...props }: ITwitchAppModalProps) => {
   );
 }
 
-export default TwitchAppModal;
+export default EditTwitchAppModal;

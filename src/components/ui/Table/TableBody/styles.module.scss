@@ -1,0 +1,54 @@
+.body tr {
+  transition: background 0.1s ease;
+  border-bottom: 1px solid var(--line);
+  &:last-child {
+    border-bottom: 0;
+  }
+  &:hover {
+    background: var(--surface);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.clickable {
+  cursor: pointer;
+  &:hover {
+    background: var(--color-background-secondary);
+  }
+  &:active {
+    background: var(--color-background-tertiary);
+  }
+}
+
+.table-cell {
+  padding: 12px 16px;
+  color: var(--color-text-primary);
+  vertical-align: middle;
+  white-space: nowrap;
+
+  &--truncate {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.state {
+  padding: 48px 16px;
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-size: var(--text-sm);
+}
+
+.align-left {
+  text-align: left;
+}
+.align-center {
+  text-align: center;
+}
+.align-right {
+  text-align: right;
+}

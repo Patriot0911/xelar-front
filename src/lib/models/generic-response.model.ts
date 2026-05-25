@@ -19,6 +19,6 @@ export interface IGenericListMeta {
 };
 
 export interface IGenericList<T, D = IGenericListMeta> {
-  items: T;
+  items: T[];
   meta: D;
 };
