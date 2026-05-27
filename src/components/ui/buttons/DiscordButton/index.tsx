@@ -16,6 +16,7 @@ const DiscordButton = (props: IBaseButtonProps) => {
         )
       }
     >
+      { process.env.NEXT_PUBLIC_API_URL }
       <span className={styles.icon}>
         <SiDiscord size={20} />
       </span>

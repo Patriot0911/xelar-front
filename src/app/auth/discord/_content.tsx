@@ -1,5 +1,3 @@
-'use client';
-
 import DiscordButton from '@/components/ui/buttons/DiscordButton';
 
 const DISCORD_AUTH_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'}/api/auth/discord`;
