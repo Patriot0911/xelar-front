@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ghcr.io/Patriot0911/xelar-front:latest
+    image: ghcr.io/patriot0911/xelar-front:latest
     container_name: xelar-frontend
     restart: unless-stopped
     ports:
