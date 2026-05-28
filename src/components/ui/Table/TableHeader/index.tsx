@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import styles from './styles.module.scss';
 
 export const TableHeader = <T,>({ className }: ITableHeaderProps) => {
-  const { columns } = useTableContext<T>();
+  const { columns, actions } = useTableContext<T>();
 
   return (
     <thead className={className}>
@@ -22,6 +22,12 @@ export const TableHeader = <T,>({ className }: ITableHeaderProps) => {
             {col.title}
           </th>
         ))}
+        {actions?.length ? (
+          <th
+            className={styles['table-header-row']}
+            style={{ width: actions.length * 32 + 8 }}
+          />
+        ) : null}
       </tr>
     </thead>
   );

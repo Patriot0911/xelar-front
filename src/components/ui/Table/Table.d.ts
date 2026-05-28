@@ -10,6 +10,15 @@ export interface ITableColumn<T> {
   className?: string;
 };
 
+export interface ITableAction<T> {
+  key: string;
+  icon: ReactNode;
+  label: string;
+  variant?: 'danger' | 'primary';
+  disabled?: boolean | ((row: T) => boolean);
+  onClick: (row: T) => void;
+};
+
 export interface ITablePaginationProps {
   page: number;
   pageSize: number;
@@ -19,6 +28,7 @@ export interface ITablePaginationProps {
 
 export interface ITableProps<T> {
   columns: ITableColumn<T>[];
+  actions?: ITableAction<T>[];
   data: T[];
   rowKey: keyof T | ((row: T) => string);
   isLoading?: boolean;

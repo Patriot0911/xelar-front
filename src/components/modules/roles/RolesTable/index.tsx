@@ -1,39 +1,21 @@
 'use client';
 
+import { useState } from 'react';
 import { LuShieldCheck, LuPencil, LuTrash2 } from 'react-icons/lu';
 import { IRoleListItem } from '@/lib/models/roles/role.model';
 import { Permission } from '@/lib/constants/permissions';
-import styles from './styles.module.scss';
+import { ITableAction, ITableColumn } from '@/components/ui/Table/Table';
+import Table from '@/components/ui/Table';
+import TablePagination from '@/components/ui/Table/TablePagination';
+import useRolesQuery from '@/hooks/queries/roles/useRolesQuery';
+import useDeleteRoleMutation from '@/hooks/mutations/roles/useDeleteRoleMutation';
+import { ROLES_DEFAULT_PAGE_SIZE } from '@/lib/constants/roles';
+import { RoleFormModal } from '../RoleFormModal';
 import { PermissionBadge } from '../PermissionBadge';
 
+import styles from './styles.module.scss';
+
 const MAX_VISIBLE_PERMISSIONS = 3;
-
-interface RolesTableProps {
-  roles: IRoleListItem[];
-  isLoading?: boolean;
-  onEdit?: (role: IRoleListItem) => void;
-  onDelete?: (role: IRoleListItem) => void;
-}
-
-function SkeletonRow() {
-  return (
-    <div className={styles.skeletonRow}>
-      <div className={styles.skeletonNameCell}>
-        <div className={styles.skeletonMark} />
-        <div className={styles.skeletonLines}>
-          <div className={styles.skeletonText} style={{ width: '45%' }} />
-          <div className={styles.skeletonText} style={{ width: '25%', height: '10px' }} />
-        </div>
-      </div>
-      <div className={styles.skeletonText} style={{ width: '30%' }} />
-      <div className={styles.skeletonPerms}>
-        <div className={styles.skeletonBadge} />
-        <div className={styles.skeletonBadge} />
-      </div>
-      <div />
-    </div>
-  );
-}
 
 function PermissionsList({ permissions }: { permissions: Permission[] }) {
   const visible = permissions.slice(0, MAX_VISIBLE_PERMISSIONS);
@@ -51,57 +33,94 @@ function PermissionsList({ permissions }: { permissions: Permission[] }) {
   );
 }
 
-export function RolesTable({ roles, isLoading, onEdit, onDelete }: RolesTableProps) {
-  return (
-    <div className={styles.wrapper}>
-      <div className={styles.thead}>
-        <span>Name</span>
-        <span>Priority</span>
-        <span>Permissions</span>
-        <span />
+const roleColumns: ITableColumn<IRoleListItem>[] = [
+  {
+    key: 'name',
+    title: 'Name',
+    render: (role) => (
+      <div className={styles.nameCell}>
+        <div className={styles.nameMark}>
+          <LuShieldCheck size={15} />
+        </div>
+        <span className={styles.nameText}>{role.name}</span>
       </div>
+    ),
+  },
+  {
+    key: 'priority',
+    title: 'Priority',
+    render: (role) => (
+      <span className={styles.priorityCell}>{role.rolePriority}</span>
+    ),
+  },
+  {
+    key: 'permissions',
+    title: 'Permissions',
+    render: (role) => <PermissionsList permissions={role.permissions} />,
+  },
+];
 
-      {isLoading ? (
-        <>
-          <SkeletonRow />
-          <SkeletonRow />
-          <SkeletonRow />
-        </>
-      ) : (
-        roles.map((role) => (
-          <div key={role.id} className={styles.trow}>
-            <div className={styles.nameCell}>
-              <div className={styles.nameMark}>
-                <LuShieldCheck size={15} />
-              </div>
-              <span className={styles.nameText}>{role.name}</span>
-            </div>
+export function RolesTable() {
+  const [page, setPage] = useState(1);
+  const [editingRole, setEditingRole] = useState<IRoleListItem | undefined>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-            <span className={styles.priorityCell}>{role.rolePriority}</span>
+  const { data, isLoading } = useRolesQuery({ page, pageSize: ROLES_DEFAULT_PAGE_SIZE });
+  const deleteMutation = useDeleteRoleMutation();
 
-            <PermissionsList permissions={role.permissions} />
+  function handleEdit(role: IRoleListItem) {
+    setEditingRole(role);
+    setIsModalOpen(true);
+  }
 
-            <div className={styles.actions}>
-              <button
-                type="button"
-                className={styles.actionBtn}
-                aria-label="Edit role"
-                onClick={() => onEdit?.(role)}
-              >
-                <LuPencil size={13} />
-              </button>
-              <button
-                type="button"
-                className={`${styles.actionBtn} ${styles.actionBtnDanger}`}
-                aria-label="Delete role"
-                onClick={() => onDelete?.(role)}
-              >
-                <LuTrash2 size={13} />
-              </button>
-            </div>
-          </div>
-        ))
-      )}
-    </div>
+  function handleDelete(role: IRoleListItem) {
+    if (!confirm(`Delete role "${role.name}"?`)) return;
+    deleteMutation.mutate(role.id);
+  }
+
+  const roleActions: ITableAction<IRoleListItem>[] = [
+    {
+      key: 'edit',
+      icon: <LuPencil size={13} />,
+      label: 'Edit role',
+      onClick: handleEdit,
+    },
+    {
+      key: 'delete',
+      icon: <LuTrash2 size={13} />,
+      label: 'Delete role',
+      variant: 'danger',
+      onClick: handleDelete,
+    },
+  ];
+
+  return (
+    <>
+      <RoleFormModal
+        role={editingRole}
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+      />
+      <Table<IRoleListItem>
+        columns={roleColumns}
+        actions={roleActions}
+        data={data?.items ?? []}
+        rowKey="id"
+        isLoading={isLoading}
+        skeletonRows={ROLES_DEFAULT_PAGE_SIZE}
+        emptyText="No roles found"
+      >
+        <Table.Header />
+        <Table.Body />
+      </Table>
+      <div className={styles['paginator-wrapper']}>
+        <TablePagination
+          page={page}
+          pageSize={ROLES_DEFAULT_PAGE_SIZE}
+          total={data?.meta.count ?? 0}
+          onChange={setPage}
+        />
+      </div>
+    </>
   );
 }
