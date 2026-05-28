@@ -5,7 +5,6 @@ const DISCORD_AUTH_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost
 export function AuthDiscordPageContent() {
   return (
     <form method="post" action={DISCORD_AUTH_URL}>
-      Test
       <DiscordButton type='submit' />
     </form>
   );
