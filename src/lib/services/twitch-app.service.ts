@@ -1,5 +1,6 @@
 import { apiClient } from '@/lib/api-client';
 import { ICreateTwitchAppModel, IEditTwitchAppModel, ITwitchAppShortModel, TTwitchAppsListModel } from '@/lib/models/twitch/twitch-app.model';
+import { IGenericPagination } from '@/lib/models/generic-response.model';
 
 export enum TwitchAppsQueryKey {
   List = 'twitch-apps-list',
@@ -19,8 +20,8 @@ class TwitchAppService {
     return apiClient.delete(`/api/twitch/apps/${appId}`);
   }
 
-  static getTwitchApps(): Promise<TTwitchAppsListModel> {
-    return apiClient.get(`/api/twitch/apps`);
+  static getTwitchApps(params?: IGenericPagination): Promise<TTwitchAppsListModel> {
+    return apiClient.get(`/api/twitch/apps`, { params });
   }
 
   static getTwitchApp(appId: string): Promise<ITwitchAppShortModel> {

@@ -22,6 +22,7 @@ export interface ITableProps<T> {
   data: T[];
   rowKey: keyof T | ((row: T) => string);
   isLoading?: boolean;
+  skeletonRows?: number;
   emptyText?: ReactNode;
   emptyComponent?: ReactNode;
   loadingComponent?: ReactNode;

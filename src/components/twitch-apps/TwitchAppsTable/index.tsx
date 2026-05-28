@@ -5,9 +5,12 @@ import { ITwitchAppShortModel } from '@/lib/models/twitch/twitch-app.model';
 import { ITableColumn } from '@/components/ui/Table/Table';
 import EditTwitchAppModal from '../EditTwitchAppModal';
 import Table from '@/components/ui/Table';
-import { useEffect, useState } from 'react';
+import TablePagination from '@/components/ui/Table/TablePagination';
+import { useState } from 'react';
 
 import styles from './styles.module.scss';
+
+const PAGE_SIZE = 10;
 
 const appColumns: ITableColumn<ITwitchAppShortModel>[] = [
   {
@@ -29,8 +32,9 @@ const appColumns: ITableColumn<ITwitchAppShortModel>[] = [
 ];
 
 const TwitchAppsTable = () => {
-  const { data, isLoading } = useTwitchAppsQuery();
-  const [SelectedAppId, setSelectedAppId] = useState<string | undefined>();
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useTwitchAppsQuery({ page, pageSize: PAGE_SIZE });
+  const [selectedAppId, setSelectedAppId] = useState<string | undefined>();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleRowClick = (row: ITwitchAppShortModel) => {
@@ -38,16 +42,10 @@ const TwitchAppsTable = () => {
     setIsOpen(true);
   }
 
-  useEffect(
-    () => {
-      console.log({ apps: data })
-    }, [data]
-  );
-
   return (
     <>
       <EditTwitchAppModal
-        appId={SelectedAppId}
+        appId={selectedAppId}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       />
@@ -56,11 +54,20 @@ const TwitchAppsTable = () => {
         data={data?.items ?? []}
         rowKey={'id'}
         isLoading={isLoading}
+        skeletonRows={PAGE_SIZE}
         onRowClick={handleRowClick}
       >
         <Table.Header />
         <Table.Body />
       </Table>
+      <div className={styles['paginator-wrapper']}>
+        <TablePagination
+          page={page}
+          pageSize={PAGE_SIZE}
+          total={data?.meta.count ?? 0}
+          onChange={setPage}
+        />
+      </div>
     </>
   );
 }

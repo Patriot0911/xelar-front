@@ -11,6 +11,7 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
     data,
     rowKey,
     isLoading,
+    skeletonRows,
     onRowClick,
     emptyText,
     emptyComponent,
@@ -29,13 +30,33 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
   };
 
   if (isLoading) {
+    if (loadingComponent) {
+      return (
+        <tbody className={className}>
+          <tr>
+            <td colSpan={columns.length} className={styles.state}>
+              {loadingComponent}
+            </td>
+          </tr>
+        </tbody>
+      );
+    }
+
     return (
       <tbody className={className}>
-        <tr>
-          <td colSpan={columns.length} className={styles.state}>
-            {loadingComponent ?? 'Loading...'}
-          </td>
-        </tr>
+        {Array.from({ length: skeletonRows }).map((_, rowIndex) => (
+          <tr key={rowIndex} className={styles['skeleton-row']}>
+            {columns.map((col) => (
+              <td
+                key={col.key}
+                style={{ width: col.width }}
+                className={styles['table-cell']}
+              >
+                <div className={styles['skeleton-bar']} />
+              </td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     );
   }

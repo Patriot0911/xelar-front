@@ -5,6 +5,7 @@ interface ITableContext<T = unknown> {
   columns: ITableColumn<T>[];
   data: T[];
   isLoading: boolean;
+  skeletonRows: number;
   rowKey: keyof T | ((row: T) => string);
   onRowClick?: (row: T) => void;
   emptyText?: ReactNode;
