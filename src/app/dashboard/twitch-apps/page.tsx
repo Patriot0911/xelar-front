@@ -10,7 +10,7 @@ export default function TwitchAppsPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Integration · Twitch"
+        eyebrow="Integration · Twitch · App"
         title="Twitch Apps"
       >
         <div className={styles.pageHeadRight}>
