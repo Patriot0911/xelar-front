@@ -1,5 +1,6 @@
 import { dmSans, jetbrainsMono, manrope, spaceGrotesk, syne } from '@/fonts';
 import type { Metadata } from 'next';
+import { Toaster } from 'sonner';
 import { Providers } from './providers';
 import { cn } from '@/lib/utils';
 
@@ -26,6 +27,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body>
         <Providers>{children}</Providers>
+        <Toaster
+          theme='dark'
+          position={'bottom-right'}
+          richColors
+          closeButton
+          duration={4000}
+          toastOptions={{
+            duration: 2000,
+            style: {
+              borderRadius: '8px',
+              animation: 'revert',
+            },
+          }}
+        />
       </body>
     </html>
   );
