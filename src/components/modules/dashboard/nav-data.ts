@@ -1,10 +1,8 @@
 import {
   LuHouse,
   LuArrowLeftRight,
-  LuMessageSquare,
   LuSettings,
   LuTv,
-  LuActivity,
   LuWebhook,
   LuShieldCheck,
 } from 'react-icons/lu';
@@ -20,14 +18,10 @@ export const NAV_MAIN: NavItem[] = [
   { label: 'Overview',    href: '/dashboard',             icon: LuHouse },
   { label: 'Twitch Apps', href: '/dashboard/twitch-apps', icon: LuTv },
   { label: 'Bridges',     href: '/dashboard/bridges',     icon: LuArrowLeftRight },
-  { label: 'Channels',    href: '/dashboard/channels',    icon: LuMessageSquare },
-  { label: 'Activity',    href: '/dashboard/activity',    icon: LuActivity },
 ];
 
 export const NAV_CONFIGURE: NavItem[] = [
   { label: 'Roles',    href: '/dashboard/roles',    icon: LuShieldCheck },
-  { label: 'Webhooks', href: '/dashboard/webhooks', icon: LuWebhook },
-  { label: 'Settings', href: '/dashboard/settings', icon: LuSettings },
 ];
 
 export function isActive(pathname: string, href: string): boolean {

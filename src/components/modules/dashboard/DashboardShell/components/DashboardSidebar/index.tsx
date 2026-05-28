@@ -2,8 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LuEllipsis } from 'react-icons/lu';
-import { NAV_MAIN, NAV_CONFIGURE, isActive, getInitials } from '../../../nav-data';
+import { NAV_MAIN, NAV_CONFIGURE, isActive } from '../../../nav-data';
 import styles from './styles.module.scss';
 import XelarLogo from '@/components/ui/logos/XelarLogo';
 import DashboardUserCard from '../../../DashboardUserCard';
@@ -14,8 +13,6 @@ const DashboardSidebar = () => {
   return (
     <aside className={styles.sidebar}>
       <XelarLogo />
-
-      {/* <WorkspaceCard /> */}
 
       {/* Main nav */}
       <nav className={styles.navSection}>

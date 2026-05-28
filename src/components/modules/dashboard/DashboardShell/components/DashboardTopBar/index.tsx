@@ -5,22 +5,22 @@ import { LuBell } from 'react-icons/lu';
 
 import styles from './styles.module.scss';
 
-type Crumb = [string, string, string];
+type Crumb = [string, string];
 
 const BREADCRUMBS: Record<string, Crumb> = {
-  '/dashboard':             ['workspace', 'main',         'overview'],
-  '/dashboard/twitch-apps': ['workspace', 'integrations', 'twitch apps'],
-  '/dashboard/bridges':     ['workspace', 'integrations', 'bridges'],
-  '/dashboard/channels':    ['workspace', 'integrations', 'channels'],
-  '/dashboard/activity':    ['workspace', 'main',         'activity'],
-  '/dashboard/webhooks':    ['workspace', 'configure',    'webhooks'],
-  '/dashboard/settings':    ['workspace', 'configure',    'settings'],
+  '/dashboard':             ['main',         'overview'],
+  '/dashboard/twitch-apps': ['integrations', 'twitch apps'],
+  '/dashboard/bridges':     ['integrations', 'bridges'],
+  '/dashboard/channels':    ['integrations', 'channels'],
+  '/dashboard/activity':    ['main',         'activity'],
+  '/dashboard/webhooks':    ['configure',    'webhooks'],
+  '/dashboard/settings':    ['configure',    'settings'],
 };
 
 const DashboardTopBar = () => {
   const pathname = usePathname();
-  const [root, mid, leaf] =
-    BREADCRUMBS[pathname] ?? ['workspace', 'main', pathname.split('/').pop() ?? ''];
+  const [root, mid] =
+    BREADCRUMBS[pathname] ?? ['main', pathname.split('/').pop() ?? ''];
 
   return (
     <div className={styles.topbar}>
@@ -28,8 +28,6 @@ const DashboardTopBar = () => {
         <span>{root}</span>
         <span className={styles.crumbSep}>/</span>
         <span>{mid}</span>
-        <span className={styles.crumbSep}>/</span>
-        <span className={styles.crumbCur}>{leaf}</span>
       </div>
 
       <div className={styles.spacer} />
