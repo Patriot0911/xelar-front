@@ -39,6 +39,12 @@ const CreateTwitchAppModal = (props: ICreateTwitchAppModalProps) => {
     }
   }, [props.isOpen]);
 
+  useEffect(() => {
+    if (createTwitchAppMutation.isSuccess) {
+      props.onClose();
+    }
+  }, [createTwitchAppMutation.isSuccess])
+
   return (
     <Modal
       {...props}

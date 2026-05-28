@@ -16,7 +16,7 @@ class TwitchAppService {
     return apiClient.patch(`/api/twitch/apps/${appId}`, data);
   }
 
-  static deleteTwitchApp(appId: string) {
+  static deleteTwitchApp(appId: string): Promise<void> {
     return apiClient.delete(`/api/twitch/apps/${appId}`);
   }
 

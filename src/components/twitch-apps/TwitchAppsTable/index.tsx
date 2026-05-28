@@ -2,13 +2,16 @@
 
 import useTwitchAppsQuery from '@/hooks/queries/twitch/useListTwitchAppsQuery';
 import { ITwitchAppShortModel } from '@/lib/models/twitch/twitch-app.model';
-import { ITableColumn } from '@/components/ui/Table/Table';
-import EditTwitchAppModal from '../EditTwitchAppModal';
-import Table from '@/components/ui/Table';
+import { ITableAction, ITableColumn } from '@/components/ui/Table/Table';
 import TablePagination from '@/components/ui/Table/TablePagination';
-import { useState } from 'react';
+import EditTwitchAppModal from '../EditTwitchAppModal';
+import { LuPencil, LuTrash2 } from 'react-icons/lu';
+import Table from '@/components/ui/Table';
+import { useEffect, useState } from 'react';
 
 import styles from './styles.module.scss';
+import ConfirmModal from '@/components/common/ConfirmModal';
+import DeleteTwitchApp from '../DeleteTwitchApp';
 
 const PAGE_SIZE = 10;
 
@@ -36,11 +39,38 @@ const TwitchAppsTable = () => {
   const { data, isLoading } = useTwitchAppsQuery({ page, pageSize: PAGE_SIZE });
   const [selectedAppId, setSelectedAppId] = useState<string | undefined>();
   const [isOpen, setIsOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  const handleRowClick = (row: ITwitchAppShortModel) => {
+  const editApp = (row: ITwitchAppShortModel) => {
     setSelectedAppId(row.id);
     setIsOpen(true);
   }
+
+  const handleDeleteAction = (row: ITwitchAppShortModel) => {
+    setSelectedAppId(row.id);
+    setIsConfirmOpen(true);
+  }
+
+  const appActions: ITableAction<ITwitchAppShortModel>[] = [
+    {
+      key: 'edit',
+      icon: <LuPencil size={13} />,
+      label: 'Edit app',
+      onClick: editApp,
+    },
+    {
+      key: 'delete',
+      icon: <LuTrash2 size={13} />,
+      label: 'Delete app',
+      variant: 'danger',
+      onClick: handleDeleteAction,
+    },
+  ];
+
+  useEffect(() => {
+    if (isConfirmOpen) return;
+    setSelectedAppId(undefined);
+  }, [isConfirmOpen]);
 
   return (
     <>
@@ -49,13 +79,18 @@ const TwitchAppsTable = () => {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       />
+      <DeleteTwitchApp
+        appId={selectedAppId}
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+      />
       <Table<ITwitchAppShortModel>
         columns={appColumns}
         data={data?.items ?? []}
         rowKey={'id'}
         isLoading={isLoading}
         skeletonRows={PAGE_SIZE}
-        onRowClick={handleRowClick}
+        actions={appActions}
       >
         <Table.Header />
         <Table.Body />

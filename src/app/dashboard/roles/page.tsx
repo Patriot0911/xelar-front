@@ -1,7 +1,7 @@
 import PageHeader from '@/components/ui/PageHeader';
 import PageContent from '@/components/ui/PageContent';
-import AddRole from '@/components/modules/roles/AddRole';
-import { RolesTable } from '@/components/modules/roles/RolesTable';
+import AddRole from '@/components/roles/AddRole';
+import { RolesTable } from '@/components/roles/RolesTable';
 
 import styles from './page.module.scss';
 
