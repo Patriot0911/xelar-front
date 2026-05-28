@@ -62,7 +62,12 @@ apiClient.interceptors.response.use(
 );
 
 apiClient.interceptors.response.use(
-  (response: AxiosResponse) => response.data?.data ?? response.data,
+  (response: AxiosResponse) => {
+    if (typeof response?.status !== 'number' || !response?.headers) {
+      return response;
+    }
+    return response.data?.data ?? response.data;
+  },
   (error: AxiosError) => {
     if (error.response) {
       return Promise.reject(error.response.data);
