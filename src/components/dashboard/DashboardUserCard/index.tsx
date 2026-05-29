@@ -1,26 +1,43 @@
+'use client';
 
+import { useState } from 'react';
 import { getInitials } from '@/lib/utils';
-import styles from './styles.module.scss';
 import useMeQuery from '@/hooks/queries/auth/useMeQuery';
+import ProfileModal from './ProfileModal';
+import styles from './styles.module.scss';
 
 const DashboardUserCard = () => {
   const { data: meData } = useMeQuery();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const displayName = meData?.displayName ?? 'User';
 
   return (
-    <div className={styles.user}>
-      <div className={styles.userAv}>
-        {getInitials(displayName)}
-        <span className={styles.userOnline} aria-hidden="true" />
+    <>
+      <div
+        className={styles.user}
+        role="button"
+        tabIndex={0}
+        aria-label="Open profile settings"
+        onClick={() => setIsProfileOpen(true)}
+        onKeyDown={(e) => e.key === 'Enter' && setIsProfileOpen(true)}
+      >
+        <div className={styles.userAv}>
+          {getInitials(displayName)}
+          <span className={styles.userOnline} aria-hidden="true" />
+        </div>
+        <div className={styles.userMeta}>
+          <span className={styles.userName}>{displayName}</span>
+          <span className={styles.userSub}>
+            {meData?.discordId ? `discord · ${meData.discordId}` : 'workspace'}
+          </span>
+        </div>
       </div>
-      <div className={styles.userMeta}>
-        <span className={styles.userName}>{displayName}</span>
-        <span className={styles.userSub}>
-          {meData?.discordId ? `discord · ${meData.discordId}` : 'workspace'}
-        </span>
-      </div>
-    </div>
+      <ProfileModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+      />
+    </>
   );
-}
+};
 
 export default DashboardUserCard;
