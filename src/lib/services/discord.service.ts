@@ -46,6 +46,14 @@ class DiscordService {
     return apiClient.patch(`/api/twitch-notifications/webhook/${id}`, data);
   }
 
+  static deleteDiscordNotification(id: string): Promise<void> {
+    return apiClient.delete(`/api/twitch-notifications/discord/${id}`);
+  }
+
+  static deleteWebhookNotification(id: string): Promise<void> {
+    return apiClient.delete(`/api/twitch-notifications/webhook/${id}`);
+  }
+
   static getGuildChannels(guildId: string): Promise<IDiscordChannelModel[]> {
     return apiClient.get(`/api/discord/guilds/${guildId}/channels`);
   }

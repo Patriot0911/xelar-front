@@ -1,4 +1,4 @@
-import { LuPencil } from 'react-icons/lu';
+import { LuPencil, LuTrash2 } from 'react-icons/lu';
 import type { ITableAction, ITableColumn } from '@/components/ui/Table/Table';
 import type { IDiscordBotNotificationModel, IStreamerRef } from '@/lib/models/discord';
 import Table from '@/components/ui/Table';
@@ -58,15 +58,22 @@ const columns: ITableColumn<IDiscordBotNotificationModel>[] = [
 interface IBotNotificationsListProps {
   items: IDiscordBotNotificationModel[];
   onEdit: (item: IDiscordBotNotificationModel) => void;
+  onDelete: (item: IDiscordBotNotificationModel) => void;
 }
 
-const BotNotificationsList = ({ items, onEdit }: IBotNotificationsListProps) => {
+const BotNotificationsList = ({ items, onEdit, onDelete }: IBotNotificationsListProps) => {
   const actions: ITableAction<IDiscordBotNotificationModel>[] = [
     {
       key: 'edit',
       icon: <LuPencil size={13} />,
       label: 'Edit',
       onClick: onEdit,
+    },
+    {
+      key: 'delete',
+      icon: <LuTrash2 size={13} />,
+      label: 'Delete',
+      onClick: onDelete,
     },
   ];
 

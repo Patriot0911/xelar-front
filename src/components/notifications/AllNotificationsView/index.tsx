@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import useAllNotificationsQuery from '@/hooks/queries/discord/useAllNotificationsQuery';
+import useDeleteDiscordNotificationMutation from '@/hooks/mutations/discord/useDeleteDiscordNotificationMutation';
+import useDeleteWebhookNotificationMutation from '@/hooks/mutations/discord/useDeleteWebhookNotificationMutation';
 import Loading from '@/components/ui/Loading';
 import BotNotificationsList from '@/components/discord/GuildNotificationsView/BotNotificationsList';
 import WebhookNotificationsList from '@/components/discord/GuildNotificationsView/WebhookNotificationsList';
@@ -12,6 +14,8 @@ type Tab = 'bot' | 'webhook';
 const AllNotificationsView = () => {
   const [activeTab, setActiveTab] = useState<Tab>('bot');
   const { data, isLoading } = useAllNotificationsQuery();
+  const deleteDiscord = useDeleteDiscordNotificationMutation();
+  const deleteWebhook = useDeleteWebhookNotificationMutation();
 
   return (
     <div className={styles.root}>
@@ -36,9 +40,17 @@ const AllNotificationsView = () => {
         {isLoading ? (
           <div className={styles.center}><Loading /></div>
         ) : activeTab === 'bot' ? (
-          <BotNotificationsList onEdit={() => {}} items={data?.bot ?? []} />
+          <BotNotificationsList
+            onEdit={() => {}}
+            onDelete={(item) => deleteDiscord.mutate(item.id)}
+            items={data?.bot ?? []}
+          />
         ) : (
-          <WebhookNotificationsList onEdit={() => {}} items={data?.webhook ?? []} />
+          <WebhookNotificationsList
+            onEdit={() => {}}
+            onDelete={(item) => deleteWebhook.mutate(item.id)}
+            items={data?.webhook ?? []}
+          />
         )}
       </div>
     </div>
