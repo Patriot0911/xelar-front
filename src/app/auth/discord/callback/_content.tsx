@@ -6,6 +6,8 @@ import { LuCheck, LuX, LuArrowLeft } from 'react-icons/lu';
 import styles from './page.module.scss';
 import { useAppDispatch } from '@/hooks/redux';
 import useDiscordCodeMutation from '@/hooks/mutations/auth/useDiscordCodeMutation';
+import useLinkDiscordMutation from '@/hooks/mutations/auth/useLinkDiscordMutation';
+import { DISCORD_LINK_INTENT_KEY } from '@/components/dashboard/DashboardUserCard/ProfileModal/tabs/ServicesTab';
 
 type Status = 'loading' | 'success' | 'error';
 
@@ -15,10 +17,15 @@ export function DiscordCallbackContent() {
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const discordCodeMutation = useDiscordCodeMutation();
+  const linkDiscordMutation = useLinkDiscordMutation();
 
   const [status, setStatus] = useState<Status>('loading');
   const [errorMsg, setErrorMsg] = useState('');
   const called = useRef(false);
+
+  const isLinkIntent = useRef(
+    typeof window !== 'undefined' && !!localStorage.getItem(DISCORD_LINK_INTENT_KEY)
+  );
 
   useEffect(() => {
     if (called.current) return;
@@ -28,29 +35,32 @@ export function DiscordCallbackContent() {
     const error = searchParams.get('error');
 
     if (error || !code) {
+      localStorage.removeItem(DISCORD_LINK_INTENT_KEY);
       setStatus('error');
       setErrorMsg(error === 'access_denied' ? 'Access denied by Discord.' : 'Missing authorization code.');
       return;
     }
 
-    discordCodeMutation.mutate(code);
-
+    if (isLinkIntent.current) {
+      localStorage.removeItem(DISCORD_LINK_INTENT_KEY);
+      linkDiscordMutation.mutate(code);
+    } else {
+      discordCodeMutation.mutate(code);
+    }
   }, [searchParams, dispatch, router]);
 
+  const activeMutation = isLinkIntent.current ? linkDiscordMutation : discordCodeMutation;
+
   useEffect(() => {
-    if (discordCodeMutation.isPending || discordCodeMutation.isIdle) {
-      return;
-    }
+    if (activeMutation.isPending || activeMutation.isIdle) return;
 
-    if (discordCodeMutation.isError) {
+    if (activeMutation.isError) {
       setStatus('error');
-      setErrorMsg(
-        discordCodeMutation.error?.message ?? 'Internal server error. Please try again later'
-      );
+      setErrorMsg(activeMutation.error?.message ?? 'Internal server error. Please try again later');
       return;
     }
 
-    if (discordCodeMutation.isSuccess) {
+    if (activeMutation.isSuccess) {
       setStatus('success');
 
       redirectTimer.current = setTimeout(
@@ -64,7 +74,7 @@ export function DiscordCallbackContent() {
         }
       };
     }
-  }, [discordCodeMutation.status]);
+  }, [activeMutation.status]);
 
   return (
     <div className={styles.page}>
@@ -78,7 +88,9 @@ export function DiscordCallbackContent() {
           <div className={styles.loading}>
             <div className={styles.spinner} />
             <div>
-              <p className={styles.title}>Connecting Discord…</p>
+              <p className={styles.title}>
+                {isLinkIntent.current ? 'Linking Discord…' : 'Connecting Discord…'}
+              </p>
               <p className={styles.sub}>Verifying your account, hold on.</p>
             </div>
           </div>

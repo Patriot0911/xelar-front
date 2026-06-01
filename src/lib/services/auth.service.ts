@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { apiClient, apiConfig } from '../api-client';
-import { IAuthMeResponse, IAuthResponseModel } from '../models/auth';
+import { IAuthMeResponse, IAuthResponseModel, ISessionModel, IUpdateProfilePayload } from '../models/auth';
 
 export const REFRESH_TOKEN_KEY = 'refresh_token';
 export const ACCESS_TOKEN_KEY = 'access_token';
 
 export enum AuthQueryKey {
   Me = 'me',
+  Sessions = 'sessions',
 };
 
 class AuthService {
@@ -54,7 +55,27 @@ class AuthService {
   }
 
   static logout(): Promise<void> {
-    return apiClient.post('/api/auth/me');
+    return apiClient.post('/api/auth/logout');
+  }
+
+  static updateProfile(payload: IUpdateProfilePayload): Promise<void> {
+    return apiClient.patch('/api/auth/me', payload);
+  }
+
+  static getSessions(): Promise<ISessionModel[]> {
+    return apiClient.get('/api/auth/sessions');
+  }
+
+  static revokeSession(sessionId: string): Promise<boolean> {
+    return apiClient.delete(`/api/auth/sessions/${sessionId}`);
+  }
+
+  static unlinkDiscord(): Promise<void> {
+    return apiClient.delete('/api/auth/discord/unlink');
+  }
+
+  static linkDiscord(code: string): Promise<void> {
+    return apiClient.post('/api/auth/discord/link', { code });
   }
 }
 

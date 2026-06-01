@@ -9,9 +9,11 @@ import { TableBody } from './TableBody';
 
 const Table = <T,>({
   columns,
+  actions,
   data,
   rowKey,
   isLoading = false,
+  skeletonRows = 5,
   emptyText,
   emptyComponent,
   loadingComponent,
@@ -23,9 +25,11 @@ const Table = <T,>({
     <TableContext.Provider
       value={{
         columns,
+        actions,
         data,
         rowKey,
         isLoading,
+        skeletonRows,
         emptyText,
         emptyComponent,
         loadingComponent,

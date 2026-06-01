@@ -1,10 +1,12 @@
 import { createContext, ReactNode, useContext } from 'react';
-import { ITableColumn } from './Table';
+import { ITableAction, ITableColumn } from './Table';
 
 interface ITableContext<T = unknown> {
   columns: ITableColumn<T>[];
+  actions?: ITableAction<T>[];
   data: T[];
   isLoading: boolean;
+  skeletonRows: number;
   rowKey: keyof T | ((row: T) => string);
   onRowClick?: (row: T) => void;
   emptyText?: ReactNode;

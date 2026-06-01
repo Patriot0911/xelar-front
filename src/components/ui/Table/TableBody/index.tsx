@@ -1,3 +1,4 @@
+import TableActionCell from '../TableActionCell';
 import { useTableContext } from '../context';
 import { ITableBodyProps } from '../Table';
 import { ReactNode } from 'react';
@@ -8,14 +9,18 @@ import styles from './styles.module.scss';
 export const TableBody = <T,>({ className }: ITableBodyProps) => {
   const {
     columns,
+    actions,
     data,
     rowKey,
     isLoading,
+    skeletonRows,
     onRowClick,
     emptyText,
     emptyComponent,
     loadingComponent,
   } = useTableContext<T>();
+
+  const colSpan = columns.length + (actions?.length ? 1 : 0);
 
   const getRowKey = (row: T, index: number) =>
     typeof rowKey === 'function'
@@ -29,13 +34,36 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
   };
 
   if (isLoading) {
+    if (loadingComponent) {
+      return (
+        <tbody className={className}>
+          <tr>
+            <td colSpan={colSpan} className={styles.state}>
+              {loadingComponent}
+            </td>
+          </tr>
+        </tbody>
+      );
+    }
+
     return (
       <tbody className={className}>
-        <tr>
-          <td colSpan={columns.length} className={styles.state}>
-            {loadingComponent ?? 'Loading...'}
-          </td>
-        </tr>
+        {Array.from({ length: skeletonRows }).map((_, rowIndex) => (
+          <tr key={rowIndex} className={styles['skeleton-row']}>
+            {columns.map((col) => (
+              <td
+                key={col.key}
+                style={{ width: col.width }}
+                className={styles['table-cell']}
+              >
+                <div className={styles['skeleton-bar']} />
+              </td>
+            ))}
+            {actions?.length ? (
+              <td style={{ width: actions.length * 32 + 8 }} />
+            ) : null}
+          </tr>
+        ))}
       </tbody>
     );
   }
@@ -44,7 +72,7 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
     return (
       <tbody className={className}>
         <tr>
-          <td colSpan={columns.length} className={styles.state}>
+          <td colSpan={colSpan} className={styles.state}>
             {emptyComponent ?? emptyText ?? 'No data found'}
           </td>
         </tr>
@@ -73,6 +101,9 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
               {getCellValue(row, col, index)}
             </td>
           ))}
+          {actions?.length ? (
+            <TableActionCell actions={actions} row={row} />
+          ) : null}
         </tr>
       ))}
     </tbody>

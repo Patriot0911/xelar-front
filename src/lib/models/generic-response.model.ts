@@ -22,3 +22,13 @@ export interface IGenericList<T, D = IGenericListMeta> {
   items: T[];
   meta: D;
 };
+
+export interface IGenericPagination {
+  pageSize?: number;
+  page?: number;
+};
+
+export interface IGenericTwitchPagination {
+  pageSize?: number;
+  cursor?: string;
+};

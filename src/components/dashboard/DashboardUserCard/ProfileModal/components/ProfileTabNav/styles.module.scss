@@ -1,0 +1,33 @@
+.nav {
+  display: flex;
+  gap: 2px;
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.tab {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink-2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover {
+    color: var(--ink-1);
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.tabActive {
+  color: var(--ink-0);
+  background: rgba(255, 255, 255, 0.07);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+  }
+}
