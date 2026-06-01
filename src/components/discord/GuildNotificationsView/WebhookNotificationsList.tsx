@@ -1,4 +1,5 @@
-import type { ITableColumn } from '@/components/ui/Table/Table';
+import { LuPencil } from 'react-icons/lu';
+import type { ITableAction, ITableColumn } from '@/components/ui/Table/Table';
 import type { IWebhookNotificationModel } from '@/lib/models/discord';
 import Table from '@/components/ui/Table';
 import styles from './styles.module.scss';
@@ -28,9 +29,19 @@ const columns: ITableColumn<IWebhookNotificationModel>[] = [
 
 interface IWebhookNotificationsListProps {
   items: IWebhookNotificationModel[];
+  onEdit: (item: IWebhookNotificationModel) => void;
 }
 
-const WebhookNotificationsList = ({ items }: IWebhookNotificationsListProps) => {
+const WebhookNotificationsList = ({ items, onEdit }: IWebhookNotificationsListProps) => {
+  const actions: ITableAction<IWebhookNotificationModel>[] = [
+    {
+      key: 'edit',
+      icon: <LuPencil size={13} />,
+      label: 'Edit',
+      onClick: onEdit,
+    },
+  ];
+
   if (!items.length) {
     return (
       <div className={styles.empty}>
@@ -42,6 +53,7 @@ const WebhookNotificationsList = ({ items }: IWebhookNotificationsListProps) => 
   return (
     <Table<IWebhookNotificationModel>
       columns={columns}
+      actions={actions}
       data={items}
       rowKey="id"
       isLoading={false}

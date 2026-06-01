@@ -1,4 +1,5 @@
-import type { ITableColumn } from '@/components/ui/Table/Table';
+import { LuPencil } from 'react-icons/lu';
+import type { ITableAction, ITableColumn } from '@/components/ui/Table/Table';
 import type { IDiscordBotNotificationModel } from '@/lib/models/discord';
 import Table from '@/components/ui/Table';
 import styles from './styles.module.scss';
@@ -33,9 +34,19 @@ const columns: ITableColumn<IDiscordBotNotificationModel>[] = [
 
 interface IBotNotificationsListProps {
   items: IDiscordBotNotificationModel[];
+  onEdit: (item: IDiscordBotNotificationModel) => void;
 }
 
-const BotNotificationsList = ({ items }: IBotNotificationsListProps) => {
+const BotNotificationsList = ({ items, onEdit }: IBotNotificationsListProps) => {
+  const actions: ITableAction<IDiscordBotNotificationModel>[] = [
+    {
+      key: 'edit',
+      icon: <LuPencil size={13} />,
+      label: 'Edit',
+      onClick: onEdit,
+    },
+  ];
+
   if (!items.length) {
     return (
       <div className={styles.empty}>
@@ -47,6 +58,7 @@ const BotNotificationsList = ({ items }: IBotNotificationsListProps) => {
   return (
     <Table<IDiscordBotNotificationModel>
       columns={columns}
+      actions={actions}
       data={items}
       rowKey="id"
       isLoading={false}

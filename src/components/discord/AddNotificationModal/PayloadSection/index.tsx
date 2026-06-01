@@ -43,10 +43,15 @@ const ColorField = () => {
   );
 };
 
-const PayloadSection = () => {
+interface IPayloadSectionProps {
+  notificationType?: 'bot' | 'webhook';
+}
+
+const PayloadSection = ({ notificationType }: IPayloadSectionProps = {}) => {
   const { control, register, watch } = useFormContext<TAddNotificationForm>();
   const embedEnabled = watch('embedEnabled');
-  const activeType   = watch('type');
+  const formType     = watch('type' as any) as 'bot' | 'webhook' | undefined;
+  const activeType   = notificationType ?? formType ?? 'bot';
 
   const { fields, append, remove } = useFieldArray<TAddNotificationForm, 'embedFields'>({
     control,

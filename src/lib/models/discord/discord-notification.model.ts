@@ -55,6 +55,18 @@ export interface ICreateWebhookNotificationPayload {
   webhookUrl: string;
 }
 
+export interface IUpdateDiscordNotificationPayload {
+  costType?: string;
+  channelId?: string;
+  payload?: Record<string, unknown>;
+}
+
+export interface IUpdateWebhookNotificationPayload {
+  costType?: string;
+  webhookUrl?: string;
+  payload?: Record<string, unknown>;
+}
+
 export function isDiscordAuthError(error: unknown): boolean {
   if (!error || typeof error !== 'object') return false;
   const code = (error as Record<string, unknown>).data;

@@ -5,19 +5,27 @@ import { LuPlus } from 'react-icons/lu';
 import useGuildNotificationsQuery from '@/hooks/queries/discord/useGuildNotificationsQuery';
 import Loading from '@/components/ui/Loading';
 import AddNotificationModal from '@/components/discord/AddNotificationModal';
+import EditNotificationModal from '@/components/discord/EditNotificationModal';
+import type { IDiscordBotNotificationModel, IWebhookNotificationModel } from '@/lib/models/discord';
 import BotNotificationsList from './BotNotificationsList';
 import WebhookNotificationsList from './WebhookNotificationsList';
 import styles from './styles.module.scss';
 
 type Tab = 'bot' | 'webhook';
 
+type EditTarget =
+  | { type: 'bot';     item: IDiscordBotNotificationModel }
+  | { type: 'webhook'; item: IWebhookNotificationModel }
+  | null;
+
 interface IGuildNotificationsViewProps {
   guildId: string;
 }
 
 const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
-  const [activeTab, setActiveTab] = useState<Tab>('bot');
-  const [modalOpen, setModalOpen] = useState(false);
+  const [activeTab,   setActiveTab]   = useState<Tab>('bot');
+  const [modalOpen,   setModalOpen]   = useState(false);
+  const [editTarget,  setEditTarget]  = useState<EditTarget>(null);
   const { data, isLoading } = useGuildNotificationsQuery(guildId);
 
   return (
@@ -54,9 +62,15 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
         {isLoading ? (
           <div className={styles.center}><Loading /></div>
         ) : activeTab === 'bot' ? (
-          <BotNotificationsList items={data?.bot ?? []} />
+          <BotNotificationsList
+            items={data?.bot ?? []}
+            onEdit={(item) => setEditTarget({ type: 'bot', item })}
+          />
         ) : (
-          <WebhookNotificationsList items={data?.webhook ?? []} />
+          <WebhookNotificationsList
+            items={data?.webhook ?? []}
+            onEdit={(item) => setEditTarget({ type: 'webhook', item })}
+          />
         )}
       </div>
 
@@ -65,6 +79,16 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
       />
+
+      {editTarget && (
+        <EditNotificationModal
+          type={editTarget.type}
+          notification={editTarget.item as any}
+          guildId={guildId}
+          isOpen={!!editTarget}
+          onClose={() => setEditTarget(null)}
+        />
+      )}
     </div>
   );
 };
