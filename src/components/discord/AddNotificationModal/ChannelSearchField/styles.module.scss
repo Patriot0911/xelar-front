@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  position: relative;
 }
 
 .labelRow {
@@ -124,13 +123,8 @@
   }
 }
 
-/* Dropdown */
+/* Dropdown — rendered via PortalDropdown, no absolute positioning needed */
 .dropdown {
-  position: absolute;
-  top: calc(100% - 6px);
-  left: 0;
-  right: 0;
-  z-index: 60;
   background: #11142B;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-md);
@@ -184,13 +178,8 @@
   flex: 1;
 }
 
-/* Empty */
+/* Empty — also rendered via PortalDropdown */
 .empty {
-  position: absolute;
-  top: calc(100% - 6px);
-  left: 0;
-  right: 0;
-  z-index: 60;
   display: flex;
   align-items: center;
   gap: 8px;

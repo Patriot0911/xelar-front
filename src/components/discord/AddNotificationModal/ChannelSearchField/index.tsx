@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import { LuHash, LuSearch, LuX, LuLoader, LuMegaphone } from 'react-icons/lu';
 import DiscordService from '@/lib/services/discord.service';
+import PortalDropdown from '@/components/ui/PortalDropdown';
 import type { IDiscordChannelModel } from '@/lib/models/discord';
 import type { TAddNotificationForm } from '../add-notification.scheme';
 import styles from './styles.module.scss';
@@ -22,7 +23,7 @@ const ChannelSearchField = ({ guildId }: IChannelSearchFieldProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const rootRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -37,19 +38,19 @@ const ChannelSearchField = ({ guildId }: IChannelSearchFieldProps) => {
   }, [guildId]);
 
   useEffect(() => {
+    if (!isOpen) return;
     const onClickOutside = (e: MouseEvent) => {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (anchorRef.current && !anchorRef.current.contains(target)) {
         setIsOpen(false);
       }
     };
     document.addEventListener('mousedown', onClickOutside);
     return () => document.removeEventListener('mousedown', onClickOutside);
-  }, []);
+  }, [isOpen]);
 
   const filtered = query.trim()
-    ? channels.filter((ch) =>
-        ch.name.toLowerCase().includes(query.toLowerCase()),
-      )
+    ? channels.filter((ch) => ch.name.toLowerCase().includes(query.toLowerCase()))
     : channels;
 
   const handleSelect = (ch: IDiscordChannelModel) => {
@@ -66,8 +67,11 @@ const ChannelSearchField = ({ guildId }: IChannelSearchFieldProps) => {
     setTimeout(() => inputRef.current?.focus(), 0);
   };
 
+  const showList = isOpen && !selected && filtered.length > 0;
+  const showEmpty = isOpen && !selected && !isLoading && filtered.length === 0;
+
   return (
-    <div className={styles.root} ref={rootRef}>
+    <div className={styles.root}>
       <div className={styles.labelRow}>
         <label className={styles.label}>Discord Channel</label>
       </div>
@@ -89,7 +93,7 @@ const ChannelSearchField = ({ guildId }: IChannelSearchFieldProps) => {
           </button>
         </div>
       ) : (
-        <div className={styles.inputWrap}>
+        <div className={styles.inputWrap} ref={anchorRef}>
           {isLoading
             ? <LuLoader size={14} className={styles.loader} />
             : <LuSearch size={14} className={styles.searchIcon} />
@@ -110,7 +114,7 @@ const ChannelSearchField = ({ guildId }: IChannelSearchFieldProps) => {
         </div>
       )}
 
-      {isOpen && !selected && filtered.length > 0 && (
+      <PortalDropdown anchorRef={anchorRef} isOpen={showList}>
         <div className={styles.dropdown}>
           {filtered.map((ch) => (
             <button
@@ -128,14 +132,14 @@ const ChannelSearchField = ({ guildId }: IChannelSearchFieldProps) => {
             </button>
           ))}
         </div>
-      )}
+      </PortalDropdown>
 
-      {isOpen && !selected && !isLoading && filtered.length === 0 && (
+      <PortalDropdown anchorRef={anchorRef} isOpen={showEmpty}>
         <div className={styles.empty}>
           <LuMegaphone size={14} />
           {query ? 'No channels match your search.' : 'No text channels found.'}
         </div>
-      )}
+      </PortalDropdown>
 
       <span className={styles.hint}>
         The bot must have permission to post in the selected channel.
