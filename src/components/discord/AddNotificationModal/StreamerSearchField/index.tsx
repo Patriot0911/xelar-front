@@ -4,7 +4,6 @@ import { useRef, useState, useEffect, useCallback } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import { LuSearch, LuX, LuLoader, LuRadio } from 'react-icons/lu';
 import TwitchAppService from '@/lib/services/twitch-app.service';
-import PortalDropdown from '@/components/ui/PortalDropdown';
 import type { ITwitchChannelModel } from '@/lib/models/twitch/twitch-channel.model';
 import type { TAddNotificationForm } from '../add-notification.scheme';
 import styles from './styles.module.scss';
@@ -24,7 +23,7 @@ const StreamerSearchField = () => {
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef<AbortController | null>(null);
-  const anchorRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   const search = useCallback(async (q: string) => {
     if (abortRef.current) abortRef.current.abort();
@@ -62,16 +61,14 @@ const StreamerSearchField = () => {
   }, [query, search]);
 
   useEffect(() => {
-    if (!isOpen) return;
     const onClickOutside = (e: MouseEvent) => {
-      const target = e.target as Node;
-      if (anchorRef.current && !anchorRef.current.contains(target)) {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };
     document.addEventListener('mousedown', onClickOutside);
     return () => document.removeEventListener('mousedown', onClickOutside);
-  }, [isOpen]);
+  }, []);
 
   const handleSelect = (channel: ITwitchChannelModel) => {
     setSelected(channel);
@@ -89,7 +86,7 @@ const StreamerSearchField = () => {
   };
 
   return (
-    <div className={styles.root}>
+    <div className={styles.root} ref={rootRef}>
       <div className={styles.labelRow}>
         <label className={styles.label}>Streamer</label>
       </div>
@@ -129,7 +126,7 @@ const StreamerSearchField = () => {
           </button>
         </div>
       ) : (
-        <div className={styles.inputWrap} ref={anchorRef}>
+        <div className={styles.inputWrap}>
           <LuSearch size={14} className={styles.searchIcon} />
           <input
             className={styles.input}
@@ -143,14 +140,13 @@ const StreamerSearchField = () => {
         </div>
       )}
 
-      <PortalDropdown anchorRef={anchorRef} isOpen={isOpen && results.length > 0}>
+      {isOpen && results.length > 0 && (
         <div className={styles.dropdown}>
           {results.map((ch) => (
             <button
               key={ch.broadcasterId}
               type="button"
               className={styles.option}
-              onMouseDown={(e) => e.preventDefault()}
               onClick={() => handleSelect(ch)}
             >
               {ch.thumbnailUrl ? (
@@ -179,7 +175,7 @@ const StreamerSearchField = () => {
             </button>
           ))}
         </div>
-      </PortalDropdown>
+      )}
 
       <span className={styles.hint}>
         Type at least {MIN_LENGTH} characters to search. The broadcaster ID is set automatically.
