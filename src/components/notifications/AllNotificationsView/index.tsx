@@ -36,9 +36,9 @@ const AllNotificationsView = () => {
         {isLoading ? (
           <div className={styles.center}><Loading /></div>
         ) : activeTab === 'bot' ? (
-          <BotNotificationsList items={data?.bot ?? []} />
+          <BotNotificationsList onEdit={() => {}} items={data?.bot ?? []} />
         ) : (
-          <WebhookNotificationsList items={data?.webhook ?? []} />
+          <WebhookNotificationsList onEdit={() => {}} items={data?.webhook ?? []} />
         )}
       </div>
     </div>
