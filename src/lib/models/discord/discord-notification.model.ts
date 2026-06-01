@@ -2,6 +2,7 @@ export interface IStreamerRef {
   broadcasterId: string;
   twitchLogin: string;
   displayName: string;
+  profileImageUrl?: string | null;
 }
 
 export interface IStreamerEventRef {
@@ -53,6 +54,18 @@ export interface ICreateWebhookNotificationPayload {
   costType: string;
   payload: Record<string, unknown>;
   webhookUrl: string;
+}
+
+export interface IUpdateDiscordNotificationPayload {
+  costType?: string;
+  channelId?: string;
+  payload?: Record<string, unknown>;
+}
+
+export interface IUpdateWebhookNotificationPayload {
+  costType?: string;
+  webhookUrl?: string;
+  payload?: Record<string, unknown>;
 }
 
 export function isDiscordAuthError(error: unknown): boolean {

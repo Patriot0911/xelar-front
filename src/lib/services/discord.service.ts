@@ -7,6 +7,8 @@ import type {
   IWebhookNotificationModel,
   ICreateDiscordNotificationPayload,
   ICreateWebhookNotificationPayload,
+  IUpdateDiscordNotificationPayload,
+  IUpdateWebhookNotificationPayload,
 } from '../models/discord/discord-notification.model';
 
 export enum DiscordQueryKey {
@@ -34,6 +36,14 @@ class DiscordService {
 
   static createWebhookNotification(guildId: string, data: ICreateWebhookNotificationPayload): Promise<IWebhookNotificationModel> {
     return apiClient.post(`/api/twitch-notifications/discord/${guildId}/webhook`, data);
+  }
+
+  static updateDiscordNotification(id: string, data: IUpdateDiscordNotificationPayload): Promise<IDiscordBotNotificationModel> {
+    return apiClient.patch(`/api/twitch-notifications/discord/${id}`, data);
+  }
+
+  static updateWebhookNotification(id: string, data: IUpdateWebhookNotificationPayload): Promise<IWebhookNotificationModel> {
+    return apiClient.patch(`/api/twitch-notifications/webhook/${id}`, data);
   }
 
   static getGuildChannels(guildId: string): Promise<IDiscordChannelModel[]> {

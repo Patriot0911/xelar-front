@@ -1,11 +1,9 @@
 .root {
   padding: 16px 32px;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: stretch;
   flex-direction: column;
   gap: 24px;
-  flex-wrap: wrap;
 
   @media (max-width: 640px) {
     padding: 24px 20px 18px;
