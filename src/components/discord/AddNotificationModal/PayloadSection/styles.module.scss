@@ -1,0 +1,262 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sectionTitle {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+// ── Embed toggle ──────────────────────────────────────────────────────────────
+
+.embedToggleRow {
+  display: flex;
+  align-items: center;
+}
+
+.embedToggleLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+
+  input[type='checkbox'] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  span {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    transition: color 0.15s;
+  }
+
+  &:hover span {
+    color: var(--ink-1);
+  }
+}
+
+// ── Embed form ────────────────────────────────────────────────────────────────
+
+.embedForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+// ── Color field ───────────────────────────────────────────────────────────────
+
+.colorField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.colorLabelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.colorLabelText {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.colorToggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.10em;
+  color: var(--ink-2);
+
+  input[type='checkbox'] {
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+}
+
+.colorPickerWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: #08091B;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.colorInput {
+  width: 28px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  overflow: hidden;
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  &::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+  }
+}
+
+.colorHex {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-1);
+  letter-spacing: 0.06em;
+}
+
+.colorDisabled {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: #08091B;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+// ── Embed fields ──────────────────────────────────────────────────────────────
+
+.fieldsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldsSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fieldsSectionTitle {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.addFieldButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-2);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: var(--ink-0);
+    background: var(--surface-2);
+    border-color: rgba(154, 107, 255, 0.4);
+  }
+}
+
+.fieldRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.fieldRowInputs {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fieldActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 4px;
+  flex-shrink: 0;
+}
+
+.inlineLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-2);
+  user-select: none;
+
+  input[type='checkbox'] {
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+}
+
+.removeFieldButton {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--ink-3);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: rgba(255, 60, 60, 0.1);
+    color: #ff6060;
+  }
+}
