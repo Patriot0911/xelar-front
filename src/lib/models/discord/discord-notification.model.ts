@@ -1,0 +1,45 @@
+export interface IStreamerRef {
+  broadcasterId: string;
+  twitchLogin: string;
+  displayName: string;
+}
+
+export interface IStreamerEventRef {
+  event: string;
+  streamer: IStreamerRef;
+}
+
+export interface IDiscordBotNotificationModel {
+  id: string;
+  channelId: string;
+  guildId: string;
+  costType: string;
+  cost: number;
+  status: 'active' | 'suspended';
+  messagePayload: unknown;
+  createdAt: string;
+  streamerEvent: IStreamerEventRef;
+}
+
+export interface IWebhookNotificationModel {
+  id: string;
+  type: string;
+  costType: string;
+  cost: number;
+  messagePayload: unknown;
+  createdAt: string;
+  streamerEvent: IStreamerEventRef;
+}
+
+export interface IGuildNotificationsResponse {
+  bot: IDiscordBotNotificationModel[];
+  webhook: IWebhookNotificationModel[];
+}
+
+export type DiscordErrorCode = 'DISCORD_NOT_CONNECTED' | 'DISCORD_TOKEN_REVOKED';
+
+export function isDiscordAuthError(error: unknown): boolean {
+  if (!error || typeof error !== 'object') return false;
+  const code = (error as Record<string, unknown>).data;
+  return code === 'DISCORD_NOT_CONNECTED' || code === 'DISCORD_TOKEN_REVOKED';
+}

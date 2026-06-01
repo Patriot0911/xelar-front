@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { DiscordCallbackContent } from './_content';
+
 import styles from './page.module.scss';
 
 export default function DiscordCallbackPage() {

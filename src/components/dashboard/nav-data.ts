@@ -5,7 +5,9 @@ import {
   LuTv,
   LuWebhook,
   LuShieldCheck,
+  LuBell,
 } from 'react-icons/lu';
+import { SiDiscord } from 'react-icons/si';
 import type { IconType } from 'react-icons';
 
 export interface NavItem {
@@ -15,9 +17,14 @@ export interface NavItem {
 }
 
 export const NAV_MAIN: NavItem[] = [
-  { label: 'Overview',    href: '/dashboard',             icon: LuHouse },
-  { label: 'Twitch Apps', href: '/dashboard/twitch-apps', icon: LuTv },
-  { label: 'Bridges',     href: '/dashboard/bridges',     icon: LuArrowLeftRight },
+  { label: 'Overview',       href: '/dashboard',                icon: LuHouse },
+  { label: 'Twitch Apps',    href: '/dashboard/twitch-apps',    icon: LuTv },
+  { label: 'Bridges',        href: '/dashboard/bridges',        icon: LuArrowLeftRight },
+];
+
+export const NAV_NOTIFICATIONS: NavItem[] = [
+  { label: 'Discord Servers', href: '/dashboard/discord',       icon: SiDiscord },
+  { label: 'All Notifications', href: '/dashboard/notifications', icon: LuBell },
 ];
 
 export const NAV_CONFIGURE: NavItem[] = [
