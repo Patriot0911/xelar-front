@@ -1,0 +1,26 @@
+.paginator-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+  min-height: 30px;
+  width: 100%;
+}
+
+.login {
+  color: var(--ink-2);
+  font-size: 12px;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--ink-1);
+  background: var(--surface-2);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.empty {
+  color: var(--ink-3);
+}
