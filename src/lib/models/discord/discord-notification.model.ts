@@ -2,6 +2,7 @@ export interface IStreamerRef {
   broadcasterId: string;
   twitchLogin: string;
   displayName: string;
+  profileImageUrl?: string | null;
 }
 
 export interface IStreamerEventRef {

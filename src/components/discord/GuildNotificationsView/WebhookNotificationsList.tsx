@@ -1,14 +1,37 @@
 import { LuPencil } from 'react-icons/lu';
 import type { ITableAction, ITableColumn } from '@/components/ui/Table/Table';
-import type { IWebhookNotificationModel } from '@/lib/models/discord';
+import type { IWebhookNotificationModel, IStreamerRef } from '@/lib/models/discord';
 import Table from '@/components/ui/Table';
+import avatarStyles from './StreamerCell.module.scss';
 import styles from './styles.module.scss';
+
+const StreamerCell = ({ streamer }: { streamer?: IStreamerRef }) => {
+  if (!streamer) return <span>—</span>;
+  return (
+    <div className={avatarStyles.streamer}>
+      {streamer.profileImageUrl ? (
+        <img
+          src={streamer.profileImageUrl}
+          alt={streamer.displayName}
+          className={avatarStyles.avatar}
+          width={24}
+          height={24}
+        />
+      ) : (
+        <div className={avatarStyles.avatarFallback}>
+          {streamer.displayName[0].toUpperCase()}
+        </div>
+      )}
+      <span className={avatarStyles.name}>{streamer.displayName}</span>
+    </div>
+  );
+};
 
 const columns: ITableColumn<IWebhookNotificationModel>[] = [
   {
     key: 'streamer',
     title: 'Streamer',
-    render: (row) => row.streamerEvent?.streamer?.displayName ?? '—',
+    render: (row) => <StreamerCell streamer={row.streamerEvent?.streamer} />,
   },
   {
     key: 'event',
