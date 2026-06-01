@@ -8,4 +8,6 @@ export interface IDiscordGuildModel {
   features: string[];
   memberCount: number;
   presenceCount: number;
+  balance: number;
+  notificationCount: number;
 }

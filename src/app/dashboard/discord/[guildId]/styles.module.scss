@@ -1,0 +1,33 @@
+.pageTabs {
+  display: flex;
+  width: 100%;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+
+.pageTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-2);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: var(--ink-1);
+  }
+
+  &.pageTabActive {
+    color: var(--ink-0);
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+  }
+}

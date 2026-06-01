@@ -38,6 +38,23 @@ export interface IGuildNotificationsResponse {
 
 export type DiscordErrorCode = 'DISCORD_NOT_CONNECTED' | 'DISCORD_TOKEN_REVOKED';
 
+export interface ICreateDiscordNotificationPayload {
+  broadcasterId: string;
+  event: string;
+  costType: string;
+  payload: Record<string, unknown>;
+  guildId: string;
+  channelId: string;
+}
+
+export interface ICreateWebhookNotificationPayload {
+  broadcasterId: string;
+  event: string;
+  costType: string;
+  payload: Record<string, unknown>;
+  webhookUrl: string;
+}
+
 export function isDiscordAuthError(error: unknown): boolean {
   if (!error || typeof error !== 'object') return false;
   const code = (error as Record<string, unknown>).data;

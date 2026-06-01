@@ -1,6 +1,13 @@
 import { apiClient } from '../api-client';
 import type { IDiscordGuildModel } from '../models/discord/discord-guild.model';
-import type { IGuildNotificationsResponse } from '../models/discord/discord-notification.model';
+import type { IDiscordChannelModel } from '../models/discord/discord-channel.model';
+import type {
+  IGuildNotificationsResponse,
+  IDiscordBotNotificationModel,
+  IWebhookNotificationModel,
+  ICreateDiscordNotificationPayload,
+  ICreateWebhookNotificationPayload,
+} from '../models/discord/discord-notification.model';
 
 export enum DiscordQueryKey {
   Guilds            = 'discord-guilds',
@@ -19,6 +26,18 @@ class DiscordService {
 
   static getAllNotifications(): Promise<IGuildNotificationsResponse> {
     return apiClient.get('/api/twitch-notifications');
+  }
+
+  static createDiscordNotification(data: ICreateDiscordNotificationPayload): Promise<IDiscordBotNotificationModel> {
+    return apiClient.post('/api/twitch-notifications/discord', data);
+  }
+
+  static createWebhookNotification(guildId: string, data: ICreateWebhookNotificationPayload): Promise<IWebhookNotificationModel> {
+    return apiClient.post(`/api/twitch-notifications/discord/${guildId}/webhook`, data);
+  }
+
+  static getGuildChannels(guildId: string): Promise<IDiscordChannelModel[]> {
+    return apiClient.get(`/api/discord/guilds/${guildId}/channels`);
   }
 }
 
