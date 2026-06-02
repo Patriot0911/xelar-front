@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { apiClient, apiConfig } from '../api-client';
-import { IAuthMeResponse, IAuthResponseModel, ISessionModel, IUpdateProfilePayload } from '../models/auth';
+import { IAuthMeResponse, IAuthResponseModel, ILoginByEmailModel, IRegisterByEmailModel, ISessionModel, IUpdateProfilePayload } from '../models/auth';
 
 export const REFRESH_TOKEN_KEY = 'refresh_token';
 export const ACCESS_TOKEN_KEY = 'access_token';
@@ -48,6 +48,14 @@ class AuthService {
 
   static discordCallback(code: string): Promise<IAuthResponseModel> {
     return apiClient.get(`/api/auth/discord/authorize?code=${code}`);
+  }
+
+  static loginByEmail(payload: ILoginByEmailModel): Promise<IAuthResponseModel> {
+    return apiClient.post('/api/auth/login/email', payload);
+  }
+
+  static registerByEmail(payload: IRegisterByEmailModel): Promise<IAuthResponseModel> {
+    return apiClient.post('/api/authregister/email', payload);
   }
 
   static getMeUser(): Promise<IAuthMeResponse> {
