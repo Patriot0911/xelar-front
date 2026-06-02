@@ -227,7 +227,7 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
             />
           )}
 
-          <PayloadSection />
+          <PayloadSection guildId={guildId} />
 
         </Modal.ModalBody>
 

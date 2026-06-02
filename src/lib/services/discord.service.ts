@@ -1,6 +1,7 @@
 import { apiClient } from '../api-client';
 import type { IDiscordGuildModel } from '../models/discord/discord-guild.model';
 import type { IDiscordChannelModel } from '../models/discord/discord-channel.model';
+import type { IDiscordRoleModel } from '../models/discord/discord-role.model';
 import type {
   IGuildNotificationsResponse,
   IDiscordBotNotificationModel,
@@ -12,9 +13,10 @@ import type {
 } from '../models/discord/discord-notification.model';
 
 export enum DiscordQueryKey {
-  Guilds            = 'discord-guilds',
+  Guilds             = 'discord-guilds',
   GuildNotifications = 'guild-notifications',
-  AllNotifications  = 'all-notifications',
+  AllNotifications   = 'all-notifications',
+  GuildRoles         = 'discord-guild-roles',
 }
 
 class DiscordService {
@@ -48,6 +50,10 @@ class DiscordService {
 
   static getGuildChannels(guildId: string): Promise<IDiscordChannelModel[]> {
     return apiClient.get(`/api/discord/guilds/${guildId}/channels`);
+  }
+
+  static getGuildRoles(guildId: string): Promise<IDiscordRoleModel[]> {
+    return apiClient.get(`/api/discord/guilds/${guildId}/roles`);
   }
 }
 

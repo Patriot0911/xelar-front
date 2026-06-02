@@ -154,7 +154,7 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
             />
           )}
 
-          <PayloadSection notificationType={type} />
+          <PayloadSection notificationType={type} guildId={guildId} />
 
         </Modal.ModalBody>
 
