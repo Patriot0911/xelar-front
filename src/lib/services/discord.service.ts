@@ -11,12 +11,14 @@ import type {
   IUpdateDiscordNotificationPayload,
   IUpdateWebhookNotificationPayload,
 } from '../models/discord/discord-notification.model';
+import type { IDiscordGuildInfoModel } from '../models/discord/discord-guild-info.model';
 
 export enum DiscordQueryKey {
   Guilds             = 'discord-guilds',
   GuildNotifications = 'guild-notifications',
   AllNotifications   = 'all-notifications',
   GuildRoles         = 'discord-guild-roles',
+  GuildInfo          = 'discord-guild-info',
 }
 
 class DiscordService {
@@ -54,6 +56,14 @@ class DiscordService {
 
   static getGuildRoles(guildId: string): Promise<IDiscordRoleModel[]> {
     return apiClient.get(`/api/discord/guilds/${guildId}/roles`);
+  }
+
+  static getGuildInfo(guildId: string): Promise<IDiscordGuildInfoModel> {
+    return apiClient.get(`/api/discord/guilds/${guildId}`);
+  }
+
+  static setManagerRole(guildId: string, roleId: string | null): Promise<{ success: boolean }> {
+    return apiClient.patch(`/api/discord/guilds/${guildId}/manager-role`, { roleId });
   }
 }
 

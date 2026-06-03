@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { NotificationCostType } from '@/lib/constants/notifications';
 
 const embedFieldSchema = z.object({
   name:   z.string().min(1, 'Field name is required').max(256),
@@ -8,7 +7,6 @@ const embedFieldSchema = z.object({
 });
 
 export const editNotificationSchema = z.object({
-  costType:          z.nativeEnum(NotificationCostType),
   // bot only
   channelId:         z.string().optional(),
   // webhook only
