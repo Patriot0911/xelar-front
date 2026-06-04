@@ -5,7 +5,7 @@ import { SiDiscord } from 'react-icons/si';
 
 import styles from './styles.module.scss';
 
-const DiscordButton = (props: IBaseButtonProps) => {
+const DiscordButton = ({ label = 'Continue with Discord', ...props }: IBaseButtonProps) => {
   return (
     <button
       {...props}
@@ -19,7 +19,7 @@ const DiscordButton = (props: IBaseButtonProps) => {
       <span className={styles.icon}>
         <SiDiscord size={20} />
       </span>
-      <span className={styles.label}>Continue with Discord</span>
+      <span className={styles.label}>{label}</span>
       <LuArrowRight size={16} className={styles.arrow} />
     </button>
   )

@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 import AuthBgEffects from '../AuthBgEffects';
 import AuthVisual from '../AuthVisual';
 
@@ -14,12 +14,21 @@ function AuthWrapper({ children }: PropsWithChildren) {
   );
 }
 
-function Content({ children }: PropsWithChildren) {
+interface ContentProps extends PropsWithChildren {
+  footer?: ReactNode;
+}
+
+function Content({ children, footer }: ContentProps) {
   return (
     <div className={styles.panel}>
       <div className={styles.panelBody}>
         {children}
       </div>
+      {footer && (
+        <div className={styles.panelFoot}>
+          {footer}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,13 +1,5 @@
-'use client';
-
-import { AuthWrapper } from '@/components/modules/auth/AuthWrapper';
+import { AuthPageContent } from './_content';
 
 export default function AuthPage() {
-  return (
-    <AuthWrapper>
-      <AuthWrapper.Content>
-        <h1>Test goes here</h1>
-      </AuthWrapper.Content>
-    </AuthWrapper>
-  );
+  return <AuthPageContent />;
 }

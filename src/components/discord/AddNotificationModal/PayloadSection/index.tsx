@@ -5,6 +5,7 @@ import { Path } from 'react-hook-form';
 import { LuPlus, LuTrash2 } from 'react-icons/lu';
 import FormInput from '@/components/ui/FormInput';
 import FormTextarea from '@/components/ui/FormTextarea';
+import RoleMentionPicker from '../RoleMentionPicker';
 import type { TAddNotificationForm } from '../add-notification.scheme';
 import styles from './styles.module.scss';
 
@@ -45,9 +46,10 @@ const ColorField = () => {
 
 interface IPayloadSectionProps {
   notificationType?: 'bot' | 'webhook';
+  guildId?: string;
 }
 
-const PayloadSection = ({ notificationType }: IPayloadSectionProps = {}) => {
+const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}) => {
   const { control, register, watch } = useFormContext<TAddNotificationForm>();
   const embedEnabled = watch('embedEnabled');
   const formType     = watch('type' as any) as 'bot' | 'webhook' | undefined;
@@ -61,6 +63,8 @@ const PayloadSection = ({ notificationType }: IPayloadSectionProps = {}) => {
   return (
     <div className={styles.section}>
       <span className={styles.sectionTitle}>Payload</span>
+
+      {guildId && <RoleMentionPicker guildId={guildId} />}
 
       <FormTextarea<TAddNotificationForm>
         name="content"

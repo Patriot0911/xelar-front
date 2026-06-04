@@ -1,8 +1,6 @@
 import type { TEditNotificationForm } from './edit-notification.scheme';
-import { NotificationCostType } from '@/lib/constants/notifications';
 
 export const EDIT_DEFAULT_VALUES: TEditNotificationForm = {
-  costType:          NotificationCostType.Personal,
   channelId:         '',
   webhookUrl:        '',
   content:           '',
