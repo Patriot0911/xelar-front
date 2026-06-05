@@ -3,12 +3,14 @@ import ExternalButton from '@/components/ui/buttons/ExternalButton';
 import TwitchAppsTable from '@/components/twitch-apps/TwitchAppsTable';
 import AddTwitchApp from '@/components/twitch-apps/AddTwitchApp';
 import PageContent from '@/components/ui/PageContent';
+import PermissionGuard from '@/components/common/PermissionGuard';
+import { Permission } from '@/lib/constants/permissions';
 
 import styles from './page.module.scss';
 
 export default function TwitchAppsPage() {
   return (
-    <>
+    <PermissionGuard requiredPermissions={[Permission.READ_APPS, Permission.MANAGE_APPS]}>
       <PageHeader
         eyebrow="Integration · Twitch · App"
         title="Twitch Apps"
@@ -24,6 +26,6 @@ export default function TwitchAppsPage() {
       <PageContent>
         <TwitchAppsTable />
       </PageContent>
-    </>
+    </PermissionGuard>
   );
 }

@@ -5,10 +5,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Modal from '@/components/ui/Modal';
 import FormInput from '@/components/ui/FormInput';
-import FormSelect from '@/components/ui/FormSelect';
-import { ISelectOption } from '@/components/ui/FormSelect/context';
 import Button from '@/components/ui/buttons/Button';
-import { NotificationCostType, COST_TYPE_LABELS, TWITCH_EVENT_LABELS, TwitchStreamerEvent } from '@/lib/constants/notifications';
+import { NotificationCostType, TWITCH_EVENT_LABELS, TwitchStreamerEvent } from '@/lib/constants/notifications';
 import useUpdateDiscordNotificationMutation from '@/hooks/mutations/discord/useUpdateDiscordNotificationMutation';
 import useUpdateWebhookNotificationMutation from '@/hooks/mutations/discord/useUpdateWebhookNotificationMutation';
 import PayloadSection from '../AddNotificationModal/PayloadSection';
@@ -17,18 +15,12 @@ import { EDIT_DEFAULT_VALUES, parsePayloadToFormValues } from './payload-parse';
 import type { IEditNotificationModalProps } from './EditNotificationModal';
 import styles from './styles.module.scss';
 
-const COST_TYPE_OPTIONS: ISelectOption[] = Object.values(NotificationCostType).map((v) => ({
-  value: v,
-  label: COST_TYPE_LABELS[v],
-}));
-
 const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }: IEditNotificationModalProps) => {
   const botMutation     = useUpdateDiscordNotificationMutation();
   const webhookMutation = useUpdateWebhookNotificationMutation();
 
   const buildDefaults = (): TEditNotificationForm => ({
     ...EDIT_DEFAULT_VALUES,
-    costType:  notification.costType as NotificationCostType,
     channelId: type === 'bot' ? (notification as any).channelId ?? '' : '',
     webhookUrl: '',
     ...parsePayloadToFormValues(notification.messagePayload),
@@ -87,7 +79,7 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
       botMutation.mutate({
         id: notification.id,
         data: {
-          costType:  data.costType,
+          costType:  NotificationCostType.Personal,
           channelId: data.channelId?.trim() || undefined,
           payload,
         },
@@ -96,7 +88,7 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
       webhookMutation.mutate({
         id: notification.id,
         data: {
-          costType:   data.costType,
+          costType:   NotificationCostType.Personal,
           webhookUrl: data.webhookUrl?.trim() || undefined,
           payload,
         },
@@ -118,24 +110,6 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
       <FormProvider {...methods}>
         <Modal.ModalBody className={styles.scrollableBody}>
 
-          <FormSelect<TEditNotificationForm, ISelectOption>
-            name="costType"
-            label="Cost Type"
-            required
-            hideErrorMessage
-            hint="Determines which balance is charged for each event delivery."
-            options={COST_TYPE_OPTIONS}
-          >
-            <FormSelect.Selected>
-              {(item) => <span>{item.label}</span>}
-            </FormSelect.Selected>
-            <FormSelect.Area>
-              <FormSelect.Option>
-                {(item) => <span>{item.label}</span>}
-              </FormSelect.Option>
-            </FormSelect.Area>
-          </FormSelect>
-
           {type === 'bot' ? (
             <FormInput<TEditNotificationForm>
               name="channelId"
@@ -154,7 +128,7 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
             />
           )}
 
-          <PayloadSection notificationType={type} />
+          <PayloadSection notificationType={type} guildId={guildId} />
 
         </Modal.ModalBody>
 

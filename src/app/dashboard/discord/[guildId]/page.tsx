@@ -42,7 +42,7 @@ export default function GuildNotificationsPage({ params }: IProps) {
         {tab === 'notifications' ? (
           <GuildNotificationsView guildId={guildId} />
         ) : (
-          <GuildManagementView />
+          <GuildManagementView guildId={guildId} />
         )}
       </PageContent>
     </>

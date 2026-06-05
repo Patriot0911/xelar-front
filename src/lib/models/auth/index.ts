@@ -3,3 +3,5 @@ export * from './user.model';
 export * from './auth.model';
 export * from './session.model';
 export * from './update-profile.model';
+export * from './login-email.model';
+export * from './register-email.model';

@@ -13,7 +13,6 @@ import {
   TwitchStreamerEvent,
   TWITCH_EVENT_LABELS,
   NotificationCostType,
-  COST_TYPE_LABELS,
 } from '@/lib/constants/notifications';
 import useCreateDiscordNotificationMutation from '@/hooks/mutations/discord/useCreateDiscordNotificationMutation';
 import useCreateWebhookNotificationMutation from '@/hooks/mutations/discord/useCreateWebhookNotificationMutation';
@@ -29,16 +28,10 @@ const EVENT_OPTIONS: ISelectOption[] = Object.values(TwitchStreamerEvent).map((v
   label: TWITCH_EVENT_LABELS[v],
 }));
 
-const COST_TYPE_OPTIONS: ISelectOption[] = Object.values(NotificationCostType).map((v) => ({
-  value: v,
-  label: COST_TYPE_LABELS[v],
-}));
-
 const DEFAULT_VALUES: TAddNotificationForm = {
   type:              'bot',
   broadcasterId:     '',
   event:             TwitchStreamerEvent.STREAM_ONLINE,
-  costType:          NotificationCostType.Personal,
   channelId:         '',
   webhookUrl:        '',
   content:           '',
@@ -123,7 +116,7 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
       botMutation.mutate({
         broadcasterId: data.broadcasterId,
         event:         data.event,
-        costType:      data.costType,
+        costType:      NotificationCostType.Personal,
         payload,
         guildId,
         channelId:     data.channelId!,
@@ -134,7 +127,7 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
         data: {
           broadcasterId: data.broadcasterId,
           event:         data.event,
-          costType:      data.costType,
+          costType:      NotificationCostType.Personal,
           payload,
           webhookUrl:    data.webhookUrl!,
         },
@@ -196,24 +189,6 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
             </FormSelect.Area>
           </FormSelect>
 
-          <FormSelect<TAddNotificationForm, ISelectOption>
-            name="costType"
-            label="Cost Type"
-            required
-            hideErrorMessage
-            hint="Determines which balance is charged for each event delivery."
-            options={COST_TYPE_OPTIONS}
-          >
-            <FormSelect.Selected>
-              {(item) => <span>{item.label}</span>}
-            </FormSelect.Selected>
-            <FormSelect.Area>
-              <FormSelect.Option>
-                {(item) => <span>{item.label}</span>}
-              </FormSelect.Option>
-            </FormSelect.Area>
-          </FormSelect>
-
           {activeType === 'bot' ? (
             <ChannelSearchField guildId={guildId} />
           ) : (
@@ -227,7 +202,7 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
             />
           )}
 
-          <PayloadSection />
+          <PayloadSection guildId={guildId} />
 
         </Modal.ModalBody>
 
