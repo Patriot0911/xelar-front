@@ -13,18 +13,21 @@ import useMeQuery from '@/hooks/queries/auth/useMeQuery';
 import { NAV_MAIN, NAV_CONFIGURE, isActive } from '../../../nav-data';
 import styles from './styles.module.scss';
 import DashboardUserCard from '../../../DashboardUserCard';
-
-// 4 primary destinations for the bottom tab bar
-const TAB_ITEMS = NAV_MAIN.slice(0, 4).map((item) => ({
-  ...item,
-  shortLabel: item.label === 'Overview' ? 'Home' : item.label,
-}));
+import { useFilteredNavItems } from '@/hooks/shared/useFilteredNavItems';
 
 const DashboardMobileNav = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const pathname = usePathname();
   const { data: meData } = useMeQuery();
   const displayName = meData?.displayName ?? 'User';
+  const mainItems = useFilteredNavItems(NAV_MAIN);
+  const configureItems = useFilteredNavItems(NAV_CONFIGURE);
+
+  // 4 primary destinations for the bottom tab bar
+  const TAB_ITEMS = mainItems.slice(0, 4).map((item) => ({
+    ...item,
+    shortLabel: item.label === 'Overview' ? 'Home' : item.label,
+  }));
 
   const closeDrawer = () => setDrawerOpen(false);
 
@@ -104,36 +107,40 @@ const DashboardMobileNav = () => {
         </span>
 
         {/* Main nav */}
-        <nav className={styles.navSection}>
-          <p className={styles.navGroupHead}>Main</p>
-          {NAV_MAIN.map(({ label, href, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`${styles.navItem} ${isActive(pathname, href) ? styles.navActive : ''}`}
-              onClick={closeDrawer}
-            >
-              <Icon size={16} />
-              {label}
-            </Link>
-          ))}
-        </nav>
+        {mainItems.length > 0 && (
+          <nav className={styles.navSection}>
+            <p className={styles.navGroupHead}>Main</p>
+            {mainItems.map(({ label, href, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className={`${styles.navItem} ${isActive(pathname, href) ? styles.navActive : ''}`}
+                onClick={closeDrawer}
+              >
+                <Icon size={16} />
+                {label}
+              </Link>
+            ))}
+          </nav>
+        )}
 
         {/* Configure nav */}
-        <nav className={styles.navSection}>
-          <p className={styles.navGroupHead}>Configure</p>
-          {NAV_CONFIGURE.map(({ label, href, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`${styles.navItem} ${isActive(pathname, href) ? styles.navActive : ''}`}
-              onClick={closeDrawer}
-            >
-              <Icon size={16} />
-              {label}
-            </Link>
-          ))}
-        </nav>
+        {configureItems.length > 0 && (
+          <nav className={styles.navSection}>
+            <p className={styles.navGroupHead}>Configure</p>
+            {configureItems.map(({ label, href, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className={`${styles.navItem} ${isActive(pathname, href) ? styles.navActive : ''}`}
+                onClick={closeDrawer}
+              >
+                <Icon size={16} />
+                {label}
+              </Link>
+            ))}
+          </nav>
+        )}
 
         <div className={styles.spacer} />
 
