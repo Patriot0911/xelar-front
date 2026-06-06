@@ -2,29 +2,64 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 20px;
+  gap: 16px;
 }
 
-.tabsRow {
+/* ── Toolbar: switcher + add button ── */
+.toolbar {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--line);
+  gap: 12px;
 }
 
-.tabs {
-  display: flex;
-  gap: 4px;
-  padding-bottom: 0;
+/* ── Pill/segment switcher ── */
+.switcher {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  gap: 2px;
+  border-radius: var(--radius-md);
+  background: var(--surface-3);
+  border: 1px solid var(--line);
 }
 
+.switcherBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: calc(var(--radius-md) - 2px);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.12s, background 0.12s, box-shadow 0.12s;
+  font-family: var(--font-body);
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--ink-1);
+  }
+
+  &.switcherBtnActive {
+    color: var(--ink-0);
+    background: var(--surface-1);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* ── Add button ── */
 .addBtn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   height: 32px;
   padding: 0 14px;
-  margin-bottom: 8px;
   border-radius: var(--radius-md);
   font-size: 13px;
   font-weight: 600;
@@ -46,45 +81,27 @@
   }
 }
 
-.tab {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink-2);
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  margin-bottom: -1px;
-  transition: color 0.15s, border-color 0.15s;
-
-  &:hover {
-    color: var(--ink-1);
-  }
-
-  &.active {
-    color: var(--ink-0);
-    border-bottom-color: var(--accent);
-  }
-}
-
+/* ── Badge inside switcher ── */
 .badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
   border-radius: var(--radius-full);
-  background: var(--surface-3);
+  background: var(--surface-2);
   font-size: 11px;
   font-weight: 600;
+  color: var(--ink-2);
+}
+
+.switcherBtnActive .badge {
+  background: var(--surface-3);
   color: var(--ink-1);
 }
 
+/* ── Content area ── */
 .content {
   min-height: 160px;
 }
