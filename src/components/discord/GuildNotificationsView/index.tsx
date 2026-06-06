@@ -50,25 +50,21 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.tabsRow}>
-        <div className={styles.tabs}>
+      <div className={styles.toolbar}>
+        <div className={styles.switcher}>
           <button
-            className={`${styles.tab} ${activeTab === 'bot' ? styles.active : ''}`}
+            className={`${styles.switcherBtn} ${activeTab === 'bot' ? styles.switcherBtnActive : ''}`}
             onClick={() => setActiveTab('bot')}
           >
             Discord Bot
-            {data && (
-              <span className={styles.badge}>{data.bot.length}</span>
-            )}
+            {data && <span className={styles.badge}>{data.bot.length}</span>}
           </button>
           <button
-            className={`${styles.tab} ${activeTab === 'webhook' ? styles.active : ''}`}
+            className={`${styles.switcherBtn} ${activeTab === 'webhook' ? styles.switcherBtnActive : ''}`}
             onClick={() => setActiveTab('webhook')}
           >
             Webhook
-            {data && (
-              <span className={styles.badge}>{data.webhook.length}</span>
-            )}
+            {data && <span className={styles.badge}>{data.webhook.length}</span>}
           </button>
         </div>
 
