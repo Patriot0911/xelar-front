@@ -38,7 +38,7 @@ const DiscordGuildGrid = () => {
       if (filter === 'needs-bot' && guild.hasBot) return false;
       if (query && !guild.name.toLowerCase().includes(query)) return false;
       return true;
-    });
+    }).sort((a, b) => a.hasBot === b.hasBot ? 0 : a.hasBot ? -1 : 1);
   }, [data, filter, search]);
 
   if (isDiscordAuthError(error)) {
