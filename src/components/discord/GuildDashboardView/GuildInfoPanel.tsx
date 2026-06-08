@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { LuUsers, LuCircleDot, LuBell, LuCoins } from 'react-icons/lu';
 import useDiscordGuildsQuery from '@/hooks/queries/discord/useDiscordGuildsQuery';
 import useDiscordGuildInfoQuery from '@/hooks/queries/discord/useDiscordGuildInfoQuery';
-import useDiscordGuildRolesQuery from '@/hooks/queries/discord/useDiscordGuildRolesQuery';
-import useSetManagerRoleMutation from '@/hooks/mutations/discord/useSetManagerRoleMutation';
+import useSetManagerPermissionMutation from '@/hooks/mutations/discord/useSetManagerPermissionMutation';
+import { MANAGER_PERMISSION_OPTIONS } from '@/lib/constants/discord-manager-permissions';
 import styles from './styles.module.scss';
 
 interface IGuildInfoPanelProps {
@@ -13,15 +13,14 @@ interface IGuildInfoPanelProps {
 }
 
 const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
-  const { data: guilds }                          = useDiscordGuildsQuery();
-  const { data: info,  isLoading: infoLoading }   = useDiscordGuildInfoQuery(guildId);
-  const { data: roles, isLoading: rolesLoading }  = useDiscordGuildRolesQuery(guildId);
-  const mutation = useSetManagerRoleMutation();
+  const { data: guilds }                        = useDiscordGuildsQuery();
+  const { data: info,  isLoading: infoLoading } = useDiscordGuildInfoQuery(guildId);
+  const mutation = useSetManagerPermissionMutation();
 
   const [selected, setSelected] = useState('');
 
   useEffect(() => {
-    if (info !== undefined) setSelected(info.managerRoleId ?? '');
+    if (info !== undefined) setSelected(info.managerPermission ?? '');
   }, [info]);
 
   useEffect(() => {
@@ -37,7 +36,7 @@ const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
     ? `https://cdn.discordapp.com/icons/${guildId}/${guild.icon}${guild.icon.startsWith('a_') ? '.gif' : '.png'}?size=128`
     : null;
 
-  const isSettingsLoading = infoLoading || rolesLoading;
+  const isSettingsLoading = infoLoading;
 
   return (
     <div className={styles.infoCard}>
@@ -84,16 +83,16 @@ const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
         <h3 className={styles.settingsTitle}>Settings</h3>
 
         <div className={styles.field}>
-          <label className={styles.fieldLabel}>Manager Role</label>
+          <label className={styles.fieldLabel}>Manager Permission</label>
           <select
             className={styles.fieldSelect}
             value={selected}
             onChange={e => setSelected(e.target.value)}
             disabled={isSettingsLoading || mutation.isPending}
           >
-            <option value="">No role — Admins only</option>
-            {(roles ?? []).map(role => (
-              <option key={role.id} value={role.id}>{role.name}</option>
+            <option value="">No permission — Admins only</option>
+            {MANAGER_PERMISSION_OPTIONS.map(option => (
+              <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </select>
         </div>
@@ -104,7 +103,7 @@ const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
 
         <button
           className={`${styles.saveBtn} ${mutation.isSuccess ? styles.saveBtnSaved : ''}`}
-          onClick={() => mutation.mutate({ guildId, roleId: selected || null })}
+          onClick={() => mutation.mutate({ guildId, permission: selected || null })}
           disabled={isSettingsLoading || mutation.isPending}
         >
           {mutation.isPending ? 'Saving…' : mutation.isSuccess ? 'Saved!' : 'Save'}
