@@ -10,4 +10,5 @@ export interface IDiscordGuildModel {
   presenceCount: number;
   balance: number;
   notificationCount: number;
+  hasBot: boolean;
 }
