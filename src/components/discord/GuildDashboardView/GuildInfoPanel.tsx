@@ -6,14 +6,16 @@ import useDiscordGuildsQuery from '@/hooks/queries/discord/useDiscordGuildsQuery
 import useDiscordGuildInfoQuery from '@/hooks/queries/discord/useDiscordGuildInfoQuery';
 import useSetManagerPermissionMutation from '@/hooks/mutations/discord/useSetManagerPermissionMutation';
 import { MANAGER_PERMISSION_OPTIONS } from '@/lib/constants/discord-manager-permissions';
-import styles from './styles.module.scss';
+import styles from './styles.module.scss';;
+import Select from '@/components/ui/Select';
+import Button from '@/components/ui/buttons/Button';
 
 interface IGuildInfoPanelProps {
   guildId: string;
 }
 
 const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
-  const { data: guilds }                        = useDiscordGuildsQuery();
+  const { data: guilds } = useDiscordGuildsQuery();
   const { data: info,  isLoading: infoLoading } = useDiscordGuildInfoQuery(guildId);
   const mutation = useSetManagerPermissionMutation();
 
@@ -80,34 +82,35 @@ const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
 
       {/* Settings */}
       <div className={styles.settings}>
-        <h3 className={styles.settingsTitle}>Settings</h3>
+        <Select
+          onChange={(e) => {
+            console.log('Selected permission:', e);
+            setSelected(e);
+          }}
+          value={selected}
+          label="Manager Permission"
+          hideErrorMessage
+          hideOptionalFlag
+          hint="The permission level for the manager."
+          options={MANAGER_PERMISSION_OPTIONS}
+        >
+          <Select.Selected>
+            {(item) => <span>{item.label}</span>}
+          </Select.Selected>
+          <Select.Area>
+            <Select.Option>
+              {(item) => <span>{item.label}</span>}
+            </Select.Option>
+          </Select.Area>
+        </Select>
 
-        <div className={styles.field}>
-          <label className={styles.fieldLabel}>Manager Permission</label>
-          <select
-            className={styles.fieldSelect}
-            value={selected}
-            onChange={e => setSelected(e.target.value)}
-            disabled={isSettingsLoading || mutation.isPending}
-          >
-            <option value="">No permission — Admins only</option>
-            {MANAGER_PERMISSION_OPTIONS.map(option => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
-          </select>
-        </div>
-
-        {mutation.isError && (
-          <p className={styles.fieldError}>Failed to save. Check permissions.</p>
-        )}
-
-        <button
-          className={`${styles.saveBtn} ${mutation.isSuccess ? styles.saveBtnSaved : ''}`}
+        <Button
           onClick={() => mutation.mutate({ guildId, permission: selected || null })}
           disabled={isSettingsLoading || mutation.isPending}
+          variant="secondary"
         >
           {mutation.isPending ? 'Saving…' : mutation.isSuccess ? 'Saved!' : 'Save'}
-        </button>
+        </Button>
       </div>
     </div>
   );
