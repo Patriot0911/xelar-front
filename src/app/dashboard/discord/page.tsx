@@ -1,9 +1,11 @@
+'use client';
+
 import { LuExternalLink } from 'react-icons/lu';
 import PageHeader from '@/components/ui/PageHeader';
 import PageContent from '@/components/ui/PageContent';
 import DiscordGuildGrid from '@/components/discord/DiscordGuildGrid';
 import { DISCORD_BOT_INVITE_URL } from '@/lib/constants/discord-bot-invite';
-import styles from './styles.module.scss';
+import Button from '@/components/ui/buttons/Button';
 
 export default function DiscordServersPage() {
   return (
@@ -12,19 +14,15 @@ export default function DiscordServersPage() {
         eyebrow="Notifications · Discord"
         title="Discord Servers"
         description="Servers you manage — invite the bot to start sending Twitch notifications."
-        actions={
-          DISCORD_BOT_INVITE_URL ? (
-            <a
-              href={DISCORD_BOT_INVITE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.inviteBtn}
-            >
-              Invite Bot
-              <LuExternalLink size={13} />
-            </a>
-          ) : null
-        }
+        actions={(
+          <>
+            {DISCORD_BOT_INVITE_URL && (
+              <Button variant="secondary" onClick={() => window.open(DISCORD_BOT_INVITE_URL!, '_blank')}>
+                Invite Bot <LuExternalLink size={13} />
+              </Button>
+            )}
+          </>
+        )}
       />
       <PageContent>
         <DiscordGuildGrid />

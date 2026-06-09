@@ -1,12 +1,7 @@
-import { InputHTMLAttributes, ReactNode } from 'react';
 import { FieldValues, Path } from 'react-hook-form';
+import { IInputProps } from '@/components/ui/Input/Input';
 
 export interface IFormInputProps<T extends FieldValues>
-  extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  extends Omit<IInputProps, 'name' | 'error' | 'touched'> {
   name: Path<T>;
-  onIconClick?: () => void;
-  icon?: ReactNode;
-  hint?: string;
-  hideErrorMessage?: boolean;
-};
+}

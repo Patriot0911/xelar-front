@@ -7,11 +7,15 @@ import { isDiscordAuthError } from '@/lib/models/discord';
 import DiscordGuildCard from '../DiscordGuildCard';
 import DiscordReconnectBlocker from '../DiscordReconnectBlocker';
 import Loading from '@/components/ui/Loading';
+import Tabs from '@/components/ui/Tabs';
+import type { TabItem } from '@/components/ui/Tabs/Tabs';
+import Input from '@/components/ui/Input';
+
 import styles from './styles.module.scss';
 
 type TGuildFilter = 'all' | 'active' | 'needs-bot';
 
-const FILTERS: { key: TGuildFilter; label: string }[] = [
+const FILTERS: TabItem<TGuildFilter>[] = [
   { key: 'all', label: 'All' },
   { key: 'active', label: 'Active' },
   { key: 'needs-bot', label: 'Needs bot' },
@@ -64,29 +68,25 @@ const DiscordGuildGrid = () => {
   return (
     <>
       <div className={styles.toolbar}>
-        <div className={styles.tabs}>
-          {FILTERS.map(({ key, label }) => (
-            <button
-              key={key}
-              type="button"
-              className={`${styles.tab} ${filter === key ? styles.tabActive : ''}`}
-              onClick={() => setFilter(key)}
-            >
-              {label}
-              <span className={styles.tabCount}>{counts[key]}</span>
-            </button>
-          ))}
-        </div>
-        <div className={styles.searchWrap}>
-          <LuSearch size={14} className={styles.searchIcon} />
-          <input
-            className={styles.searchInput}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search servers…"
-            autoComplete="off"
-          />
-        </div>
+        <Tabs
+          items={
+            FILTERS.map((i) => ({
+              ...i,
+              count: counts[i.key],
+            }))
+          }
+          value={filter}
+          onChange={setFilter}
+        />
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search servers"
+          autoComplete="off"
+          hideOptionalFlag
+          className={styles.searchWrap}
+          icon={<LuSearch size={14} />}
+        />
       </div>
 
       {filteredGuilds.length ? (
