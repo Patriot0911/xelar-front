@@ -52,7 +52,7 @@ const DiscordGuildCard = ({ guild }: IDiscordGuildCardProps) => {
     return (
       <div className={styles.card}>
         {header}
-
+        <div className={styles.divider} />
         <div className={styles.placeholder}>
           <div className={styles.placeholderIcon}>
             <LuBotOff size={20} />
@@ -82,9 +82,9 @@ const DiscordGuildCard = ({ guild }: IDiscordGuildCardProps) => {
   }
 
   return (
-    <Link href={`/dashboard/discord/${guild.id}`} className={styles.card}>
+    <Link href={`/dashboard/discord/${guild.id}`} className={`${styles.card} ${styles.cardActive}`}>
       {header}
-
+      <div className={styles.divider} />
       <div className={styles.stats}>
         <div className={styles.stat}>
           <LuBell size={13} className={styles.statIcon} />
