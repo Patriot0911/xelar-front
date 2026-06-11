@@ -1,29 +1,43 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { LuUsers, LuCircleDot, LuBell, LuCoins } from 'react-icons/lu';
-import useDiscordGuildsQuery from '@/hooks/queries/discord/useDiscordGuildsQuery';
 import useDiscordGuildInfoQuery from '@/hooks/queries/discord/useDiscordGuildInfoQuery';
 import useSetManagerPermissionMutation from '@/hooks/mutations/discord/useSetManagerPermissionMutation';
 import { MANAGER_PERMISSION_OPTIONS } from '@/lib/constants/discord-manager-permissions';
-import styles from './styles.module.scss';;
+import { IGuildInfoPanelProps } from './GuildInfoPanel';
 import Select from '@/components/ui/Select';
-import Button from '@/components/ui/buttons/Button';
 
-interface IGuildInfoPanelProps {
-  guildId: string;
-}
+import styles from '../styles.module.scss';
+import { ADMINISTRATOR, hasBitFlagPermission } from '@/lib/utils';
 
 const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
-  const { data: guilds } = useDiscordGuildsQuery();
-  const { data: info,  isLoading: infoLoading } = useDiscordGuildInfoQuery(guildId);
+  const { data: guild,  isLoading: infoLoading } = useDiscordGuildInfoQuery(guildId);
   const mutation = useSetManagerPermissionMutation();
 
   const [selected, setSelected] = useState('');
+  const isPermissionChangePermitted = useMemo<boolean>(
+    () => (
+      !!guild?.owner
+      || !!(
+        guild?.permissions
+        && hasBitFlagPermission(guild?.permissions, ADMINISTRATOR)
+      )
+    ), [guild]
+  );
+
+  const handleChangePermission = (selected: string) => {
+    mutation.mutate({
+      guildId,
+      permission: selected,
+    });
+  }
 
   useEffect(() => {
-    if (info !== undefined) setSelected(info.managerPermission ?? '');
-  }, [info]);
+    if (guild !== undefined) {
+      setSelected(guild.managerPermission ?? '');
+    }
+  }, [guild]);
 
   useEffect(() => {
     if (mutation.isSuccess) {
@@ -31,8 +45,6 @@ const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
       return () => clearTimeout(t);
     }
   }, [mutation.isSuccess]);
-
-  const guild = guilds?.find(g => g.id === guildId);
 
   const iconUrl = guild?.icon
     ? `https://cdn.discordapp.com/icons/${guildId}/${guild.icon}${guild.icon.startsWith('a_') ? '.gif' : '.png'}?size=128`
@@ -83,14 +95,12 @@ const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
       {/* Settings */}
       <div className={styles.settings}>
         <Select
-          onChange={(e) => {
-            console.log('Selected permission:', e);
-            setSelected(e);
-          }}
+          onChange={handleChangePermission}
           value={selected}
           label="Manager Permission"
           hideErrorMessage
           hideOptionalFlag
+          disabled={!isPermissionChangePermitted || isSettingsLoading || mutation.isPending}
           hint="The permission level for the manager."
           options={MANAGER_PERMISSION_OPTIONS}
         >
@@ -103,14 +113,6 @@ const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
             </Select.Option>
           </Select.Area>
         </Select>
-
-        <Button
-          onClick={() => mutation.mutate({ guildId, permission: selected || null })}
-          disabled={isSettingsLoading || mutation.isPending}
-          variant="secondary"
-        >
-          {mutation.isPending ? 'Saving…' : mutation.isSuccess ? 'Saved!' : 'Save'}
-        </Button>
       </div>
     </div>
   );

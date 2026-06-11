@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
-}
+};
 
 export function getInitials(name: string): string {
   return name
@@ -12,5 +12,10 @@ export function getInitials(name: string): string {
     .join('')
     .slice(0, 2)
     .toUpperCase();
-}
+};
 
+export const ADMINISTRATOR = 0x8;
+
+export const hasBitFlagPermission = (permissions: string, flag: number): boolean => {
+  return (BigInt(permissions) & BigInt(flag)) === BigInt(flag);
+};

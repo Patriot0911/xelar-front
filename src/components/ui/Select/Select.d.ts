@@ -14,4 +14,5 @@ export interface ISelectProps<O extends ISelectOption<string, string>> extends P
   className?: string;
   required?: boolean;
   touched?: boolean;
+  disabled?: boolean;
 }

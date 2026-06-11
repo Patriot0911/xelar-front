@@ -26,6 +26,7 @@ const Select = <O extends ISelectOption<string, string>>({
   touched,
   children,
   hideOptionalFlag,
+  disabled,
 }: ISelectProps<O>) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -65,11 +66,14 @@ const Select = <O extends ISelectOption<string, string>>({
             styles['controller-select'],
             touched && !hasError && styles['controller-select__touched'],
             hasError && styles['controller-select__error'],
+            disabled && styles['controller-select__disabled']
           )}
         >
           {children}
           {!hasValue && <span className={styles.placeholder}>{placeholder}</span>}
-          <Select.Trigger />
+          <Select.Trigger
+            disabled={disabled}
+          />
         </div>
 
         {hint && <span className={styles.hint}>{hint}</span>}

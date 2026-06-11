@@ -6,16 +6,21 @@ import styles from './styles.module.scss';
 
 interface ISelectTriggerProps {
   className?: string;
+  disabled?: boolean;
 }
 
-const SelectTrigger = ({ className }: ISelectTriggerProps) => {
+const SelectTrigger = ({ className, disabled }: ISelectTriggerProps) => {
   const { isOpen, toggle } = useSelectContext();
 
   return (
     <button
       type="button"
-      onClick={toggle}
-      className={cn(styles.trigger, className)}
+      onClick={() => !disabled && toggle()}
+      className={cn(
+        styles.trigger,
+        className,
+        disabled && styles['disabled']
+      )}
       aria-expanded={isOpen}
       aria-haspopup="listbox"
     >

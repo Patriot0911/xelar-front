@@ -11,4 +11,4 @@ export interface IDiscordGuildModel {
   balance: number;
   notificationCount: number;
   hasBot: boolean;
-}
+};

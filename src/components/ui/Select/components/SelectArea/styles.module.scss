@@ -12,8 +12,27 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  overflow-y: auto;
+  max-height: 250px;
 
   animation: dropdown-in 0.15s ease;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #1e2649;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(106, 90, 197, 0.514);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(151, 138, 226, 0.514);
+  }
 }
 
 @keyframes dropdown-in {
