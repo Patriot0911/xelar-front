@@ -2,6 +2,8 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import AuthService from './services/auth.service';
 import { IGenericAxiosResponse } from './models/generic-response.model';
 import { IAuthResponseModel } from './models/auth';
+import { getGlobalStore } from '../store/storeRef';
+import { logout } from '@/store/slices/authSlice';
 
 let isRefreshing = false;
 let queue: (() => void)[] = [];
@@ -52,8 +54,7 @@ apiClient.interceptors.response.use(
 
       return apiClient(original);
     } catch(err) {
-      AuthService.clearTokens();
-      // window.location.href = '/';
+      getGlobalStore()?.dispatch(logout());
       return Promise.reject(err);
     } finally {
       isRefreshing = false;
