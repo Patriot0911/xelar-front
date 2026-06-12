@@ -108,7 +108,7 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
           <div className={styles.row}>
             <FormInput<TAddNotificationForm>
               name="embedTitle"
-              label="Title"
+              label="Embed title"
               placeholder="Embed title"
               maxLength={256}
               hideErrorMessage

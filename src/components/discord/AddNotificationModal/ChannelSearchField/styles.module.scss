@@ -76,6 +76,7 @@
 .selectedCard {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
   padding: 10px 10px 10px 12px;
   border-radius: var(--radius-sm);
@@ -93,6 +94,7 @@
   font-size: 13px;
   font-weight: 600;
   color: var(--ink-0);
+  width: 100%;
 }
 
 .selectedTopic {

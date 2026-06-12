@@ -46,6 +46,13 @@ const ChannelSearchField = ({ guildId }: IChannelSearchFieldProps) => {
     return () => document.removeEventListener('mousedown', onClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (!field.value || channels.length === 0) return;
+
+    const match = channels.find((ch) => ch.id === field.value);
+    if (match) setSelected(match);
+  }, [field.value, channels]);
+
   const filtered = query.trim()
     ? channels.filter((ch) =>
         ch.name.toLowerCase().includes(query.toLowerCase()),
