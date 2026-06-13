@@ -18,6 +18,7 @@ export enum DiscordQueryKey {
   GuildNotifications = 'guild-notifications',
   AllNotifications   = 'all-notifications',
   GuildRoles         = 'discord-guild-roles',
+  GuildChannels      = 'discord-guild-channels',
   GuildInfo          = 'discord-guild-info',
 }
 

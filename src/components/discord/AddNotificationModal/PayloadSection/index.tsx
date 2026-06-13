@@ -4,8 +4,8 @@ import { useController, useFieldArray, useFormContext } from 'react-hook-form';
 import { Path } from 'react-hook-form';
 import { LuPlus, LuTrash2 } from 'react-icons/lu';
 import FormInput from '@/components/ui/FormInput';
-import FormTextarea from '@/components/ui/FormTextarea';
 import RoleMentionPicker from '../RoleMentionPicker';
+import MentionEditor from './MentionEditor';
 import type { TAddNotificationForm } from '../add-notification.scheme';
 import styles from './styles.module.scss';
 
@@ -66,13 +66,14 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
 
       {guildId && <RoleMentionPicker guildId={guildId} />}
 
-      <FormTextarea<TAddNotificationForm>
+      <MentionEditor
         name="content"
         label="Content"
         placeholder="Message text…"
-        hint="Plain text message, max 2000 characters."
+        hint="Plain text message, max 2000 characters. Role and channel mentions are highlighted."
         rows={3}
         maxLength={2000}
+        guildId={guildId}
         hideErrorMessage
       />
 
@@ -116,12 +117,14 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
             <ColorField />
           </div>
 
-          <FormTextarea<TAddNotificationForm>
+          <MentionEditor
             name="embedDescription"
             label="Description"
             placeholder="Embed description"
+            hint="Role and channel mentions are highlighted."
             rows={3}
             maxLength={4096}
+            guildId={guildId}
             hideErrorMessage
           />
 
