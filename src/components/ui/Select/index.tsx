@@ -81,7 +81,7 @@ const Select = <O extends ISelectOption<string, string>>({
         <div
           className={cn(
             styles['controller-select'],
-            (hasValue || touched) && !hasError && styles['controller-select__touched'],
+            touched && !hasError && styles['controller-select__touched'],
             hasError && styles['controller-select__error'],
             disabled && styles['controller-select__disabled']
           )}
