@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { ISelectOption, SelectContext } from './context';
 import { ISelectProps } from './Select';
@@ -9,8 +9,12 @@ import SelectArea from './components/SelectArea';
 import SelectOption from './components/SelectOption';
 import SelectTrigger from './components/SelectTrigger';
 import SelectedOption from './components/SelectedOption';
+import SelectSearch from './components/SelectSearch';
 
 import styles from './styles.module.scss';
+
+const defaultFilterOption = <O extends ISelectOption<string, string>>(option: O, search: string) =>
+  String(option.label).toLowerCase().includes(search.toLowerCase());
 
 const Select = <O extends ISelectOption<string, string>>({
   value,
@@ -27,30 +31,43 @@ const Select = <O extends ISelectOption<string, string>>({
   children,
   hideOptionalFlag,
   disabled,
+  searchable,
+  filterOption = defaultFilterOption,
 }: ISelectProps<O>) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState('');
   const ref = useRef<HTMLDivElement>(null);
   const hasValue = Boolean(value);
   const selectedOption = options.find((o) => o.value === value);
   const hasError = Boolean(error);
+  const visibleOptions = searchable && search ? options.filter((o) => filterOption(o, search)) : options;
 
-  useOnClickOutside(ref, () => setIsOpen(false));
+  const close = () => setIsOpen(false);
+
+  useOnClickOutside(ref, close);
+
+  useEffect(() => {
+    if (!isOpen) setSearch('');
+  }, [isOpen]);
 
   return (
     <SelectContext.Provider
       value={{
-        options,
+        options: visibleOptions,
         value,
         selectedOption,
         onChange: (v) => {
           onChange(v);
-          setIsOpen(false);
+          close();
         },
         isOpen,
         toggle: () => setIsOpen((prev) => !prev),
-        close: () => setIsOpen(false),
+        close,
         showError: hasError,
         showTouched: Boolean(touched),
+        searchable: Boolean(searchable),
+        search,
+        setSearch,
       }}
     >
       <div className={cn(styles.controller, className)} ref={ref}>
@@ -90,5 +107,6 @@ Select.Option = SelectOption;
 Select.Selected = SelectedOption;
 Select.Area = SelectArea;
 Select.Trigger = SelectTrigger;
+Select.Search = SelectSearch;
 
 export default Select;

@@ -15,6 +15,9 @@ export interface ISelectContext<O extends ISelectOption<T, K>, T = string, K = s
   close: () => void;
   showError: boolean;
   showTouched: boolean;
+  searchable: boolean;
+  search: string;
+  setSearch: (value: string) => void;
 }
 
 export const SelectContext = createContext<ISelectContext<ISelectOption<any, any>> | null>(null);

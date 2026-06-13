@@ -36,5 +36,6 @@ FormSelect.Option = Select.Option;
 FormSelect.Selected = Select.Selected;
 FormSelect.Area = Select.Area;
 FormSelect.Trigger = Select.Trigger;
+FormSelect.Search = Select.Search;
 
 export default FormSelect;

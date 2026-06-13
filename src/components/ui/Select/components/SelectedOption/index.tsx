@@ -13,13 +13,17 @@ const SelectedOption = <O extends ISelectOption<string, string>>({
   children,
   className,
 }: ISelectedOptionProps<O>) => {
-  const { selectedOption } = useSelectContext<O>();
+  const { selectedOption, isOpen, search, searchable } = useSelectContext<O>();
 
-  if (!selectedOption) return null;
+  if (!selectedOption || (isOpen && search)) return null;
 
   return (
     <span className={cn(styles['selected-item'], className)}>
-      {children(selectedOption)}
+      {
+        !(searchable && isOpen)
+        ? children(selectedOption)
+        : null
+      }
     </span>
   );
 };

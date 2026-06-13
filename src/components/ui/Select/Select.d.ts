@@ -15,4 +15,6 @@ export interface ISelectProps<O extends ISelectOption<string, string>> extends P
   required?: boolean;
   touched?: boolean;
   disabled?: boolean;
+  searchable?: boolean;
+  filterOption?: (option: O, search: string) => boolean;
 }
