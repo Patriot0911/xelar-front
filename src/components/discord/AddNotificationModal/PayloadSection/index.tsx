@@ -83,6 +83,7 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
             name="username"
             label="Username Override"
             placeholder="Custom username"
+            hideOptionalFlag
             hint="Overrides the default webhook name."
             hideErrorMessage
           />
@@ -91,6 +92,7 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
             label="Avatar URL"
             type="url"
             placeholder="https://…"
+            hideOptionalFlag
             hint="Overrides the default webhook avatar."
             hideErrorMessage
           />
@@ -112,6 +114,7 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
               label="Embed title"
               placeholder="Embed title"
               maxLength={256}
+              hideOptionalFlag
               hideErrorMessage
             />
             <ColorField />
@@ -134,6 +137,7 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
             type="url"
             placeholder="https://…"
             hint="Makes the embed title a clickable link."
+            hideOptionalFlag
             hideErrorMessage
           />
 
@@ -144,6 +148,7 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
               type="url"
               placeholder="https://…"
               hint="Small image in the top-right corner."
+              hideOptionalFlag
               hideErrorMessage
             />
             <FormInput<TAddNotificationForm>
@@ -152,6 +157,7 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
               type="url"
               placeholder="https://…"
               hint="Large image at the bottom of the embed."
+              hideOptionalFlag
               hideErrorMessage
             />
           </div>
@@ -161,6 +167,7 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
             label="Footer"
             placeholder="Footer text"
             maxLength={2048}
+            hideOptionalFlag
             hideErrorMessage
           />
 
@@ -187,6 +194,7 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
                     label="Name"
                     placeholder="Field name"
                     maxLength={256}
+                    hideOptionalFlag
                     hideErrorMessage
                   />
                   <FormInput<TAddNotificationForm>
@@ -194,6 +202,7 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
                     label="Value"
                     placeholder="Field value"
                     maxLength={1024}
+                    hideOptionalFlag
                     hideErrorMessage
                   />
                 </div>

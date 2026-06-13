@@ -23,7 +23,7 @@ const Input = ({
   return (
     <div className={styles.controller}>
       {
-        (!!label && !hideOptionalFlag) && (
+        (!!label || !hideOptionalFlag) && (
           <div className={styles['label-wrapper']}>
             {label && (<label htmlFor={inputId}>{label}</label>)}
             {(!props.required && !hideOptionalFlag) && (
