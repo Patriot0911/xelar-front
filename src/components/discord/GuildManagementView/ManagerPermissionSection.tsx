@@ -2,24 +2,23 @@
 
 import { useEffect, useState } from 'react';
 import useDiscordGuildInfoQuery from '@/hooks/queries/discord/useDiscordGuildInfoQuery';
-import useDiscordGuildRolesQuery from '@/hooks/queries/discord/useDiscordGuildRolesQuery';
-import useSetManagerRoleMutation from '@/hooks/mutations/discord/useSetManagerRoleMutation';
+import useSetManagerPermissionMutation from '@/hooks/mutations/discord/useSetManagerPermissionMutation';
+import { MANAGER_PERMISSION_OPTIONS } from '@/lib/constants/discord-manager-permissions';
 import styles from './styles.module.scss';
 
 interface IProps {
   guildId: string;
 }
 
-const ManagerRoleSection = ({ guildId }: IProps) => {
-  const { data: info, isLoading: infoLoading }   = useDiscordGuildInfoQuery(guildId);
-  const { data: roles, isLoading: rolesLoading }  = useDiscordGuildRolesQuery(guildId);
-  const mutation = useSetManagerRoleMutation();
+const ManagerPermissionSection = ({ guildId }: IProps) => {
+  const { data: info, isLoading: infoLoading } = useDiscordGuildInfoQuery(guildId);
+  const mutation = useSetManagerPermissionMutation();
 
   const [selected, setSelected] = useState<string>('');
 
   useEffect(() => {
     if (info !== undefined) {
-      setSelected(info.managerRoleId ?? '');
+      setSelected(info.managerPermission ?? '');
     }
   }, [info]);
 
@@ -30,11 +29,11 @@ const ManagerRoleSection = ({ guildId }: IProps) => {
     }
   }, [mutation.isSuccess]);
 
-  const isLoading = infoLoading || rolesLoading;
+  const isLoading = infoLoading;
   const isPending = mutation.isPending;
 
   const handleSave = () => {
-    mutation.mutate({ guildId, roleId: selected || null });
+    mutation.mutate({ guildId, permission: selected || null });
   };
 
   return (
@@ -43,24 +42,24 @@ const ManagerRoleSection = ({ guildId }: IProps) => {
         <h2 className={styles.sectionTitle}>Access Control</h2>
         <p className={styles.sectionSub}>
           By default only Discord server Administrators can manage notifications for this server.
-          You can optionally grant access to members with a specific role.
+          You can optionally grant access to members with a specific permission.
         </p>
       </div>
 
       <div className={styles.card}>
         <div className={styles.roleRow}>
           <div className={styles.selectWrapper}>
-            <span className={styles.label}>Manager Role</span>
+            <span className={styles.label}>Manager Permission</span>
             <select
               className={styles.select}
               value={selected}
               onChange={(e) => setSelected(e.target.value)}
               disabled={isLoading || isPending}
             >
-              <option value="">No role — Admins only</option>
-              {(roles ?? []).map((role) => (
-                <option key={role.id} value={role.id}>
-                  {role.name}
+              <option value="">No permission — Admins only</option>
+              {MANAGER_PERMISSION_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </select>
@@ -80,11 +79,11 @@ const ManagerRoleSection = ({ guildId }: IProps) => {
         )}
 
         <p className={styles.hint}>
-          Members with this role will be able to add and manage notifications for this server.
+          Members with this permission will be able to add and manage notifications for this server.
         </p>
       </div>
     </section>
   );
 };
 
-export default ManagerRoleSection;
+export default ManagerPermissionSection;

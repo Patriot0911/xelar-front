@@ -31,13 +31,13 @@ interface IGuildNotificationsViewProps {
 }
 
 const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
-  const [activeTab,    setActiveTab]    = useState<Tab>('bot');
-  const [modalOpen,    setModalOpen]    = useState(false);
-  const [editTarget,   setEditTarget]   = useState<EditTarget>(null);
+  const [activeTab, setActiveTab]    = useState<Tab>('bot');
+  const [modalOpen, setModalOpen]    = useState(false);
+  const [editTarget, setEditTarget]   = useState<EditTarget>(null);
   const [deleteTarget, setDeleteTarget] = useState<DeleteTarget>(null);
 
   const { data, isLoading } = useGuildNotificationsQuery(guildId);
-  const deleteBot     = useDeleteDiscordNotificationMutation();
+  const deleteBot = useDeleteDiscordNotificationMutation();
   const deleteWebhook = useDeleteWebhookNotificationMutation();
 
   const handleConfirmDelete = () => {

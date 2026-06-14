@@ -4,16 +4,12 @@ import { useState } from 'react';
 import GuildInfoPanel from './GuildInfoPanel';
 import GuildNotificationsView from '@/components/discord/GuildNotificationsView';
 import GuildLogsSection from '@/components/discord/GuildManagementView/GuildLogsSection';
+import { IGuildDashboardViewProps, TGuildDashboardTab } from './GuildDashboardView';
+
 import styles from './styles.module.scss';
 
-type Tab = 'notifications' | 'logs';
-
-interface IGuildDashboardViewProps {
-  guildId: string;
-}
-
 const GuildDashboardView = ({ guildId }: IGuildDashboardViewProps) => {
-  const [activeTab, setActiveTab] = useState<Tab>('notifications');
+  const [activeTab, setActiveTab] = useState<TGuildDashboardTab>('notifications');
 
   return (
     <div className={styles.layout}>

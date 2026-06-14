@@ -1,6 +1,6 @@
 'use client';
 
-import ManagerRoleSection from './ManagerRoleSection';
+import ManagerPermissionSection from './ManagerPermissionSection';
 import GuildLogsSection from './GuildLogsSection';
 import styles from './styles.module.scss';
 
@@ -11,7 +11,7 @@ interface IProps {
 const GuildManagementView = ({ guildId }: IProps) => {
   return (
     <div className={styles.root}>
-      <ManagerRoleSection guildId={guildId} />
+      <ManagerPermissionSection guildId={guildId} />
       <GuildLogsSection guildId={guildId} />
     </div>
   );

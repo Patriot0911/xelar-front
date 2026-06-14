@@ -4,6 +4,7 @@ import type { IDiscordBotNotificationModel, IStreamerRef } from '@/lib/models/di
 import Table from '@/components/ui/Table';
 import avatarStyles from './StreamerCell.module.scss';
 import styles from './styles.module.scss';
+import useDiscordGuildChannelsQuery from '@/hooks/queries/discord/useDiscordGuildChannelsQuery';
 
 const StreamerCell = ({ streamer }: { streamer?: IStreamerRef }) => {
   if (!streamer) return <span>—</span>;
@@ -27,6 +28,17 @@ const StreamerCell = ({ streamer }: { streamer?: IStreamerRef }) => {
   );
 };
 
+const ChannelCell = ({ channelId, guildId }: { guildId: string; channelId: string; }) => {
+  const { data, isLoading } = useDiscordGuildChannelsQuery(guildId);
+  console.log({ data })
+  const channel = data?.find(
+    (c) => c.id === channelId
+  )?.name ?? 'NaN';
+  return (
+    <span className={avatarStyles.name}>{channel}</span>
+  );
+};
+
 const columns: ITableColumn<IDiscordBotNotificationModel>[] = [
   {
     key: 'streamer',
@@ -39,9 +51,10 @@ const columns: ITableColumn<IDiscordBotNotificationModel>[] = [
     render: (row) => row.streamerEvent?.event ?? '—',
   },
   {
-    key: 'channelId',
-    title: 'Channel ID',
+    key: 'channel',
+    title: 'Channel',
     dataBind: 'channelId',
+    render: (row) => <ChannelCell channelId={row.channelId} guildId={(row as any).discordGuild.guildId} />
   },
   {
     key: 'status',

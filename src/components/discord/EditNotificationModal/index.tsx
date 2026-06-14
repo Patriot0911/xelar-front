@@ -13,10 +13,12 @@ import PayloadSection from '../AddNotificationModal/PayloadSection';
 import { editNotificationSchema, TEditNotificationForm } from './edit-notification.scheme';
 import { EDIT_DEFAULT_VALUES, parsePayloadToFormValues } from './payload-parse';
 import type { IEditNotificationModalProps } from './EditNotificationModal';
+import ChannelSearchField from '../AddNotificationModal/ChannelSearchField';
+
 import styles from './styles.module.scss';
 
 const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }: IEditNotificationModalProps) => {
-  const botMutation     = useUpdateDiscordNotificationMutation();
+  const botMutation = useUpdateDiscordNotificationMutation();
   const webhookMutation = useUpdateWebhookNotificationMutation();
 
   const buildDefaults = (): TEditNotificationForm => ({
@@ -60,15 +62,15 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
 
     if (data.embedEnabled) {
       const embed: Record<string, unknown> = {};
-      if (data.embedTitle?.trim())       embed.title       = data.embedTitle.trim();
+      if (data.embedTitle?.trim()) embed.title = data.embedTitle.trim();
       if (data.embedDescription?.trim()) embed.description = data.embedDescription.trim();
       if (data.embedColorEnabled && data.embedColor) {
         embed.color = parseInt(data.embedColor.replace('#', ''), 16);
       }
-      if (data.embedUrl?.trim())          embed.url       = data.embedUrl.trim();
+      if (data.embedUrl?.trim()) embed.url = data.embedUrl.trim();
       if (data.embedThumbnailUrl?.trim()) embed.thumbnail = { url: data.embedThumbnailUrl.trim() };
-      if (data.embedImageUrl?.trim())     embed.image     = { url: data.embedImageUrl.trim() };
-      if (data.embedFooterText?.trim())   embed.footer    = { text: data.embedFooterText.trim() };
+      if (data.embedImageUrl?.trim()) embed.image = { url: data.embedImageUrl.trim() };
+      if (data.embedFooterText?.trim()) embed.footer = { text: data.embedFooterText.trim() };
       if (data.embedFields.length > 0) {
         embed.fields = data.embedFields.map((f) => ({ name: f.name, value: f.value, inline: f.inline }));
       }
@@ -111,12 +113,8 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
         <Modal.ModalBody className={styles.scrollableBody}>
 
           {type === 'bot' ? (
-            <FormInput<TEditNotificationForm>
-              name="channelId"
-              label="Channel ID"
-              placeholder="Channel ID"
-              hint="Leave blank to keep the current channel."
-              hideErrorMessage
+            <ChannelSearchField
+              guildId={guildId}
             />
           ) : (
             <FormInput<TEditNotificationForm>

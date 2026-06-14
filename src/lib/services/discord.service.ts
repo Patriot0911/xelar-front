@@ -18,6 +18,7 @@ export enum DiscordQueryKey {
   GuildNotifications = 'guild-notifications',
   AllNotifications   = 'all-notifications',
   GuildRoles         = 'discord-guild-roles',
+  GuildChannels      = 'discord-guild-channels',
   GuildInfo          = 'discord-guild-info',
 }
 
@@ -70,8 +71,8 @@ class DiscordService {
     return apiClient.get(`/api/discord/guilds/${guildId}`);
   }
 
-  static setManagerRole(guildId: string, roleId: string | null): Promise<{ success: boolean }> {
-    return apiClient.patch(`/api/discord/guilds/${guildId}/manager-role`, { roleId });
+  static setManagerPermission(guildId: string, permission: string | null): Promise<{ success: boolean }> {
+    return apiClient.patch(`/api/discord/guilds/${guildId}/manager-permission`, { permission });
   }
 }
 

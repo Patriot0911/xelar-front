@@ -1,76 +1,32 @@
 import { FieldValues, useController, useFormContext } from 'react-hook-form';
 import { IFormInputProps } from './FormInput';
-import { cn } from '@/lib/utils';
-
-import styles from './styles.module.scss';
+import Input from '@/components/ui/Input';
 
 const FormInput = <T extends FieldValues>({
-  label,
   name,
-  className,
-  hint,
-  icon,
-  onIconClick,
   hideErrorMessage,
   ...props
 }: IFormInputProps<T>) => {
-  const { control, formState: { isSubmitted, } } = useFormContext<T>();
+  const { control, formState: { isSubmitted } } = useFormContext<T>();
   const {
     field,
-    fieldState: { error, isTouched, isDirty, },
-  } = useController({ name, control, });
+    fieldState: { error, isTouched, isDirty },
+  } = useController({ name, control });
 
   const hasValue = Boolean(field.value);
-  const showTouched = (isDirty || isTouched) && !error && hasValue;
+  const touched = (isDirty || isTouched) && !error && hasValue;
   const showError = error && (isSubmitted || isDirty || hasValue);
 
   return (
-    <div className={styles['controller']}>
-      <div className={styles['label-wrapper']}>
-        <label htmlFor={name}>{label}</label>
-        {!props.required && (
-          <span className={styles['flag-optional']}>Optional</span>
-        )}
-      </div>
-      <div
-        className={
-          cn(
-            className,
-            styles['controller-input'],
-            showTouched && styles['controller-input__touched'],
-            showError && styles['controller-input__error'],
-            props.disabled && styles['controller-input__disabled'],
-          )
-        }
-      >
-        <input
-          {...field}
-          {...props}
-          id={name}
-          aria-invalid={!!error}
-          aria-describedby={`${name}-error`}
-          value={field.value ?? ''}
-        />
-        {icon && (
-          <button
-            type={'button'}
-            className={styles['icon-button']}
-            onClick={onIconClick}
-          >
-            {icon}
-          </button>
-        )}
-      </div>
-      {hint && (<span className={styles.hint}>{hint}</span>)}
-
-      {!hideErrorMessage && (
-        <span className={styles['controller-error']} id={`${name}-error`}>
-          {error?.message}
-        </span>
-      )}
-
-    </div>
+    <Input
+      {...props}
+      {...field}
+      value={field.value ?? ''}
+      touched={touched}
+      error={showError ? error.message : undefined}
+      hideErrorMessage={hideErrorMessage}
+    />
   );
-}
+};
 
 export default FormInput;

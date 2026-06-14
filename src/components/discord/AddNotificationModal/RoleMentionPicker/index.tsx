@@ -80,9 +80,9 @@ const RoleMentionPicker = ({ guildId }: IRoleMentionPickerProps) => {
               );
             })
           )}
-          <p className={styles.hint}>Click a role to copy its mention syntax to clipboard.</p>
         </div>
       )}
+      <p className={styles.hint}>Click a role to copy its mention syntax to clipboard.</p>
     </div>
   );
 };
