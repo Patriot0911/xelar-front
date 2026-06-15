@@ -10,41 +10,36 @@ import {
 
 const RolesService = {
   getRoles: async (params?: IRolesListParams): Promise<IRolesListResponse> => {
-    const res = await apiClient.get<never, IGenericResponseModel<IRolesListResponse>>(
+    return await apiClient.get(
       '/api/roles',
       { params },
     );
-    return res.data;
   },
 
   getRoleById: async (id: string): Promise<IRoleItem> => {
-    const res = await apiClient.get<never, IGenericResponseModel<IRoleItem>>(
+    return await apiClient.get(
       `/api/roles/${id}`,
     );
-    return res.data;
   },
 
   createRole: async (payload: ICreateRolePayload): Promise<IRoleItem> => {
-    const res = await apiClient.post<never, IGenericResponseModel<IRoleItem>>(
+    return await apiClient.post(
       '/api/roles',
       payload,
     );
-    return res.data;
   },
 
   editRole: async (id: string, payload: IEditRolePayload): Promise<boolean> => {
-    const res = await apiClient.put<never, IGenericResponseModel<boolean>>(
+    return await apiClient.put(
       `/api/roles/${id}`,
       payload,
     );
-    return res.data;
   },
 
   deleteRole: async (id: string): Promise<IRoleItem> => {
-    const res = await apiClient.delete<never, IGenericResponseModel<IRoleItem>>(
+    return await apiClient.delete(
       `/api/roles/${id}`,
     );
-    return res.data;
   },
 };
 

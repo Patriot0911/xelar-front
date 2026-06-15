@@ -7,6 +7,11 @@ export enum TwitchStreamerEvent {
   CHANNEL_CHEER     = 'channel.cheer',
 }
 
+// Events that don't require the streamer to have authorized personal (free) subscriptions.
+export const PUBLIC_TWITCH_EVENTS: TwitchStreamerEvent[] = [
+  TwitchStreamerEvent.STREAM_ONLINE,
+];
+
 export const TWITCH_EVENT_LABELS: Record<TwitchStreamerEvent, string> = {
   [TwitchStreamerEvent.STREAM_ONLINE]:     'Stream Online',
   [TwitchStreamerEvent.STREAM_OFFLINE]:    'Stream Offline',

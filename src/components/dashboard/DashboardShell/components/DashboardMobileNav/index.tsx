@@ -4,30 +4,18 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  LuBell,
-  LuEllipsis,
   LuMenu,
   LuX,
 } from 'react-icons/lu';
-import useMeQuery from '@/hooks/queries/auth/useMeQuery';
-import { NAV_MAIN, NAV_CONFIGURE, isActive } from '../../../nav-data';
+import { isActive, NAV_LIST } from '../../../nav-data';
 import styles from './styles.module.scss';
 import DashboardUserCard from '../../../DashboardUserCard';
-import { useFilteredNavItems } from '@/hooks/shared/useFilteredNavItems';
+import { useFilteredNavSections } from '@/hooks/shared/useFilteredNavSections';
 
 const DashboardMobileNav = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const pathname = usePathname();
-  const { data: meData } = useMeQuery();
-  const displayName = meData?.displayName ?? 'User';
-  const mainItems = useFilteredNavItems(NAV_MAIN);
-  const configureItems = useFilteredNavItems(NAV_CONFIGURE);
-
-  // 4 primary destinations for the bottom tab bar
-  const TAB_ITEMS = mainItems.slice(0, 4).map((item) => ({
-    ...item,
-    shortLabel: item.label === 'Overview' ? 'Home' : item.label,
-  }));
+  const filteredSections = useFilteredNavSections(NAV_LIST);
 
   const closeDrawer = () => setDrawerOpen(false);
 
@@ -51,33 +39,9 @@ const DashboardMobileNav = () => {
         </div>
 
         <button className={styles.bellBtn} type="button" aria-label="Notifications">
-          <LuBell size={18} />
-          <span className={styles.bellDot} aria-hidden="true" />
         </button>
       </div>
 
-      {/* ── Bottom tab bar — visible < 640px ────────────────────── */}
-      <nav className={styles.tabbar} aria-label="Mobile navigation">
-        {TAB_ITEMS.map(({ href, icon: Icon, shortLabel }) => (
-          <Link
-            key={href}
-            href={href}
-            className={`${styles.tab} ${isActive(pathname, href) ? styles.tabActive : ''}`}
-          >
-            <Icon size={20} />
-            <span className={styles.tabLabel}>{shortLabel}</span>
-          </Link>
-        ))}
-        <button
-          className={styles.tab}
-          type="button"
-          aria-label="More navigation options"
-          onClick={() => setDrawerOpen(true)}
-        >
-          <LuEllipsis size={20} />
-          <span className={styles.tabLabel}>More</span>
-        </button>
-      </nav>
 
       {/* ── Veil backdrop ────────────────────────────────────────── */}
       <div
@@ -106,38 +70,24 @@ const DashboardMobileNav = () => {
           <span className={styles.wmX}>X</span>elar
         </span>
 
-        {/* Main nav */}
-        {mainItems.length > 0 && (
+        {filteredSections.length > 0 && (
           <nav className={styles.navSection}>
             <p className={styles.navGroupHead}>Main</p>
-            {mainItems.map(({ label, href, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`${styles.navItem} ${isActive(pathname, href) ? styles.navActive : ''}`}
-                onClick={closeDrawer}
-              >
-                <Icon size={16} />
-                {label}
-              </Link>
-            ))}
-          </nav>
-        )}
-
-        {/* Configure nav */}
-        {configureItems.length > 0 && (
-          <nav className={styles.navSection}>
-            <p className={styles.navGroupHead}>Configure</p>
-            {configureItems.map(({ label, href, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`${styles.navItem} ${isActive(pathname, href) ? styles.navActive : ''}`}
-                onClick={closeDrawer}
-              >
-                <Icon size={16} />
-                {label}
-              </Link>
+            {filteredSections.map((section) => (
+              <div key={section.label}>
+                <p className={styles.navGroupHead}>{section.label}</p>
+                {section.items.map(({ label, href, icon: Icon }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={`${styles.navItem} ${isActive(pathname, href) ? styles.navActive : ''}`}
+                    onClick={closeDrawer}
+                  >
+                    <Icon size={16} />
+                    {label}
+                  </Link>
+                ))}
+              </div>
             ))}
           </nav>
         )}
