@@ -44,7 +44,7 @@ const WeeklyStatsChart = () => {
         {isLoading ? (
           <div className={styles.placeholder}>Loading…</div>
         ) : (
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height={260}>
             <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
               <defs>
                 <linearGradient id="totalGradient" x1="0" y1="0" x2="0" y2="1">
