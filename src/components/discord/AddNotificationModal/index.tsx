@@ -13,9 +13,12 @@ import {
   TwitchStreamerEvent,
   TWITCH_EVENT_LABELS,
   NotificationCostType,
+  COST_TYPE_LABELS,
+  PUBLIC_TWITCH_EVENTS,
 } from '@/lib/constants/notifications';
 import useCreateDiscordNotificationMutation from '@/hooks/mutations/discord/useCreateDiscordNotificationMutation';
 import useCreateWebhookNotificationMutation from '@/hooks/mutations/discord/useCreateWebhookNotificationMutation';
+import useAllowPersonalSubscriptionsQuery from '@/hooks/queries/twitch/useAllowPersonalSubscriptionsQuery';
 import { addNotificationSchema, TAddNotificationForm } from './add-notification.scheme';
 import StreamerSearchField from './StreamerSearchField';
 import ChannelSearchField from './ChannelSearchField';
@@ -23,15 +26,29 @@ import PayloadSection from './PayloadSection';
 import type { IAddNotificationModalProps } from './AddNotificationModal';
 import styles from './styles.module.scss';
 
-const EVENT_OPTIONS: ISelectOption[] = Object.values(TwitchStreamerEvent).map((v) => ({
+const ALL_EVENT_OPTIONS: ISelectOption[] = Object.values(TwitchStreamerEvent).map((v) => ({
   value: v,
   label: TWITCH_EVENT_LABELS[v],
 }));
+
+const PUBLIC_EVENT_OPTIONS: ISelectOption[] = ALL_EVENT_OPTIONS.filter(
+  (option) => PUBLIC_TWITCH_EVENTS.includes(option.value as TwitchStreamerEvent)
+);
+
+const ALL_COST_TYPE_OPTIONS: ISelectOption[] = [NotificationCostType.Personal, NotificationCostType.Credit].map((v) => ({
+  value: v,
+  label: COST_TYPE_LABELS[v],
+}));
+
+const PERSONAL_COST_TYPE_OPTIONS: ISelectOption[] = ALL_COST_TYPE_OPTIONS.filter(
+  (option) => option.value === NotificationCostType.Personal
+);
 
 const DEFAULT_VALUES: TAddNotificationForm = {
   type:              'bot',
   broadcasterId:     '',
   event:             TwitchStreamerEvent.STREAM_ONLINE,
+  costType:          NotificationCostType.Personal,
   channelId:         '',
   webhookUrl:        '',
   content:           '',
@@ -94,9 +111,16 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
     defaultValues: DEFAULT_VALUES,
   });
 
-  const activeType = methods.watch('type');
+  const activeType    = methods.watch('type');
+  const broadcasterId = methods.watch('broadcasterId');
   const isPending  = botMutation.isPending || webhookMutation.isPending;
   const isSuccess  = botMutation.isSuccess  || webhookMutation.isSuccess;
+
+  const { data: personalSubscriptionsStatus } = useAllowPersonalSubscriptionsQuery(broadcasterId);
+  const allowsPersonalSubscriptions = !!personalSubscriptionsStatus?.allowed;
+
+  const eventOptions    = allowsPersonalSubscriptions ? ALL_EVENT_OPTIONS : PUBLIC_EVENT_OPTIONS;
+  const costTypeOptions = allowsPersonalSubscriptions ? ALL_COST_TYPE_OPTIONS : PERSONAL_COST_TYPE_OPTIONS;
 
   useEffect(() => {
     if (!isOpen) {
@@ -110,13 +134,26 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
     if (isSuccess) onClose();
   }, [isSuccess]);
 
+  useEffect(() => {
+    if (allowsPersonalSubscriptions) return;
+
+    const currentEvent = methods.getValues('event');
+    if (!PUBLIC_TWITCH_EVENTS.includes(currentEvent)) {
+      methods.setValue('event', TwitchStreamerEvent.STREAM_ONLINE, { shouldValidate: true });
+    }
+
+    if (methods.getValues('costType') === NotificationCostType.Credit) {
+      methods.setValue('costType', NotificationCostType.Personal, { shouldValidate: true });
+    }
+  }, [allowsPersonalSubscriptions]);
+
   const handleSubmit = (data: TAddNotificationForm) => {
     const payload = buildPayload(data);
     if (data.type === 'bot') {
       botMutation.mutate({
         broadcasterId: data.broadcasterId,
         event:         data.event,
-        costType:      NotificationCostType.Personal,
+        costType:      data.costType,
         payload,
         guildId,
         channelId:     data.channelId!,
@@ -127,7 +164,7 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
         data: {
           broadcasterId: data.broadcasterId,
           event:         data.event,
-          costType:      NotificationCostType.Personal,
+          costType:      data.costType,
           payload,
           webhookUrl:    data.webhookUrl!,
         },
@@ -176,8 +213,34 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
             label="Event"
             required
             hideErrorMessage
-            hint="The Twitch event that will trigger the notification."
-            options={EVENT_OPTIONS}
+            hint={
+              allowsPersonalSubscriptions
+                ? 'The Twitch event that will trigger the notification.'
+                : 'This streamer has not authorized private events. Only public events are available.'
+            }
+            options={eventOptions}
+          >
+            <FormSelect.Selected>
+              {(item) => <span>{item.label}</span>}
+            </FormSelect.Selected>
+            <FormSelect.Area>
+              <FormSelect.Option>
+                {(item) => <span>{item.label}</span>}
+              </FormSelect.Option>
+            </FormSelect.Area>
+          </FormSelect>
+
+          <FormSelect<TAddNotificationForm, ISelectOption>
+            name="costType"
+            label="Cost Type"
+            required
+            hideErrorMessage
+            hint={
+              allowsPersonalSubscriptions
+                ? 'Credit notifications are free, using the streamer\'s authorized subscription.'
+                : 'This streamer has not authorized free notifications. Only personal cost is available.'
+            }
+            options={costTypeOptions}
           >
             <FormSelect.Selected>
               {(item) => <span>{item.label}</span>}

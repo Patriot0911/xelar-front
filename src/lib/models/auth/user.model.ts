@@ -4,6 +4,8 @@ export interface IUserPayloadModel {
   id: string;
   displayName: string;
   discordId?: string | null;
+  twitchLogin?: string | null;
+  allowPersonalSubscriptions: boolean;
   roles: string[];
   permissions: Permission[];
 };

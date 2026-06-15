@@ -85,6 +85,18 @@ class AuthService {
   static linkDiscord(code: string): Promise<void> {
     return apiClient.post('/api/auth/discord/link', { code });
   }
+
+  static linkTwitch(code: string): Promise<void> {
+    return apiClient.get(`/api/auth/twitch/link?code=${code}`);
+  }
+
+  static unlinkTwitch(): Promise<void> {
+    return apiClient.delete('/api/auth/twitch/unlink');
+  }
+
+  static setTwitchPersonalAuth(enabled: boolean): Promise<void> {
+    return apiClient.patch('/api/auth/twitch/authorization', { enabled });
+  }
 }
 
 export default AuthService;

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TwitchStreamerEvent } from '@/lib/constants/notifications';
+import { NotificationCostType, TwitchStreamerEvent } from '@/lib/constants/notifications';
 
 const embedFieldSchema = z.object({
   name:   z.string().min(1, 'Field name is required').max(256),
@@ -11,6 +11,7 @@ export const addNotificationSchema = z.object({
   type:        z.enum(['bot', 'webhook']),
   broadcasterId: z.string().min(1, 'Broadcaster ID is required'),
   event:       z.nativeEnum(TwitchStreamerEvent),
+  costType:    z.nativeEnum(NotificationCostType),
   channelId:   z.string().optional(),
   webhookUrl:  z.string().optional(),
   // Payload — base

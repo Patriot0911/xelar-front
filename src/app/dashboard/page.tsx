@@ -1,6 +1,7 @@
 'use client';
 
 import OverviewStats from '@/components/modules/overview/OverviewStats';
+import WeeklyStatsChart from '@/components/modules/overview/WeeklyStatsChart';
 import PageHeader from '@/components/ui/PageHeader';
 
 export default function DashboardPage() {
@@ -12,6 +13,7 @@ export default function DashboardPage() {
       />
 
       <OverviewStats />
+      <WeeklyStatsChart />
     </>
   );
 }

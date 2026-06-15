@@ -32,6 +32,10 @@ class TwitchAppService {
   static searchChannels(search: string, signal?: AbortSignal): Promise<ITwitchChannelsResponse> {
     return apiClient.get('/api/twitch/channels', { params: { search }, signal });
   }
+
+  static getAllowPersonalSubscriptions(broadcasterId: string): Promise<{ allowed: boolean }> {
+    return apiClient.get(`/api/twitch/${broadcasterId}/allow-personal-subscriptions`);
+  }
 }
 
 export default TwitchAppService;
