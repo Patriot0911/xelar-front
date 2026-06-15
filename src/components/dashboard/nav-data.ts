@@ -69,7 +69,7 @@ export const NAV_LIST: NavSection[] = [
     items: NAV_MAIN,
   },
   {
-    label: 'Notifications',
+    label: 'Media',
     items: NAV_NOTIFICATIONS,
   },
   {
