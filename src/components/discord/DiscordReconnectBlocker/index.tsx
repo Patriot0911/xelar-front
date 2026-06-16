@@ -1,6 +1,7 @@
-import Link from 'next/link';
 import { LuUnplug } from 'react-icons/lu';
 import styles from './styles.module.scss';
+
+const DISCORD_AUTH_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'}/api/auth/discord`;
 
 const DiscordReconnectBlocker = () => {
   return (
@@ -13,9 +14,11 @@ const DiscordReconnectBlocker = () => {
         <p className={styles.description}>
           Your Discord access has expired or was revoked. Reconnect your Discord account to continue.
         </p>
-        <Link href="/auth/discord" className={styles.button}>
-          Reconnect Discord
-        </Link>
+        <form method="post" action={DISCORD_AUTH_URL}>
+          <button type="submit" className={styles.button}>
+            Reconnect Discord
+          </button>
+        </form>
       </div>
     </div>
   );

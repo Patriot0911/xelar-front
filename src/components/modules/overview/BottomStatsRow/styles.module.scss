@@ -1,0 +1,27 @@
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 0;
+  margin: 0 32px 28px;
+
+  > * {
+    margin: 0 !important;
+  }
+
+  > *:first-child {
+    margin-right: 14px !important;
+  }
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+
+    > *:first-child {
+      margin-right: 0 !important;
+      margin-bottom: 14px !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    margin: 0 20px 20px;
+  }
+}

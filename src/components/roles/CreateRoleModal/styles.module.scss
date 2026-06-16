@@ -1,0 +1,29 @@
+.permsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.20);
+  border: 1px solid var(--line);
+}
+
+
+.fieldLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.fieldCount {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: none;
+  font-weight: 400;
+}

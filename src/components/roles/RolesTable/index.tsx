@@ -10,7 +10,7 @@ import TablePagination from '@/components/ui/Table/TablePagination';
 import useRolesQuery from '@/hooks/queries/roles/useRolesQuery';
 import useDeleteRoleMutation from '@/hooks/mutations/roles/useDeleteRoleMutation';
 import { ROLES_DEFAULT_PAGE_SIZE } from '@/lib/constants/roles';
-import { RoleFormModal } from '../RoleFormModal';
+import CreateRoleModal from '../CreateRoleModal';
 import { PermissionBadge } from '../PermissionBadge';
 
 import styles from './styles.module.scss';
@@ -96,10 +96,10 @@ export function RolesTable() {
 
   return (
     <>
-      <RoleFormModal
+      <CreateRoleModal
+        isOpen={isModalOpen}
         role={editingRole}
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
+        onClose={() => setIsModalOpen(false)}
       />
       <Table<IRoleListItem>
         columns={roleColumns}

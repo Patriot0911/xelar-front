@@ -1,5 +1,5 @@
 import { apiClient } from '@/lib/api-client';
-import { IDailyStatsItem, IPlatformStatsModel, IUserStatsModel } from '@/lib/models/statistics/statistics.model';
+import { IDailyStatsItem, INotificationSplitModel, IPlatformStatsModel, ITopStreamerItem, IUserStatsModel } from '@/lib/models/statistics/statistics.model';
 
 const StatisticsService = {
   getPlatformStats: async (): Promise<IPlatformStatsModel> => {
@@ -12,6 +12,14 @@ const StatisticsService = {
 
   getMyStats: async (): Promise<IUserStatsModel> => {
     return await apiClient.get('/api/statistics/me');
+  },
+
+  getTopStreamers: async (): Promise<ITopStreamerItem[]> => {
+    return await apiClient.get('/api/statistics/top-streamers');
+  },
+
+  getNotificationSplit: async (): Promise<INotificationSplitModel> => {
+    return await apiClient.get('/api/statistics/notification-split');
   },
 };
 

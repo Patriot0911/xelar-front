@@ -5,6 +5,7 @@ export interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   hint?: string;
   hideOptionalFlag?: boolean;
+  hideHintOnError?: boolean;
   icon?: ReactNode;
   onIconClick?: () => void;
   hideErrorMessage?: boolean;

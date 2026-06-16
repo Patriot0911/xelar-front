@@ -4,6 +4,7 @@ import {
   LuShieldCheck,
   LuBell,
   LuRadio,
+  LuUser,
 } from 'react-icons/lu';
 import { SiDiscord } from 'react-icons/si';
 import type { IconType } from 'react-icons';
@@ -54,6 +55,12 @@ export const NAV_CONFIGURE: NavItem[] = [
     href: '/dashboard/twitch-subscriptions',
     icon: LuRadio,
     requiredPermissions: [Permission.READ_APPS, Permission.MANAGE_APPS]
+  },
+  {
+    label: 'Users',
+    href: '/dashboard/users',
+    icon: LuUser,
+    requiredPermissions: [Permission.ADMIN]
   },
   {
     label: 'Roles',

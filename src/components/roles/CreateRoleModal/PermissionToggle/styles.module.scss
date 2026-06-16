@@ -1,0 +1,56 @@
+.permToggle {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 9px 10px;
+  border-radius: 8px;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.1s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  &.permToggleActive {
+    background: rgba(154, 107, 255, 0.08);
+  }
+}
+
+.permCheckbox {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--line-strong);
+  display: grid;
+  place-items: center;
+  color: transparent;
+  background: transparent;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  flex-shrink: 0;
+
+  &.permCheckboxChecked {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+}
+
+.permLabel {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink-0);
+  letter-spacing: -0.005em;
+}
+
+.permKey {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-3);
+  letter-spacing: 0.06em;
+}
