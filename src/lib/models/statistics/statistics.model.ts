@@ -16,3 +16,15 @@ export interface IUserStatsModel {
   notificationsSent: number;
   usedCredits: number;
 }
+
+export interface ITopStreamerItem {
+  twitchLogin: string;
+  displayName: string | null;
+  profileImageUrl: string | null;
+  notificationCount: number;
+}
+
+export interface INotificationSplitModel {
+  discord: number;
+  webhook: number;
+}
