@@ -10,6 +10,7 @@ const Input = ({
   icon,
   onIconClick,
   hideErrorMessage,
+  hideHintOnError,
   touched,
   className,
   id,
@@ -54,12 +55,22 @@ const Input = ({
           </button>
         )}
       </div>
-      {hint && <span className={styles.hint}>{hint}</span>}
-      {!hideErrorMessage && (
-        <span className={styles['controller-error']} id={inputId ? `${inputId}-error` : undefined}>
-          {error}
-        </span>
-      )}
+      <div className={styles.sub}>
+        {hint && (!hasError || !hideHintOnError) && (
+          <span className={styles.hint}>{hint}</span>
+        )}
+        {
+          (
+            !hideErrorMessage && (
+              !hideHintOnError || (hideHintOnError && hasError)
+            )
+          ) && (
+            <span className={styles['controller-error']} id={inputId ? `${inputId}-error` : undefined}>
+              {error}
+            </span>
+          )
+        }
+      </div>
     </div>
   );
 };

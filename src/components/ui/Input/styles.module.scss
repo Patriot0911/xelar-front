@@ -105,6 +105,11 @@
       }
     }
   }
+  .sub {
+    min-height: 1.125rem;
+    display: flex;
+    flex-direction: column;
+  }
   .hint {
     font-family: var(--font-body);
     font-size: 11.5px;
@@ -112,9 +117,8 @@
     line-height: 1.5;
   }
   .controller-error {
-    position: relative;
-    height: 0.8rem;
     line-height: 1rem;
+    min-height: 1rem;
     font-size: 0.75rem;
     color: var(--status-error);
     font-weight: 600;
