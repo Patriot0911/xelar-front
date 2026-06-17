@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { LuShieldCheck, LuPencil, LuTrash2 } from 'react-icons/lu';
 import { IRoleListItem } from '@/lib/models/roles/role.model';
-import { Permission } from '@/lib/constants/permissions';
+import { Permission, PERMISSION_LABELS } from '@/lib/constants/permissions';
 import { ITableAction, ITableColumn } from '@/components/ui/Table/Table';
 import Table from '@/components/ui/Table';
 import TablePagination from '@/components/ui/Table/TablePagination';
@@ -14,6 +14,7 @@ import CreateRoleModal from '../CreateRoleModal';
 import { PermissionBadge } from '../PermissionBadge';
 
 import styles from './styles.module.scss';
+import { FaUserTie } from 'react-icons/fa';
 
 const MAX_VISIBLE_PERMISSIONS = 3;
 
@@ -40,7 +41,11 @@ const roleColumns: ITableColumn<IRoleListItem>[] = [
     render: (role) => (
       <div className={styles.nameCell}>
         <div className={styles.nameMark}>
-          <LuShieldCheck size={15} />
+          {
+            role.permissions.includes(Permission.ADMIN)
+            ? <LuShieldCheck size={15} />
+            : <FaUserTie size={15} />
+          }
         </div>
         <span className={styles.nameText}>{role.name}</span>
       </div>

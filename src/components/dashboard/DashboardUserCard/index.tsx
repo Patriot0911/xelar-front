@@ -23,12 +23,11 @@ const DashboardUserCard = () => {
       >
         <div className={styles.userAv}>
           {getInitials(displayName)}
-          <span className={styles.userOnline} aria-hidden="true" />
         </div>
         <div className={styles.userMeta}>
           <span className={styles.userName}>{displayName}</span>
-          <span className={styles.userSub}>
-            {meData?.discordId ? `discord · ${meData.discordId}` : 'workspace'}
+          <span className={styles['user-balance-wrapepr']}>
+            {(meData?.balance ?? 0).toLocaleString()} credits
           </span>
         </div>
       </div>

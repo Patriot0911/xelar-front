@@ -13,12 +13,11 @@ const ProfileUserInfo = ({ meData }: IProfileUserInfoProps) => {
     <div className={styles.userInfo}>
       <div className={styles.avatar}>
         {getInitials(displayName)}
-        <span className={styles.online} aria-hidden="true" />
       </div>
       <div className={styles.meta}>
         <span className={styles.name}>{displayName}</span>
-        <span className={styles.sub}>
-          {meData?.discordId ? `discord · ${meData.discordId}` : 'workspace'}
+        <span className={styles['user-balance-wrapepr']}>
+          {(meData?.balance ?? 0).toLocaleString()} credits
         </span>
       </div>
     </div>
