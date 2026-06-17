@@ -11,7 +11,7 @@ interface ISetManagerPermissionVars {
 const useSetManagerPermissionMutation = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<void, IGenericErrorResponseModel, ISetManagerPermissionVars>({
+  return useMutation<{ success: boolean; }, IGenericErrorResponseModel, ISetManagerPermissionVars>({
     mutationFn: ({ guildId, permission }: ISetManagerPermissionVars) =>
       DiscordService.setManagerPermission(guildId, permission),
     onSuccess: (_, { guildId }) => {
