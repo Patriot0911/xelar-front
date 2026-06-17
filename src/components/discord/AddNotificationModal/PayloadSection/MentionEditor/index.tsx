@@ -40,15 +40,23 @@ const MentionEditor = ({
   const { data: roles = [] }    = useDiscordGuildRolesQuery(guildId);
   const { data: channels = [] } = useDiscordGuildChannelsQuery(guildId);
 
-  const editorRef    = useRef<HTMLDivElement>(null);
-  const lastValueRef = useRef<string>('');
+  const editorRef       = useRef<HTMLDivElement>(null);
+  const lastValueRef    = useRef<string>('');
+  const lastRolesLenRef = useRef(-1);
+  const lastChansLenRef = useRef(-1);
 
   const value = (field.value as string | undefined) ?? '';
 
   useEffect(() => {
     const root = editorRef.current;
     if (!root) return;
-    if (value === lastValueRef.current) return;
+
+    const rolesChanged = roles.length    !== lastRolesLenRef.current;
+    const chansChanged = channels.length !== lastChansLenRef.current;
+    if (value === lastValueRef.current && !rolesChanged && !chansChanged) return;
+
+    lastRolesLenRef.current = roles.length;
+    lastChansLenRef.current = channels.length;
 
     const caret = root === document.activeElement ? getCaretOffset(root) : null;
     buildContent(root, value, roles, channels);

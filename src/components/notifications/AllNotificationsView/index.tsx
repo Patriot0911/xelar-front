@@ -82,7 +82,7 @@ const AllNotificationsView = () => {
         <EditNotificationModal
           type={editTarget.type}
           notification={editTarget.item as any}
-          guildId={editTarget.type === 'bot' ? editTarget.item.guildId : ''}
+          guildId={editTarget.type === 'bot' ? (editTarget.item as any).guild.discordGuildId : ''}
           isOpen={!!editTarget}
           onClose={() => setEditTarget(null)}
         />
