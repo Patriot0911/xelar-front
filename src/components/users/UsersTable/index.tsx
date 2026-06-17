@@ -79,25 +79,16 @@ export function UsersTable() {
   const [page, setPage] = useState(1);
   const { data, isLoading } = useUsersQuery({ page, pageSize: USERS_DEFAULT_PAGE_SIZE });
 
-  const actions: ITableAction<IUserListItem>[] = [
-    {
-      key: 'view',
-      icon: <LuArrowRight size={13} />,
-      label: 'View user',
-      onClick: (user) => router.push(`/dashboard/users/${user.id}`),
-    },
-  ];
-
   return (
     <>
       <Table<IUserListItem>
         columns={columns}
-        actions={actions}
         data={data?.items ?? []}
         rowKey="id"
         isLoading={isLoading}
         skeletonRows={USERS_DEFAULT_PAGE_SIZE}
         emptyText="No users found"
+        onRowClick={(user) => router.push(`/dashboard/users/${user.id}`)}
       >
         <Table.Header />
         <Table.Body />
