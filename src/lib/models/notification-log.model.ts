@@ -7,7 +7,7 @@ export interface INotificationLogModel {
   notificationType: NotificationLogType;
   status: NotificationLogStatus;
   ownerId: string;
-  guildId: string | null;
+  discordGuildId: string | null;
   streamerLogin: string;
   eventType: string;
   requestPayload: Record<string, unknown> | null;

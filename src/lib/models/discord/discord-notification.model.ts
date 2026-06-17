@@ -10,6 +10,7 @@ export interface IStreamerEventRef {
   streamer: IStreamerRef;
 }
 
+// todo: rework interface
 export interface IDiscordBotNotificationModel {
   id: string;
   channelId: string;

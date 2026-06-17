@@ -54,7 +54,7 @@ const columns: ITableColumn<IDiscordBotNotificationModel>[] = [
     key: 'channel',
     title: 'Channel',
     dataBind: 'channelId',
-    render: (row) => <ChannelCell channelId={row.channelId} guildId={(row as any).discordGuild.guildId} />
+    render: (row) => <ChannelCell channelId={row.channelId} guildId={(row as any).guild.discordGuildId} />
   },
   {
     key: 'status',
