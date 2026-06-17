@@ -9,6 +9,7 @@ const useUnlinkTwitchMutation = () => {
   return useMutation<void, IGenericErrorResponseModel, void>({
     mutationFn: AuthService.unlinkTwitch,
     onSuccess: () => {
+      toast.success('Twitch unlinked');
       queryClient.invalidateQueries({ queryKey: [AuthQueryKey.Me] });
     },
     onError: (err) => {

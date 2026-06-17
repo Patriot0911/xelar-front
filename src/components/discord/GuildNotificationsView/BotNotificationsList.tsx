@@ -30,7 +30,6 @@ const StreamerCell = ({ streamer }: { streamer?: IStreamerRef }) => {
 
 const ChannelCell = ({ channelId, guildId }: { guildId: string; channelId: string; }) => {
   const { data, isLoading } = useDiscordGuildChannelsQuery(guildId);
-  console.log({ data })
   const channel = data?.find(
     (c) => c.id === channelId
   )?.name ?? 'NaN';

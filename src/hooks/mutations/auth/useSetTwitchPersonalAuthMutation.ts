@@ -8,7 +8,8 @@ const useSetTwitchPersonalAuthMutation = () => {
 
   return useMutation<void, IGenericErrorResponseModel, boolean>({
     mutationFn: AuthService.setTwitchPersonalAuth,
-    onSuccess: () => {
+    onSuccess: (_, enabled) => {
+      toast.success(enabled ? 'Personal auth enabled' : 'Personal auth disabled');
       queryClient.invalidateQueries({ queryKey: [AuthQueryKey.Me] });
     },
     onError: (err) => {
