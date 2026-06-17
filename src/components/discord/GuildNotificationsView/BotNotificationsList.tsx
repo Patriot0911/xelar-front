@@ -30,7 +30,6 @@ const StreamerCell = ({ streamer }: { streamer?: IStreamerRef }) => {
 
 const ChannelCell = ({ channelId, guildId }: { guildId: string; channelId: string; }) => {
   const { data, isLoading } = useDiscordGuildChannelsQuery(guildId);
-  console.log({ data })
   const channel = data?.find(
     (c) => c.id === channelId
   )?.name ?? 'NaN';
@@ -54,7 +53,7 @@ const columns: ITableColumn<IDiscordBotNotificationModel>[] = [
     key: 'channel',
     title: 'Channel',
     dataBind: 'channelId',
-    render: (row) => <ChannelCell channelId={row.channelId} guildId={(row as any).discordGuild.guildId} />
+    render: (row) => <ChannelCell channelId={row.channelId} guildId={(row as any).guild.discordGuildId} />
   },
   {
     key: 'status',

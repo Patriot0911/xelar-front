@@ -9,6 +9,7 @@ const useLinkDiscordMutation = () => {
   return useMutation<void, IGenericErrorResponseModel, string>({
     mutationFn: AuthService.linkDiscord,
     onSuccess: () => {
+      toast.success('Discord linked');
       queryClient.invalidateQueries({ queryKey: [AuthQueryKey.Me] });
     },
     onError: (err) => {

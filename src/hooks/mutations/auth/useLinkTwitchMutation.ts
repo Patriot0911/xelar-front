@@ -9,6 +9,7 @@ const useLinkTwitchMutation = () => {
   return useMutation<void, IGenericErrorResponseModel, string>({
     mutationFn: AuthService.linkTwitch,
     onSuccess: () => {
+      toast.success('Twitch linked');
       queryClient.invalidateQueries({ queryKey: [AuthQueryKey.Me] });
     },
     onError: (err) => {

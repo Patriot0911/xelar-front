@@ -9,6 +9,7 @@ const useRevokeSessionMutation = () => {
   return useMutation<boolean, IGenericErrorResponseModel, string>({
     mutationFn: AuthService.revokeSession,
     onSuccess: () => {
+      toast.success('Session revoked');
       queryClient.invalidateQueries({ queryKey: [AuthQueryKey.Sessions] });
     },
     onError: (err) => {

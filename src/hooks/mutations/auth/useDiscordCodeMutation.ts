@@ -4,6 +4,7 @@ import { IGenericErrorResponseModel } from '@/lib/models/generic-response.model'
 import AuthService, { AuthQueryKey } from '@/lib/services/auth.service';
 import { login, logout } from '@/store/slices/authSlice';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 const useDiscordCodeMutation = () => {
   const queryClient = useQueryClient();
@@ -18,7 +19,8 @@ const useDiscordCodeMutation = () => {
         data.user satisfies IAuthMeResponse
       );
     },
-    onError: () => {
+    onError: (err) => {
+      toast.error(err.message ?? 'Login failed');
       dispatch(logout());
     },
   });

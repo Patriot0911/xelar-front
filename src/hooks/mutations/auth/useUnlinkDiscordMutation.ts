@@ -9,6 +9,7 @@ const useUnlinkDiscordMutation = () => {
   return useMutation<void, IGenericErrorResponseModel, void>({
     mutationFn: AuthService.unlinkDiscord,
     onSuccess: () => {
+      toast.success('Discord unlinked');
       queryClient.invalidateQueries({ queryKey: [AuthQueryKey.Me] });
     },
     onError: (err) => {
