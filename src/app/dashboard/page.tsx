@@ -1,8 +1,8 @@
 'use client';
 
-import OverviewStats from '@/components/modules/overview/OverviewStats';
-import WeeklyStatsChart from '@/components/modules/overview/WeeklyStatsChart';
-import BottomStatsRow from '@/components/modules/overview/BottomStatsRow';
+import OverviewStats from '@/components/overview/OverviewStats';
+import WeeklyStatsChart from '@/components/overview/WeeklyStatsChart';
+import BottomStatsRow from '@/components/overview/BottomStatsRow';
 import PageHeader from '@/components/ui/PageHeader';
 
 export default function DashboardPage() {

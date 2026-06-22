@@ -8,7 +8,7 @@ import Link from 'next/link';
 import FormInput from '@/components/ui/FormInput';
 import DiscordButton from '@/components/ui/buttons/DiscordButton';
 import Button from '@/components/ui/buttons/Button';
-import { AuthWrapper } from '@/components/modules/auth/AuthWrapper';
+import { AuthWrapper } from '@/components/auth/AuthWrapper';
 import { LuArrowRight, LuEye, LuEyeOff } from 'react-icons/lu';
 import { TSignInForm, TSignUpForm, signInSchema, signUpSchema } from './auth.scheme';
 import useLoginByEmailMutation from '@/hooks/mutations/auth/useLoginByEmailMutation';
