@@ -1,4 +1,4 @@
-import { AuthWrapper } from '@/components/modules/auth/AuthWrapper';
+import { AuthWrapper } from '@/components/auth/AuthWrapper';
 import { AuthDiscordPageContent } from './_content';
 
 export default function AuthDiscordPage() {

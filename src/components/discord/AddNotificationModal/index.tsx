@@ -119,8 +119,8 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
   const { data: personalSubscriptionsStatus } = useAllowPersonalSubscriptionsQuery(broadcasterId);
   const allowsPersonalSubscriptions = !!personalSubscriptionsStatus?.allowed;
 
-  const eventOptions    = allowsPersonalSubscriptions ? ALL_EVENT_OPTIONS : PUBLIC_EVENT_OPTIONS;
-  const costTypeOptions = allowsPersonalSubscriptions ? ALL_COST_TYPE_OPTIONS : PERSONAL_COST_TYPE_OPTIONS;
+  const eventOptions    = PUBLIC_EVENT_OPTIONS; // todo
+  const costTypeOptions = PERSONAL_COST_TYPE_OPTIONS; // todo
 
   useEffect(() => {
     if (!isOpen) {
