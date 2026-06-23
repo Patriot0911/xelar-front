@@ -25,8 +25,13 @@ export const editNotificationSchema = z.object({
   embedUrl:          z.string().optional(),
   embedThumbnailUrl: z.string().optional(),
   embedImageUrl:     z.string().optional(),
-  embedFooterText:   z.string().max(2048).optional(),
-  embedFields:       z.array(embedFieldSchema),
+  embedAuthorName:    z.string().max(256).optional(),
+  embedAuthorUrl:     z.string().optional(),
+  embedAuthorIconUrl: z.string().optional(),
+  embedFooterText:    z.string().max(2048).optional(),
+  embedFooterIconUrl: z.string().optional(),
+  embedTimestamp:     z.boolean(),
+  embedFields:        z.array(embedFieldSchema),
 }).superRefine((data, ctx) => {
   if (!data.content?.trim() && !data.embedEnabled) {
     ctx.addIssue({

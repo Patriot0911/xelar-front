@@ -68,9 +68,20 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
         embed.color = parseInt(data.embedColor.replace('#', ''), 16);
       }
       if (data.embedUrl?.trim()) embed.url = data.embedUrl.trim();
+      if (data.embedAuthorName?.trim()) {
+        const author: Record<string, string> = { name: data.embedAuthorName.trim() };
+        if (data.embedAuthorUrl?.trim())     author.url      = data.embedAuthorUrl.trim();
+        if (data.embedAuthorIconUrl?.trim()) author.icon_url = data.embedAuthorIconUrl.trim();
+        embed.author = author;
+      }
       if (data.embedThumbnailUrl?.trim()) embed.thumbnail = { url: data.embedThumbnailUrl.trim() };
       if (data.embedImageUrl?.trim()) embed.image = { url: data.embedImageUrl.trim() };
-      if (data.embedFooterText?.trim()) embed.footer = { text: data.embedFooterText.trim() };
+      if (data.embedFooterText?.trim()) {
+        const footer: Record<string, string> = { text: data.embedFooterText.trim() };
+        if (data.embedFooterIconUrl?.trim()) footer.icon_url = data.embedFooterIconUrl.trim();
+        embed.footer = footer;
+      }
+      if (data.embedTimestamp) embed.timestamp = '${startedAt}';
       if (data.embedFields.length > 0) {
         embed.fields = data.embedFields.map((f) => ({ name: f.name, value: f.value, inline: f.inline }));
       }

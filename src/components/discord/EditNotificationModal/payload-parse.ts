@@ -14,8 +14,13 @@ export const EDIT_DEFAULT_VALUES: TEditNotificationForm = {
   embedUrl:          '',
   embedThumbnailUrl: '',
   embedImageUrl:     '',
-  embedFooterText:   '',
-  embedFields:       [],
+  embedAuthorName:    '',
+  embedAuthorUrl:     '',
+  embedAuthorIconUrl: '',
+  embedFooterText:    '',
+  embedFooterIconUrl: '',
+  embedTimestamp:     false,
+  embedFields:        [],
 };
 
 export const parsePayloadToFormValues = (
@@ -25,7 +30,10 @@ export const parsePayloadToFormValues = (
   | 'content' | 'username' | 'avatarUrl'
   | 'embedEnabled' | 'embedTitle' | 'embedDescription'
   | 'embedColorEnabled' | 'embedColor' | 'embedUrl'
-  | 'embedThumbnailUrl' | 'embedImageUrl' | 'embedFooterText' | 'embedFields'
+  | 'embedAuthorName' | 'embedAuthorUrl' | 'embedAuthorIconUrl'
+  | 'embedThumbnailUrl' | 'embedImageUrl'
+  | 'embedFooterText' | 'embedFooterIconUrl'
+  | 'embedTimestamp' | 'embedFields'
 > => {
   const base = {
     content:           '',
@@ -37,9 +45,14 @@ export const parsePayloadToFormValues = (
     embedColorEnabled: false,
     embedColor:        '#5865F2',
     embedUrl:          '',
+    embedAuthorName:    '',
+    embedAuthorUrl:     '',
+    embedAuthorIconUrl: '',
     embedThumbnailUrl: '',
     embedImageUrl:     '',
     embedFooterText:   '',
+    embedFooterIconUrl: '',
+    embedTimestamp:    false,
     embedFields:       [] as TEditNotificationForm['embedFields'],
   };
 
@@ -70,8 +83,16 @@ export const parsePayloadToFormValues = (
     const img = embed.image as Record<string, unknown> | null | undefined;
     if (typeof img?.url === 'string') base.embedImageUrl = img.url;
 
+    const author = embed.author as Record<string, unknown> | null | undefined;
+    if (typeof author?.name === 'string')     base.embedAuthorName    = author.name;
+    if (typeof author?.url === 'string')      base.embedAuthorUrl     = author.url;
+    if (typeof author?.icon_url === 'string') base.embedAuthorIconUrl = author.icon_url;
+
     const footer = embed.footer as Record<string, unknown> | null | undefined;
-    if (typeof footer?.text === 'string') base.embedFooterText = footer.text;
+    if (typeof footer?.text === 'string')     base.embedFooterText    = footer.text;
+    if (typeof footer?.icon_url === 'string') base.embedFooterIconUrl = footer.icon_url;
+
+    if (typeof embed.timestamp === 'string' && embed.timestamp.length > 0) base.embedTimestamp = true;
 
     if (Array.isArray(embed.fields)) {
       base.embedFields = embed.fields.map((f: any) => ({
