@@ -51,7 +51,8 @@ interface IPayloadSectionProps {
 
 const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}) => {
   const { control, register, watch } = useFormContext<TAddNotificationForm>();
-  const embedEnabled = watch('embedEnabled');
+  const embedEnabled    = watch('embedEnabled');
+  const embedTimestamp  = watch('embedTimestamp');
   const formType     = watch('type' as any) as 'bot' | 'webhook' | undefined;
   const activeType   = notificationType ?? formType ?? 'bot';
 
@@ -143,6 +144,35 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
 
           <div className={styles.row}>
             <FormInput<TAddNotificationForm>
+              name="embedAuthorName"
+              label="Author name"
+              placeholder="Author name"
+              maxLength={256}
+              hideOptionalFlag
+              hideErrorMessage
+            />
+            <FormInput<TAddNotificationForm>
+              name="embedAuthorIconUrl"
+              label="Author icon URL"
+              type="url"
+              placeholder="https://…"
+              hideOptionalFlag
+              hideErrorMessage
+            />
+          </div>
+
+          <FormInput<TAddNotificationForm>
+            name="embedAuthorUrl"
+            label="Author URL"
+            type="url"
+            placeholder="https://…"
+            hint="Makes the author name a clickable link."
+            hideOptionalFlag
+            hideErrorMessage
+          />
+
+          <div className={styles.row}>
+            <FormInput<TAddNotificationForm>
               name="embedThumbnailUrl"
               label="Thumbnail URL"
               type="url"
@@ -162,14 +192,34 @@ const PayloadSection = ({ notificationType, guildId }: IPayloadSectionProps = {}
             />
           </div>
 
-          <FormInput<TAddNotificationForm>
-            name="embedFooterText"
-            label="Footer"
-            placeholder="Footer text"
-            maxLength={2048}
-            hideOptionalFlag
-            hideErrorMessage
-          />
+          <div className={styles.row}>
+            <FormInput<TAddNotificationForm>
+              name="embedFooterText"
+              label="Footer text"
+              placeholder="Footer text"
+              maxLength={2048}
+              hideOptionalFlag
+              hideErrorMessage
+            />
+            <FormInput<TAddNotificationForm>
+              name="embedFooterIconUrl"
+              label="Footer icon URL"
+              type="url"
+              placeholder="https://…"
+              hideOptionalFlag
+              hideErrorMessage
+            />
+          </div>
+
+          <div className={styles.embedToggleRow}>
+            <label className={styles.embedToggleLabel}>
+              <input type="checkbox" {...register('embedTimestamp')} />
+              <span>Timestamp</span>
+            </label>
+            {embedTimestamp && (
+              <span className={styles.timestampHint}>Uses stream start time — <code>{'${startedAt}'}</code></span>
+            )}
+          </div>
 
           <div className={styles.fieldsSection}>
             <div className={styles.fieldsSectionHeader}>
