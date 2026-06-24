@@ -99,7 +99,7 @@ function SignUpForm() {
           label="Display Name"
           required
           autoComplete="name"
-          placeholder="e.g. Night Owl"
+          placeholder="e.g. MyHero"
           hideErrorMessage
         />
         <FormInput<TSignUpForm>
