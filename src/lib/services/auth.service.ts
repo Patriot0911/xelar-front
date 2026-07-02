@@ -55,7 +55,7 @@ class AuthService {
   }
 
   static registerByEmail(payload: IRegisterByEmailModel): Promise<IAuthResponseModel> {
-    return apiClient.post('/api/authregister/email', payload);
+    return apiClient.post('/api/auth/register/email', payload);
   }
 
   static getMeUser(): Promise<IAuthMeResponse> {
