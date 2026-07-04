@@ -26,11 +26,11 @@ const EditTwitchAppModal = ({ appId, ...props }: IEditTwitchAppModalProps) => {
     mode: 'onTouched',
     reValidateMode: 'onChange',
     defaultValues: {
-      type: TwitchAppStatus.Active,
+      status: TwitchAppStatus.Active,
     },
   });
 
-  const submitHandler = ({ type, ...data}: TEditTwitchAppForm) => {
+  const submitHandler = (data: TEditTwitchAppForm) => {
     if (!appId) {
       return;
     }
@@ -51,7 +51,7 @@ const EditTwitchAppModal = ({ appId, ...props }: IEditTwitchAppModalProps) => {
     if (selectedApp) {
       methods.reset({
         name: selectedApp.name,
-        // type: selectedApp.type,
+        status: selectedApp.status,
       });
     }
   }, [selectedApp]);
@@ -78,8 +78,8 @@ const EditTwitchAppModal = ({ appId, ...props }: IEditTwitchAppModalProps) => {
             hideErrorMessage
           />
           <FormSelect<TEditTwitchAppForm, ISelectOption>
-            name={'type'}
-            label={'Type'}
+            name={'status'}
+            label={'Status'}
             hideErrorMessage
             required
             hint={'Determines the client`s accessibility to various formats of use in the system'}

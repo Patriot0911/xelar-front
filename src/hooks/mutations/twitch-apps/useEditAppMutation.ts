@@ -11,6 +11,7 @@ const useEditAppMutation = () => {
     onSuccess: () => {
       toast.success('App edited successfully');
       queryClient.invalidateQueries({ queryKey: [TwitchAppsQueryKey.List] })
+      queryClient.invalidateQueries({ queryKey: [TwitchAppsQueryKey.Selected] })
     },
     onError: (err) => {
       toast.error(err.message ?? 'Something went wrong');

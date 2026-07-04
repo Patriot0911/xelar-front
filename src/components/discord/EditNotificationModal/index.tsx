@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Modal from '@/components/ui/Modal';
 import FormInput from '@/components/ui/FormInput';
 import Button from '@/components/ui/buttons/Button';
+import Switch from '@/components/ui/Switch';
 import { NotificationCostType, TWITCH_EVENT_LABELS, TwitchStreamerEvent } from '@/lib/constants/notifications';
 import useUpdateDiscordNotificationMutation from '@/hooks/mutations/discord/useUpdateDiscordNotificationMutation';
 import useUpdateWebhookNotificationMutation from '@/hooks/mutations/discord/useUpdateWebhookNotificationMutation';
@@ -25,6 +26,7 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
     ...EDIT_DEFAULT_VALUES,
     channelId: type === 'bot' ? (notification as any).channelId ?? '' : '',
     webhookUrl: '',
+    isDisabled: !!notification.isDisabled,
     ...parsePayloadToFormValues(notification.messagePayload),
   });
 
@@ -34,6 +36,8 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
     reValidateMode: 'onChange',
     defaultValues: buildDefaults(),
   });
+
+  const { field: isDisabledField } = useController({ control: methods.control, name: 'isDisabled' });
 
   const isPending = botMutation.isPending || webhookMutation.isPending;
   const isSuccess = botMutation.isSuccess  || webhookMutation.isSuccess;
@@ -92,8 +96,9 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
       botMutation.mutate({
         id: notification.id,
         data: {
-          costType:  NotificationCostType.Personal,
-          channelId: data.channelId?.trim() || undefined,
+          costType:   NotificationCostType.Personal,
+          channelId:  data.channelId?.trim() || undefined,
+          isDisabled: data.isDisabled,
           payload,
         },
       });
@@ -103,6 +108,7 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
         data: {
           costType:   NotificationCostType.Personal,
           webhookUrl: data.webhookUrl?.trim() || undefined,
+          isDisabled: data.isDisabled,
           payload,
         },
       });
@@ -122,6 +128,13 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
 
       <FormProvider {...methods}>
         <Modal.ModalBody className={styles.scrollableBody}>
+
+          <Switch
+            checked={!!isDisabledField.value}
+            onChange={isDisabledField.onChange}
+            label="Disable notification"
+            hint="Skip this notification without deleting it."
+          />
 
           {type === 'bot' ? (
             <ChannelSearchField

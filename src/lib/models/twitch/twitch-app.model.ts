@@ -1,8 +1,10 @@
+import { TwitchAppStatus } from '@/lib/constants/twitch-app-status';
 import { IGenericList } from '../generic-response.model';
 
 export interface ITwitchAppShortModel {
   id: string;
   clientId: string;
+  status: TwitchAppStatus;
   name: string;
   createdAt: Date;
 };

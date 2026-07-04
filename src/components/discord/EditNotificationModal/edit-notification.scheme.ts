@@ -11,6 +11,8 @@ export const editNotificationSchema = z.object({
   channelId:         z.string().optional(),
   // webhook only
   webhookUrl:        z.string().optional(),
+  // Notification state
+  isDisabled:        z.boolean(),
   // Payload — base
   content:           z.string().max(2000).optional(),
   // Payload — webhook-only
