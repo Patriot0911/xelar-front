@@ -10,8 +10,10 @@ const OverviewStats = () => {
 
   const value = (n: number | undefined) => (isLoading ? '—' : (n ?? 0).toLocaleString());
 
+  const totalNotifications = (data?.totalDiscordNotifications ?? 0) + (data?.totalWebhookNotifications ?? 0);
+
   const stats = [
-    { label: 'Total notifications', value: value(data?.totalNotifications), sub: 'All time' },
+    { label: 'Total subscriptions', value: value(totalNotifications), sub: 'Right now' },
     { label: 'Successful notifications', value: value(data?.successfulNotifications), sub: 'All time' },
     { label: 'Streamers', value: value(data?.totalStreamers), sub: 'Tracked on Twitch' },
     { label: 'Discord guilds', value: value(data?.totalGuilds), sub: 'Connected servers' },
