@@ -1,0 +1,125 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.searchWrap {
+  width: 280px;
+  max-width: 100%;
+}
+
+.nameCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(154, 107, 255, 0.1);
+  border: 1px solid rgba(154, 107, 255, 0.2);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+
+.avatarImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.nameMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.displayName {
+  font-weight: 500;
+  color: var(--ink-0);
+  font-size: 13.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.login {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+.flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.flag {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+
+  &[data-flag='partner'] {
+    background: rgba(154, 107, 255, 0.08);
+    color: var(--accent);
+    border: 1px solid rgba(154, 107, 255, 0.18);
+  }
+
+  &[data-flag='internal'] {
+    background: rgba(255, 176, 32, 0.1);
+    color: #ffb020;
+    border: 1px solid rgba(255, 176, 32, 0.2);
+  }
+}
+
+.noFlags {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.twitchCell {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  color: var(--ink-1);
+
+  &[data-enabled='true'] {
+    color: #9147ff;
+  }
+}
+
+.linked {
+  font-size: 12px;
+  color: #34d399;
+}
+
+.noRoles {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.paginatorWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 30px;
+  width: 100%;
+}

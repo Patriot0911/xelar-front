@@ -5,6 +5,7 @@ import {
   LuBell,
   LuRadio,
   LuUser,
+  LuUsers,
 } from 'react-icons/lu';
 import { SiDiscord } from 'react-icons/si';
 import type { IconType } from 'react-icons';
@@ -60,6 +61,12 @@ export const NAV_CONFIGURE: NavItem[] = [
     label: 'Users',
     href: '/dashboard/users',
     icon: LuUser,
+    requiredPermissions: [Permission.ADMIN]
+  },
+  {
+    label: 'Streamers',
+    href: '/dashboard/streamers',
+    icon: LuUsers,
     requiredPermissions: [Permission.ADMIN]
   },
   {
