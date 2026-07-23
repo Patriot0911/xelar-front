@@ -4,6 +4,7 @@ import type { IWebhookNotificationModel, IStreamerRef } from '@/lib/models/disco
 import Table from '@/components/ui/Table';
 import avatarStyles from './StreamerCell.module.scss';
 import styles from './styles.module.scss';
+import GameFiltersCell from './GameFiltersCell';
 
 const StreamerCell = ({ streamer }: { streamer?: IStreamerRef }) => {
   if (!streamer) return <span>—</span>;
@@ -42,6 +43,11 @@ const columns: ITableColumn<IWebhookNotificationModel>[] = [
     key: 'type',
     title: 'Type',
     dataBind: 'type',
+  },
+  {
+    key: 'games',
+    title: 'Games',
+    render: (row) => <GameFiltersCell gameFilters={row.gameFilters} />,
   },
   {
     key: 'createdAt',

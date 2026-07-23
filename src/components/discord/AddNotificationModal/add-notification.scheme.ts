@@ -35,6 +35,7 @@ export const addNotificationSchema = z.object({
   embedFooterIconUrl: z.string().optional(),
   embedTimestamp:     z.boolean(),
   embedFields:        z.array(embedFieldSchema),
+  gameFilters:        z.array(z.string()),
 }).superRefine((data, ctx) => {
   if (data.type === 'bot' && !data.channelId?.trim()) {
     ctx.addIssue({

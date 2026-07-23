@@ -22,6 +22,7 @@ export const EDIT_DEFAULT_VALUES: TEditNotificationForm = {
   embedFooterIconUrl: '',
   embedTimestamp:     false,
   embedFields:        [],
+  gameFilters:        [],
 };
 
 export const parsePayloadToFormValues = (

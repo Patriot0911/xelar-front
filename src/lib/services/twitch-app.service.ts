@@ -1,6 +1,7 @@
 import { apiClient } from '@/lib/api-client';
 import { ICreateTwitchAppModel, IEditTwitchAppModel, ITwitchAppShortModel, TTwitchAppsListModel } from '@/lib/models/twitch/twitch-app.model';
 import { ITwitchChannelsResponse } from '@/lib/models/twitch/twitch-channel.model';
+import { ITwitchCategoriesResponse, ITwitchCategoryModel } from '@/lib/models/twitch/twitch-category.model';
 import { IGenericPagination } from '@/lib/models/generic-response.model';
 
 export enum TwitchAppsQueryKey {
@@ -31,6 +32,14 @@ class TwitchAppService {
 
   static searchChannels(search: string, signal?: AbortSignal): Promise<ITwitchChannelsResponse> {
     return apiClient.get('/api/twitch/channels', { params: { search }, signal });
+  }
+
+  static searchCategories(search: string, signal?: AbortSignal): Promise<ITwitchCategoriesResponse> {
+    return apiClient.get('/api/twitch/categories', { params: { search }, signal });
+  }
+
+  static getGamesByIds(ids: string[]): Promise<ITwitchCategoryModel[]> {
+    return apiClient.get('/api/twitch/games', { params: { ids: ids.join(',') } });
   }
 
   static getAllowPersonalSubscriptions(broadcasterId: string): Promise<{ allowed: boolean }> {

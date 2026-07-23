@@ -20,6 +20,7 @@ export interface IDiscordBotNotificationModel {
   status: 'active' | 'suspended';
   messagePayload: unknown;
   isDisabled: boolean;
+  gameFilters: string[];
   createdAt: string;
   streamerEvent: IStreamerEventRef;
 }
@@ -31,6 +32,7 @@ export interface IWebhookNotificationModel {
   cost: number;
   messagePayload: unknown;
   isDisabled: boolean;
+  gameFilters: string[];
   createdAt: string;
   streamerEvent: IStreamerEventRef;
 }
@@ -49,6 +51,7 @@ export interface ICreateDiscordNotificationPayload {
   payload: Record<string, unknown>;
   guildId: string;
   channelId: string;
+  gameFilters?: string[];
 }
 
 export interface ICreateWebhookNotificationPayload {
@@ -57,6 +60,7 @@ export interface ICreateWebhookNotificationPayload {
   costType: string;
   payload: Record<string, unknown>;
   webhookUrl: string;
+  gameFilters?: string[];
 }
 
 export interface IUpdateDiscordNotificationPayload {
@@ -64,6 +68,7 @@ export interface IUpdateDiscordNotificationPayload {
   channelId?: string;
   payload?: Record<string, unknown>;
   isDisabled?: boolean;
+  gameFilters?: string[];
 }
 
 export interface IUpdateWebhookNotificationPayload {
@@ -71,6 +76,7 @@ export interface IUpdateWebhookNotificationPayload {
   webhookUrl?: string;
   payload?: Record<string, unknown>;
   isDisabled?: boolean;
+  gameFilters?: string[];
 }
 
 export function isDiscordAuthError(error: unknown): boolean {

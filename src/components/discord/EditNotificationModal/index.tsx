@@ -15,6 +15,7 @@ import { editNotificationSchema, TEditNotificationForm } from './edit-notificati
 import { EDIT_DEFAULT_VALUES, parsePayloadToFormValues } from './payload-parse';
 import type { IEditNotificationModalProps } from './EditNotificationModal';
 import ChannelSearchField from '../AddNotificationModal/ChannelSearchField';
+import GameFilterField from '../AddNotificationModal/GameFilterField';
 
 import styles from './styles.module.scss';
 
@@ -27,6 +28,7 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
     channelId: type === 'bot' ? (notification as any).channelId ?? '' : '',
     webhookUrl: '',
     isDisabled: !!notification.isDisabled,
+    gameFilters: notification.gameFilters ?? [],
     ...parsePayloadToFormValues(notification.messagePayload),
   });
 
@@ -99,6 +101,7 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
           costType:   NotificationCostType.Personal,
           channelId:  data.channelId?.trim() || undefined,
           isDisabled: data.isDisabled,
+          gameFilters: data.gameFilters,
           payload,
         },
       });
@@ -109,6 +112,7 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
           costType:   NotificationCostType.Personal,
           webhookUrl: data.webhookUrl?.trim() || undefined,
           isDisabled: data.isDisabled,
+          gameFilters: data.gameFilters,
           payload,
         },
       });
@@ -149,6 +153,8 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
               hideErrorMessage
             />
           )}
+
+          <GameFilterField />
 
           <PayloadSection notificationType={type} guildId={guildId} />
 

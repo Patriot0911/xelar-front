@@ -34,6 +34,7 @@ export const editNotificationSchema = z.object({
   embedFooterIconUrl: z.string().optional(),
   embedTimestamp:     z.boolean(),
   embedFields:        z.array(embedFieldSchema),
+  gameFilters:        z.array(z.string()),
 }).superRefine((data, ctx) => {
   if (!data.content?.trim() && !data.embedEnabled) {
     ctx.addIssue({

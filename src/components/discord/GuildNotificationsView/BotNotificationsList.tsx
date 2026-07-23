@@ -5,6 +5,7 @@ import Table from '@/components/ui/Table';
 import avatarStyles from './StreamerCell.module.scss';
 import styles from './styles.module.scss';
 import useDiscordGuildChannelsQuery from '@/hooks/queries/discord/useDiscordGuildChannelsQuery';
+import GameFiltersCell from './GameFiltersCell';
 
 const StreamerCell = ({ streamer }: { streamer?: IStreamerRef }) => {
   if (!streamer) return <span>—</span>;
@@ -59,6 +60,11 @@ const columns: ITableColumn<IDiscordBotNotificationModel>[] = [
     key: 'status',
     title: 'Status',
     dataBind: 'status',
+  },
+  {
+    key: 'games',
+    title: 'Games',
+    render: (row) => <GameFiltersCell gameFilters={row.gameFilters} />,
   },
   {
     key: 'createdAt',

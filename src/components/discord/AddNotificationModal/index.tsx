@@ -22,6 +22,7 @@ import useAllowPersonalSubscriptionsQuery from '@/hooks/queries/twitch/useAllowP
 import { addNotificationSchema, TAddNotificationForm } from './add-notification.scheme';
 import StreamerSearchField from './StreamerSearchField';
 import ChannelSearchField from './ChannelSearchField';
+import GameFilterField from './GameFilterField';
 import PayloadSection from './PayloadSection';
 import type { IAddNotificationModalProps } from './AddNotificationModal';
 import styles from './styles.module.scss';
@@ -69,6 +70,7 @@ const DEFAULT_VALUES: TAddNotificationForm = {
   embedFooterIconUrl: '',
   embedTimestamp:     false,
   embedFields:        [],
+  gameFilters:        [],
 };
 
 const buildPayload = (data: TAddNotificationForm): Record<string, unknown> => {
@@ -173,6 +175,7 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
         payload,
         guildId,
         channelId:     data.channelId!,
+        gameFilters:   data.gameFilters,
       });
     } else {
       webhookMutation.mutate({
@@ -183,6 +186,7 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
           costType:      data.costType,
           payload,
           webhookUrl:    data.webhookUrl!,
+          gameFilters:   data.gameFilters,
         },
       });
     }
@@ -280,6 +284,8 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
               hideErrorMessage
             />
           )}
+
+          <GameFilterField />
 
           <PayloadSection guildId={guildId} />
 
