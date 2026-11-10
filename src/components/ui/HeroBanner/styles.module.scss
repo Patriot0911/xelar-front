@@ -32,3 +32,14 @@
     linear-gradient(180deg, transparent 35%, rgba(7, 9, 26, 0.45) 72%, rgba(7, 9, 26, 0.88) 100%);
   pointer-events: none;
 }
+
+/* `fadeInto`: dissolve fully into a solid surface, so the banner flows into the panel below it. */
+.fadeInto .shade {
+  background: linear-gradient(
+    180deg,
+    transparent 25%,
+    color-mix(in srgb, var(--hero-fade-color) 55%, transparent) 62%,
+    color-mix(in srgb, var(--hero-fade-color) 90%, transparent) 88%,
+    var(--hero-fade-color) 100%
+  );
+}
