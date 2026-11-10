@@ -4,6 +4,8 @@ export interface IWebhookNotificationsTableProps {
   data?: IGuildWebhookNotificationsResponse;
   isLoading: boolean;
   /** Pagination is rendered only when both `page` and `onPageChange` are passed. */
+  /** Overrides the default empty message (e.g. "Nothing matches …" while searching). */
+  emptyText?: string;
   page?: number;
   onPageChange?: (page: number) => void;
   onEdit: (item: IWebhookNotificationModel) => void;

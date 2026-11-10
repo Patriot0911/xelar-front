@@ -1,3 +1,7 @@
+'use client';
+
+import { useState } from 'react';
+import useUserNotificationLogsQuery from '@/hooks/queries/users/useUserNotificationLogsQuery';
 import Table from '@/components/ui/Table';
 import TablePagination from '@/components/ui/Table/TablePagination';
 import { ITableColumn } from '@/components/ui/Table/Table';
@@ -45,26 +49,31 @@ const columns: ITableColumn<IUserNotificationLog>[] = [
   },
 ];
 
-const UserLogsTable = ({ data, isLoading, page, onPageChange }: IUserLogsTableProps) => (
-  <div className={styles.root}>
-    <Table<IUserNotificationLog>
-      columns={columns}
-      data={data?.items ?? []}
-      rowKey="id"
-      isLoading={isLoading}
-      skeletonRows={USER_LOGS_PAGE_SIZE}
-      emptyText="No notification logs yet"
-    >
-      <Table.Header />
-      <Table.Body />
-    </Table>
-    <TablePagination
-      page={page}
-      pageSize={USER_LOGS_PAGE_SIZE}
-      total={data?.meta.count ?? 0}
-      onChange={onPageChange}
-    />
-  </div>
-);
+const UserLogsTable = ({ userId }: IUserLogsTableProps) => {
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useUserNotificationLogsQuery(userId, page);
+
+  return (
+    <div className={styles.root}>
+      <Table<IUserNotificationLog>
+        columns={columns}
+        data={data?.items ?? []}
+        rowKey="id"
+        isLoading={isLoading}
+        skeletonRows={USER_LOGS_PAGE_SIZE}
+        emptyText="No notification logs yet"
+      >
+        <Table.Header />
+        <Table.Body />
+      </Table>
+      <TablePagination
+        page={page}
+        pageSize={USER_LOGS_PAGE_SIZE}
+        total={data?.meta.count ?? 0}
+        onChange={setPage}
+      />
+    </div>
+  );
+};
 
 export default UserLogsTable;

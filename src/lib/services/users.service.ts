@@ -8,7 +8,9 @@ import {
   IUserNotificationLogsParams,
   IUserNotificationLogsResponse,
   IUserSession,
-  IUserSubscriptions,
+  IUserSubscriptionsParams,
+  IUserBotSubscriptionsResponse,
+  IUserWebhookSubscriptionsResponse,
   IUsersListParams,
   IUsersListResponse,
 } from '@/lib/models/users/user.model';
@@ -42,8 +44,20 @@ const UsersService = {
     return apiClient.patch(`/api/users/${userId}/balance`, payload);
   },
 
-  getUserSubscriptions: async (userId: string): Promise<IUserSubscriptions> => {
-    return apiClient.get(`/api/users/${userId}/subscriptions`).then(expectObject<IUserSubscriptions>(`/api/users/${userId}/subscriptions`));
+  getUserBotSubscriptions: async (
+    userId: string,
+    params: IUserSubscriptionsParams,
+  ): Promise<IUserBotSubscriptionsResponse> => {
+    const endpoint = `/api/users/${userId}/subscriptions/bot`;
+    return apiClient.get(endpoint, { params }).then(expectList<IUserBotSubscriptionsResponse>(endpoint));
+  },
+
+  getUserWebhookSubscriptions: async (
+    userId: string,
+    params: IUserSubscriptionsParams,
+  ): Promise<IUserWebhookSubscriptionsResponse> => {
+    const endpoint = `/api/users/${userId}/subscriptions/webhook`;
+    return apiClient.get(endpoint, { params }).then(expectList<IUserWebhookSubscriptionsResponse>(endpoint));
   },
 
   getUserNotificationLogs: async (

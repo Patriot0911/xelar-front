@@ -295,3 +295,25 @@
   flex: 1;
   min-height: 8px;
 }
+
+.logoLink {
+  display: inline-flex;
+  align-self: flex-start;
+  position: relative;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 1180px) and (min-width: 900px) {
+    align-self: center;
+  }
+}

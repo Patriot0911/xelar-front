@@ -1,10 +1,9 @@
 'use client';
 
 import useUserDetailQuery from '@/hooks/queries/users/useUserDetailQuery';
-import AsyncBoundary from '@/components/common/AsyncBoundary';
-import Loading from '@/components/ui/Loading';
-import UserProfilePanel from './components/UserProfilePanel';
-import UserActivityPanel from './components/UserActivityPanel';
+import UserHero from './components/UserHero';
+import UserDetails from './components/UserDetails';
+import UserActivity from './components/UserActivity';
 import { IUserDetailViewProps } from './UserDetailView';
 
 import styles from './styles.module.scss';
@@ -15,11 +14,9 @@ const UserDetailView = ({ userId }: IUserDetailViewProps) => {
 
   return (
     <div className={styles.root}>
-      <UserProfilePanel user={user} />
-      {/* Its own boundary: failing logs/sessions must not take the profile down with them. */}
-      <AsyncBoundary compact loading={<Loading type="block" title="Loading activity" />}>
-        <UserActivityPanel userId={user.id} />
-      </AsyncBoundary>
+      <UserHero user={user} />
+      <UserDetails user={user} />
+      <UserActivity userId={user.id} />
     </div>
   );
 };

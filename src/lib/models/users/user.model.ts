@@ -1,9 +1,7 @@
 import { IGenericList, IGenericPagination } from '@/lib/models/generic-response.model';
+import type { IDiscordBotNotificationModel, IWebhookNotificationModel } from '@/lib/models/discord';
 
 export type AccountStatus = 'active' | 'blocked';
-export type NotificationCostType = 'personal' | 'credit' | 'guild';
-export type NotificationStatus = 'active' | 'suspended';
-export type WebhookType = 'discord';
 export type NotificationLogType = 'discord' | 'webhook';
 export type NotificationLogStatus = 'sent' | 'failed';
 
@@ -40,33 +38,6 @@ export interface IUserSession {
   expiresAt: string;
 }
 
-export interface IDiscordNotificationItem {
-  id: string;
-  status: NotificationStatus;
-  costType: NotificationCostType;
-  cost: number;
-  channelId: string;
-  discordGuildId: string;
-  streamerEventId: string;
-  createdAt: string;
-}
-
-export interface IWebhookNotificationItem {
-  id: string;
-  status: NotificationStatus;
-  costType: NotificationCostType;
-  cost: number;
-  type: WebhookType;
-  discordGuildId: string | null;
-  streamerEventId: string;
-  createdAt: string;
-}
-
-export interface IUserSubscriptions {
-  discord: IDiscordNotificationItem[];
-  webhook: IWebhookNotificationItem[];
-}
-
 export interface IUserNotificationLog {
   id: string;
   notificationId: string;
@@ -81,6 +52,12 @@ export interface IUserNotificationLog {
 export interface IUserNotificationLogsParams extends IGenericPagination {}
 
 export interface IUserNotificationLogsResponse extends IGenericList<IUserNotificationLog> {}
+
+export interface IUserSubscriptionsParams extends IGenericPagination {}
+
+export interface IUserBotSubscriptionsResponse extends IGenericList<IDiscordBotNotificationModel> {}
+
+export interface IUserWebhookSubscriptionsResponse extends IGenericList<IWebhookNotificationModel> {}
 
 export interface IUpdateUserRolesPayload {
   roleIds: string[];

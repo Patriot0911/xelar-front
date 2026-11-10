@@ -85,3 +85,9 @@
   flex-wrap: wrap;
   gap: 12px;
 }
+
+// Let the visual's glow circles bleed past its box; the page clips
+// horizontal overflow (overflow-x: clip) so this can't cause scroll.
+.visual {
+  overflow: visible;
+}

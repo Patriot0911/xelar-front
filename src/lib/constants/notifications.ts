@@ -32,3 +32,10 @@ export const COST_TYPE_LABELS: Record<NotificationCostType, string> = {
   [NotificationCostType.Credit]:   'Credit',
   [NotificationCostType.Guild]:    'Guild',
 };
+
+/** Whose balance pays for a notification — wording for admin views. */
+export const COST_SOURCE_LABELS: Record<NotificationCostType, string> = {
+  [NotificationCostType.Personal]: 'User balance',
+  [NotificationCostType.Credit]:   'Streamer credit',
+  [NotificationCostType.Guild]:    'Server balance',
+};

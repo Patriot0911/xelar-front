@@ -105,7 +105,8 @@ lib/
 ├── query-client.ts   # TanStack QueryClient: retry / throwOnError / toast policy, typed meta (see Error handling)
 ├── errors/           # ApiError, toApiError, getErrorMessage, query error policy, response contract checks
 ├── utils.ts          # cn(), getInitials(), bit-flag helpers
-├── guild-visuals.ts  # Discord CDN icon/banner URLs, deterministic guild banner gradient
+├── guild-visuals.ts  # Discord CDN icon/banner URLs
+├── seed-gradient.ts  # getSeedGradient(id): stable vivid gradient for banners without an image
 ├── services/         # One object/class per backend resource: <resource>.service.ts
 ├── models/           # API request/response types: <area>/<entity>.model.ts (+ index.ts barrel)
 └── constants/        # Enums, labels, query keys, page sizes, static content: <area>.ts
@@ -119,7 +120,8 @@ hooks/
 ├── mutations/<area>/use<Action>Mutation.ts   # useMutation wrappers (+ toasts + invalidation)
 ├── redux/                                    # typed useAppDispatch / useAppSelector, selectors
 └── shared/                                   # generic hooks: useInView, useMediaQuery, useOnClickOutside,
-                                              # useIsAuthenticated, useHasPermission, useFilteredNavSections
+                                              # useIsAuthenticated, useHasPermission, useFilteredNavSections,
+                                              # useDebouncedValue, useListSearch, useClampPage
 ```
 
 ## Data layer
@@ -156,7 +158,7 @@ const useStreamersQuery = (params?: IStreamersListParams) =>
   });
 ```
 
-Every GET checks the response envelope with `expectList` / `expectArray` / `expectObject` (`lib/errors/contract.ts`). A mismatch becomes an `ApiError` of kind `contract`, so a client deployed ahead of the API fails the *query* (handled below) instead of crashing a component on `undefined.items`.
+Every GET checks the response envelope with `expectList` / `expectArray` / `expectObject` (`lib/errors/contract.ts`). Entities a whole page is built around get a full schema with `parseResponse` (e.g. `guildInfoResponseSchema`): identity fields are required, statistics use `.catch(null)` so a missing or renamed field shows "—" instead of crashing — this is what keeps the page alive when the backend is older than the client. A mismatch becomes an `ApiError` of kind `contract`, so a client deployed ahead of the API fails the *query* (handled below) instead of crashing a component on `undefined.items`.
 
 **Mutation hooks** — own their success toast and invalidate the affected query keys in `onSuccess`. Error toasts are global; a hook only sets `meta: { errorMessage }` (fallback text) or `meta: { errorMode: 'silent' }` (the UI shows the error inline).
 

@@ -1,37 +1,53 @@
 'use client';
 
 import { useState } from 'react';
-import useAllNotificationsQuery from '@/hooks/queries/discord/useAllNotificationsQuery';
+import useMyBotNotificationsQuery from '@/hooks/queries/discord/useMyBotNotificationsQuery';
+import useMyWebhookNotificationsQuery from '@/hooks/queries/discord/useMyWebhookNotificationsQuery';
 import useDeleteDiscordNotificationMutation from '@/hooks/mutations/discord/useDeleteDiscordNotificationMutation';
 import useDeleteWebhookNotificationMutation from '@/hooks/mutations/discord/useDeleteWebhookNotificationMutation';
-import Loading from '@/components/ui/Loading';
+import useClampPage from '@/hooks/shared/useClampPage';
+import useListSearch from '@/hooks/shared/useListSearch';
+import Tabs from '@/components/ui/Tabs';
+import { TabItem } from '@/components/ui/Tabs/Tabs';
+import SearchInput from '@/components/ui/SearchInput';
 import EditNotificationModal from '@/components/discord/EditNotificationModal';
 import ConfirmModal from '@/components/common/ConfirmModal';
 import BotNotificationsTable from '@/components/discord/BotNotificationsTable';
 import WebhookNotificationsTable from '@/components/discord/WebhookNotificationsTable';
-import type { IDiscordBotNotificationModel, IWebhookNotificationModel } from '@/lib/models/discord';
+import { GUILD_NOTIFICATION_TYPE_LABELS, GuildNotificationType } from '@/lib/constants/guild-notifications';
+import type { TGuildNotificationRef } from '@/lib/models/discord';
+
 import styles from './styles.module.scss';
 
-type Tab = 'bot' | 'webhook';
-
-type EditTarget =
-  | { type: 'bot';     item: IDiscordBotNotificationModel }
-  | { type: 'webhook'; item: IWebhookNotificationModel }
-  | null;
-
-type DeleteTarget =
-  | { type: 'bot';     item: IDiscordBotNotificationModel }
-  | { type: 'webhook'; item: IWebhookNotificationModel }
-  | null;
-
+/** Every notification the current user created, across servers: search, bot / webhook tabs, pagination. */
 const AllNotificationsView = () => {
-  const [activeTab, setActiveTab]       = useState<Tab>('bot');
-  const [editTarget, setEditTarget]     = useState<EditTarget>(null);
-  const [deleteTarget, setDeleteTarget] = useState<DeleteTarget>(null);
+  const [activeType, setActiveType] = useState<GuildNotificationType>(GuildNotificationType.Bot);
+  const [botPage, setBotPage] = useState(1);
+  const [webhookPage, setWebhookPage] = useState(1);
+  const [editTarget, setEditTarget] = useState<TGuildNotificationRef | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<TGuildNotificationRef | null>(null);
 
-  const { data, isLoading } = useAllNotificationsQuery();
-  const deleteBot     = useDeleteDiscordNotificationMutation();
+  // One search for both tabs; a new term starts both lists from page 1.
+  const { value, setValue, search } = useListSearch(() => {
+    setBotPage(1);
+    setWebhookPage(1);
+  });
+
+  const botQuery = useMyBotNotificationsQuery(botPage, search);
+  const webhookQuery = useMyWebhookNotificationsQuery(webhookPage, search);
+  const deleteBot = useDeleteDiscordNotificationMutation();
   const deleteWebhook = useDeleteWebhookNotificationMutation();
+
+  useClampPage(botPage, setBotPage, botQuery.data?.items.length);
+  useClampPage(webhookPage, setWebhookPage, webhookQuery.data?.items.length);
+
+  const activeQuery = activeType === GuildNotificationType.Bot ? botQuery : webhookQuery;
+  const emptyText = search ? `Nothing matches “${search}”` : undefined;
+
+  const tabs: TabItem<GuildNotificationType>[] = [
+    { key: GuildNotificationType.Bot, label: GUILD_NOTIFICATION_TYPE_LABELS[GuildNotificationType.Bot], count: botQuery.data?.meta.count },
+    { key: GuildNotificationType.Webhook, label: GUILD_NOTIFICATION_TYPE_LABELS[GuildNotificationType.Webhook], count: webhookQuery.data?.meta.count },
+  ];
 
   const handleConfirmDelete = () => {
     if (!deleteTarget) return;
@@ -39,41 +55,37 @@ const AllNotificationsView = () => {
     mutation.mutate(deleteTarget.item.id, { onSuccess: () => setDeleteTarget(null) });
   };
 
-  const isDeleting = deleteBot.isPending || deleteWebhook.isPending;
-
   return (
     <div className={styles.root}>
-      <div className={styles.tabs}>
-        <button
-          className={`${styles.tab} ${activeTab === 'bot' ? styles.active : ''}`}
-          onClick={() => setActiveTab('bot')}
-        >
-          Discord Bot
-          {data && <span className={styles.badge}>{data.bot.length}</span>}
-        </button>
-        <button
-          className={`${styles.tab} ${activeTab === 'webhook' ? styles.active : ''}`}
-          onClick={() => setActiveTab('webhook')}
-        >
-          Webhook
-          {data && <span className={styles.badge}>{data.webhook.length}</span>}
-        </button>
+      <div className={styles.toolbar}>
+        <Tabs<GuildNotificationType> items={tabs} value={activeType} onChange={setActiveType} />
+        <SearchInput
+          value={value}
+          onChange={setValue}
+          placeholder="Search by streamer or event"
+          label="Search notifications"
+          isSearching={activeQuery.isFetching && !activeQuery.isLoading}
+        />
       </div>
 
-      <div className={styles.content}>
-        {isLoading ? (
-          <Loading type="block" title="Loading notifications" />
-        ) : activeTab === 'bot' ? (
+      <div role="tabpanel" aria-label={GUILD_NOTIFICATION_TYPE_LABELS[activeType]}>
+        {activeType === GuildNotificationType.Bot ? (
           <BotNotificationsTable
-            data={{ items: data?.bot ?? [], meta: { count: data?.bot.length ?? 0 } }}
-            isLoading={false}
+            data={botQuery.data}
+            isLoading={botQuery.isLoading}
+            page={botPage}
+            onPageChange={setBotPage}
+            emptyText={emptyText}
             onEdit={(item) => setEditTarget({ type: 'bot', item })}
             onDelete={(item) => setDeleteTarget({ type: 'bot', item })}
           />
         ) : (
           <WebhookNotificationsTable
-            data={{ items: data?.webhook ?? [], meta: { count: data?.webhook.length ?? 0 } }}
-            isLoading={false}
+            data={webhookQuery.data}
+            isLoading={webhookQuery.isLoading}
+            page={webhookPage}
+            onPageChange={setWebhookPage}
+            emptyText={emptyText}
             onEdit={(item) => setEditTarget({ type: 'webhook', item })}
             onDelete={(item) => setDeleteTarget({ type: 'webhook', item })}
           />
@@ -82,10 +94,11 @@ const AllNotificationsView = () => {
 
       {editTarget && (
         <EditNotificationModal
-          type={editTarget.type}
-          notification={editTarget.item as any}
-          guildId={editTarget.type === 'bot' ? editTarget.item.guild?.discordGuildId ?? '' : ''}
-          isOpen={!!editTarget}
+          {...(editTarget.type === 'bot'
+            ? { type: 'bot' as const, notification: editTarget.item }
+            : { type: 'webhook' as const, notification: editTarget.item })}
+          guildId={editTarget.item.guild?.discordGuildId ?? ''}
+          isOpen
           onClose={() => setEditTarget(null)}
         />
       )}
@@ -94,7 +107,7 @@ const AllNotificationsView = () => {
         title="Delete notification"
         description="Are you sure you want to delete this notification? This action cannot be undone."
         isOpen={!!deleteTarget}
-        isLoading={isDeleting}
+        isLoading={deleteBot.isPending || deleteWebhook.isPending}
         onConfirm={handleConfirmDelete}
         onCancel={() => setDeleteTarget(null)}
         onClose={() => setDeleteTarget(null)}

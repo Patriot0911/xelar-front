@@ -7,6 +7,7 @@ const useUsersQuery = (params?: IUsersListParams) => {
   return useQuery<IUsersListResponse>({
     queryKey: [UsersQueryKey.List, params],
     queryFn: () => UsersService.getUsers(params),
+    placeholderData: (prev) => prev, // keep rows on screen while the next page / search loads
   });
 };
 

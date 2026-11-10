@@ -5,6 +5,8 @@ import Button from '@/components/ui/buttons/Button';
 const ConfirmModal = ({
   title,
   description,
+  confirmLabel = 'Confirm',
+  confirmVariant,
   onCancel,
   onConfirm,
   ...props
@@ -24,10 +26,11 @@ const ConfirmModal = ({
         </Button>
         <Button
           type='submit'
+          variant={confirmVariant}
           onClick={onConfirm}
           isLoading={props.isLoading}
         >
-          Confirm
+          {confirmLabel}
         </Button>
       </Modal.ModalFooter>
     </Modal>

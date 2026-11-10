@@ -119,6 +119,17 @@ Main props (`ISelectProps<O>`): `options: O[]`, `value`, `onChange(value)`, `lab
 </FormSelect>
 ```
 
+### `SearchInput` — `ui/SearchInput`
+Compact toolbar search: leading icon (spinner while `isSearching`), clear button, Escape clears, full width under 576px. Controlled: `value`, `onChange(value)`, `placeholder`, `label` (a11y name), `isSearching`, `className` + native input attributes. Pair it with `useListSearch` (`hooks/shared`), which debounces the term (300 ms) and resets paging:
+
+```tsx
+const [page, setPage] = useState(1);
+const { value, setValue, search } = useListSearch(() => setPage(1));
+const { data, isLoading, isFetching } = useUsersQuery({ page, pageSize, search });
+
+<SearchInput value={value} onChange={setValue} isSearching={isFetching && !isLoading} />
+```
+
 ### `Switch` — `ui/Switch`
 Toggle. Props: `checked`, `onChange(checked)`, `label`, `hint`, `disabled`.
 
@@ -163,6 +174,16 @@ Error boundary (Next `unstable_catchError`) + `Suspense` + TanStack `QueryErrorR
 
 ### `ErrorFallback` — `common/ErrorFallback`
 Turns any caught error into an `ErrorState`: title and text by `ApiError.kind`, retry hidden for errors a retry can't fix (404, 403, validation, business), technical details in development only. Props: `error`, `onRetry?`, `actions?`, `compact?`, `className?`. Used by `AsyncBoundary` and the route `error.tsx` files.
+
+### `ActionsMenu` — `ui/ActionsMenu`
+"More actions" dropdown on Radix DropdownMenu (keyboard navigation, portal, collision handling) with a glass trigger.
+
+| Prop | Purpose |
+|---|---|
+| `items: IActionsMenuItem[]` | `{ key, label, icon?, description?, variant?: 'default' \| 'danger', disabled?, onSelect }` |
+| `label?` | Accessible name of the trigger (default "More actions") |
+| `triggerText?` | Text next to the "…" icon; omit for icon-only |
+| `align?` | `'start' \| 'end'` (default `end`) |
 
 ### `ConfirmModal` — `common/ConfirmModal`
 Ready-made confirmation dialog: `title`, `description`, `isOpen`, `isLoading`, `onConfirm`, `onCancel`, `onClose`.
@@ -252,6 +273,12 @@ Solid section container for dashboard pages (`--card` background, `--line` borde
   …
 </Panel>
 ```
+
+### `HeroBanner` — `ui/HeroBanner`
+Wide banner for detail-page heroes: `imageUrl` if given (falls back on load error), otherwise a gradient from `getSeedGradient(seed)` with a light/neon pattern. The bottom fades into the page so overlapping content stays readable; children render on top. Props: `seed` (required), `imageUrl?`, `className`, `children`. No border by design.
+
+### `SectionTabs<T>` — `ui/SectionTabs`
+Page-level section tabs with a neon underline and optional icons (`role="tablist"`). Props: `items: { key: T; label; icon? }[]`, `value`, `onChange`, `label` (accessible name), `className`. Stretches to full width under 576px; scrolls horizontally if it doesn't fit. For a secondary switch inside a section use `Tabs`.
 
 ### `PageContent` — `ui/PageContent`
 Padded content container under `PageHeader`.

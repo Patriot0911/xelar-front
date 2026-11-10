@@ -39,7 +39,7 @@ const HeroSection = () => {
           </div>
         </div>
 
-        <AuthVisual />
+        <AuthVisual className={styles.visual} />
       </div>
     </section>
   );

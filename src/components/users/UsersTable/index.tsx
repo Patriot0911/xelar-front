@@ -1,15 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LuUser, LuArrowRight } from 'react-icons/lu';
 import { ITableColumn } from '@/components/ui/Table/Table';
 import Table from '@/components/ui/Table';
 import UserStatusBadge from '@/components/users/UserStatusBadge';
+import SearchInput from '@/components/ui/SearchInput';
+import useListSearch from '@/hooks/shared/useListSearch';
 import TablePagination from '@/components/ui/Table/TablePagination';
 import useUsersQuery from '@/hooks/queries/users/useUsersQuery';
 import { USERS_DEFAULT_PAGE_SIZE } from '@/lib/constants/users';
 import { IUserListItem } from '@/lib/models/users/user.model';
-import { useState } from 'react';
 
 import styles from './styles.module.scss';
 
@@ -66,20 +68,30 @@ const columns: ITableColumn<IUserListItem>[] = [
   },
 ];
 
-export function UsersTable() {
+const UsersTable = () => {
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useUsersQuery({ page, pageSize: USERS_DEFAULT_PAGE_SIZE });
+  const { value, setValue, search } = useListSearch(() => setPage(1));
+  const { data, isLoading, isFetching } = useUsersQuery({ page, pageSize: USERS_DEFAULT_PAGE_SIZE, search });
 
   return (
     <>
+      <div className={styles.toolbar}>
+        <SearchInput
+          value={value}
+          onChange={setValue}
+          placeholder="Search by name, email, Discord, Twitch or ID"
+          label="Search users"
+          isSearching={isFetching && !isLoading}
+        />
+      </div>
       <Table<IUserListItem>
         columns={columns}
         data={data?.items ?? []}
         rowKey="id"
         isLoading={isLoading}
         skeletonRows={USERS_DEFAULT_PAGE_SIZE}
-        emptyText="No users found"
+        emptyText={search ? `No users match “${search}”` : 'No users found'}
         onRowClick={(user) => router.push(`/dashboard/users/${user.id}`)}
       >
         <Table.Header />
@@ -95,4 +107,6 @@ export function UsersTable() {
       </div>
     </>
   );
-}
+};
+
+export default UsersTable;

@@ -1,12 +1,9 @@
+/* A plain label/value pair — grouping comes from the surrounding `UserDetails` grid, not from boxes. */
 .item {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   min-width: 0;
-  padding: 10px 12px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
 }
 
 .fullWidth {
@@ -16,8 +13,7 @@
 .head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
   min-height: 18px;
 }
 
@@ -32,7 +28,7 @@
 .value {
   margin: 0;
   min-width: 0;
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--ink-0);
   overflow: hidden;
   text-overflow: ellipsis;

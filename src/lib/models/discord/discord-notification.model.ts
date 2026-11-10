@@ -34,6 +34,8 @@ export interface IDiscordBotNotificationModel {
 
 export interface IWebhookNotificationModel {
   id: string;
+  /** Present when the webhook belongs to a server (created from a guild page). */
+  guild?: INotificationGuildRef | null;
   type: string;
   costType: string;
   cost: number;
@@ -49,12 +51,10 @@ export type TGuildNotificationRef =
   | { type: 'bot'; item: IDiscordBotNotificationModel }
   | { type: 'webhook'; item: IWebhookNotificationModel };
 
-export interface IGuildNotificationsResponse {
-  bot: IDiscordBotNotificationModel[];
-  webhook: IWebhookNotificationModel[];
+export interface IGuildNotificationsParams extends IGenericPagination {
+  /** Matches streamer name / login and event type. */
+  search?: string;
 }
-
-export interface IGuildNotificationsParams extends IGenericPagination {}
 
 export interface IGuildBotNotificationsResponse extends IGenericList<IDiscordBotNotificationModel> {}
 

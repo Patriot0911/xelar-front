@@ -1,10 +1,15 @@
 import { SiDiscord } from 'react-icons/si';
+import { cn } from '@/lib/utils';
 
 import styles from './styles.module.scss';
 
-const AuthVisual = () => {
+interface IAuthVisualProps {
+  className?: string;
+}
+
+const AuthVisual = ({ className }: IAuthVisualProps) => {
   return (
-    <div className={styles.visual}>
+    <div className={cn(styles.visual, className)}>
       <div className={styles.glow} />
       <div className={styles.glow2} />
 
