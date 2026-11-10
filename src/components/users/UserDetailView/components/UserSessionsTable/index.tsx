@@ -2,6 +2,7 @@
 
 import { LuLogOut } from 'react-icons/lu';
 import useDeleteUserSessionMutation from '@/hooks/mutations/users/useDeleteUserSessionMutation';
+import useUserSessionsQuery from '@/hooks/queries/users/useUserSessionsQuery';
 import Table from '@/components/ui/Table';
 import { ITableAction, ITableColumn } from '@/components/ui/Table/Table';
 import { IUserSession } from '@/lib/models/users/user.model';
@@ -30,7 +31,8 @@ const columns: ITableColumn<IUserSession>[] = [
   },
 ];
 
-const UserSessionsTable = ({ userId, sessions, isLoading }: IUserSessionsTableProps) => {
+const UserSessionsTable = ({ userId }: IUserSessionsTableProps) => {
+  const { data: sessions = [], isLoading } = useUserSessionsQuery(userId);
   const deleteMutation = useDeleteUserSessionMutation();
 
   const actions: ITableAction<IUserSession>[] = [

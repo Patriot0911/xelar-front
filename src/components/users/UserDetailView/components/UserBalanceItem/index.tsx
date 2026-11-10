@@ -45,6 +45,7 @@ const UserBalanceItem = ({ userId, balance }: IUserBalanceItemProps) => {
             icon={<LuPencil size={13} />}
             label="Edit balance"
             variant="accent"
+            className={styles.edit}
             onClick={() => setIsOpen(true)}
           />
         }

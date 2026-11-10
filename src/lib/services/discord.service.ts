@@ -1,5 +1,5 @@
 import { apiClient } from '../api-client';
-import { expectArray, expectList, expectObject } from '@/lib/errors';
+import { expectArray, expectList, expectObject, parseResponse } from '@/lib/errors';
 import type { IDiscordGuildModel } from '../models/discord/discord-guild.model';
 import type { IDiscordChannelModel } from '../models/discord/discord-channel.model';
 import type { IDiscordRoleModel } from '../models/discord/discord-role.model';
@@ -16,6 +16,7 @@ import type {
   IUpdateWebhookNotificationPayload,
 } from '../models/discord/discord-notification.model';
 import type { IDiscordGuildInfoModel } from '../models/discord/discord-guild-info.model';
+import { guildInfoResponseSchema } from '../models/discord/discord-guild-info.scheme';
 
 export enum DiscordQueryKey {
   Guilds             = 'discord-guilds',
@@ -82,7 +83,9 @@ class DiscordService {
   }
 
   static getGuildInfo(guildId: string): Promise<IDiscordGuildInfoModel> {
-    return apiClient.get(`/api/discord/guilds/${guildId}`).then(expectObject<IDiscordGuildInfoModel>(`/api/discord/guilds/${guildId}`));
+    const endpoint = `/api/discord/guilds/${guildId}`;
+    // Full schema (not just the envelope): missing stats become null instead of crashing the hero.
+    return apiClient.get(endpoint).then((data) => parseResponse(guildInfoResponseSchema, data, endpoint));
   }
 
   static setManagerPermission(guildId: string, permission: string | null): Promise<{ success: boolean }> {

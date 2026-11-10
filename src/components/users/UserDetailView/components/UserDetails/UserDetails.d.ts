@@ -1,5 +1,5 @@
 import { IUserItem } from '@/lib/models/users/user.model';
 
-export interface IUserProfilePanelProps {
+export interface IUserDetailsProps {
   user: IUserItem;
 };

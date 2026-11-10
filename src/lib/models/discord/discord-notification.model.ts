@@ -34,6 +34,8 @@ export interface IDiscordBotNotificationModel {
 
 export interface IWebhookNotificationModel {
   id: string;
+  /** Present when the webhook belongs to a server (created from a guild page). */
+  guild?: INotificationGuildRef | null;
   type: string;
   costType: string;
   cost: number;

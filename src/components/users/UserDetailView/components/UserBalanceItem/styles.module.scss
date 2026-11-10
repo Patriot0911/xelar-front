@@ -16,3 +16,8 @@
   letter-spacing: 0.06em;
   color: var(--ink-2);
 }
+
+/* Keeps the label row as tall as its neighbours in the details grid. */
+.edit {
+  margin: -4px 0;
+}

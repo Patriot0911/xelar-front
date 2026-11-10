@@ -163,11 +163,13 @@ Rules:
 - Status colours: `--status-ok` (done/success), `--status-warn`, `--status-error`; accent for "active / in progress".
 - Neon (`--neon-pink`, `--neon-pink-soft`, `--neon-pink-glow`, `--neon-gradient`) marks live / active Discord surfaces and a page's primary call to action (`Button variant="neon"`). Use it sparingly — one neon CTA per view.
 - Glass surfaces over imagery: dark tint (≈50%) + `backdrop-filter: blur(16–20px) saturate(160%+)` + a 1px inner top highlight. The tint is what keeps text readable; don't drop it below ~45%.
-- Discord images: build URLs with `getGuildIconUrl` / `getGuildBannerUrl`; when a guild has no banner use `getGuildGradient(guildId)` (stable per guild, analogous hues, never dark).
+- Discord images: build URLs with `getGuildIconUrl` / `getGuildBannerUrl`. Entities without a banner get `getSeedGradient(id)` via `HeroBanner` (stable per id — snowflake or UUID — analogous hues, never dark).
 - State via `data-*` attributes or modifier classes: `&[data-active='true']`, `styles[variant]`, `styles[status]`.
 - Breakpoints: 576 / 768 / 992 / 1200 px. Mobile side padding 16–20px; no horizontal page scroll.
 - **Mobile (≤576px) is vertical-first:** grids collapse to one column, headers stack. A text button or tab group that is the only action in its row (a sub-tab switch, a single "Block user" button) stretches to the full width so it doesn't look off-centre. Icon-only buttons keep their size.
-- Content sections on dashboard pages use `Panel` (solid `--card` background, `--radius-md`); inner cells use `--surface` + `--radius-sm`. Don't leave sections transparent.
+- **Detail pages** (a server, a user) follow one layout: a full-width hero (`HeroBanner` + neon-ringed avatar overlapping its bottom edge + an `ActionsMenu` for secondary/destructive actions) → details as grouped label/value grids (no box per field; a group is a mono-dot title + thin top rule) → `SectionTabs` for the data sections, each tab in its own `AsyncBoundary`; a secondary switch inside a tab uses segmented `Tabs`.
+- Destructive or rare actions (block, delete…) live in `ActionsMenu`, not as standalone buttons; disruptive ones confirm with `ConfirmModal`.
+- `Panel` (solid `--card`, `--radius-md`) is for classic list/admin sections without a hero. Never leave a section transparent.
 - Dates in tables and detail views: `formatDateTime` from `lib/utils.ts`.
 - Waiting states: `Loading` with the matching `type` (`block` for a page/section, `inline` in a cell, `card` for full-screen flows) — never a bare "Loading…" string. Tables use their skeleton rows.
 - Global styles (`.react-flow …`) from inside a module: `:global(.class)` nested under a local class.
@@ -186,6 +188,8 @@ Rules:
 - Every service GET ends with `.then(expectList | expectArray | expectObject<TResponse>(endpoint))`.
 - A page's main entity uses `useSuspenseQuery` and is rendered inside `AsyncBoundary` (in the route page); independent sections get their own `AsyncBoundary compact`. Never branch on `isLoading` / `!data` for suspense queries.
 - Don't show an empty state when a request failed: let the error reach a boundary (default) or render `ErrorFallback`.
+- Boundaries go around the smallest part that can fail on its own. A decorative or statistical sub-block (e.g. `GuildHeroStats`) gets its own boundary with a tiny inline fallback; a page's main block falls back in its own shape (`GuildHeroFallback` keeps the generated banner) rather than a generic error replacing everything.
+- Optional numbers from the API are `number | null` in models and rendered as "—" when null; never call `.toLocaleString()` / `.toFixed()` on a value the schema doesn't guarantee.
 - Queries that require auth set `enabled: status === 'authenticated'` (see `useMeQuery`).
 - Pagination: `page` state in the view, page size from a `<AREA>_DEFAULT_PAGE_SIZE` constant, `TablePagination` with `meta.count`. Add `placeholderData: (prev) => prev` so the table keeps rows while the next page loads, and step back a page when the current one becomes empty after a delete.
 
