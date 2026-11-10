@@ -6,7 +6,7 @@ import useRolesQuery from '@/hooks/queries/roles/useRolesQuery';
 import useUpdateUserRolesMutation from '@/hooks/mutations/users/useUpdateUserRolesMutation';
 import IconButton from '@/components/ui/buttons/IconButton';
 import { cn } from '@/lib/utils';
-import UserInfoItem from '../UserInfoItem';
+import InfoItem from '@/components/ui/InfoItem';
 import { IUserRolesItemProps } from './UserRolesItem';
 
 import styles from './styles.module.scss';
@@ -50,7 +50,7 @@ const UserRolesItem = ({ userId, roles }: IUserRolesItemProps) => {
   };
 
   return (
-    <UserInfoItem label="Roles" fullWidth>
+    <InfoItem label="Roles" fullWidth>
       <div className={styles.list}>
         {roles.map((name) => (
           <button
@@ -97,7 +97,7 @@ const UserRolesItem = ({ userId, roles }: IUserRolesItemProps) => {
           onClick={() => setIsAdding((prev) => !prev)}
         />
       </div>
-    </UserInfoItem>
+    </InfoItem>
   );
 };
 

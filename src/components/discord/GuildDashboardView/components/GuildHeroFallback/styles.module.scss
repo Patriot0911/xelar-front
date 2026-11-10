@@ -3,11 +3,11 @@
   place-items: center;
   min-height: 232px;
   padding: 16px;
-  border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+  border-radius: calc(var(--radius-panel) - 1px) calc(var(--radius-panel) - 1px) 0 0;
 
   @media (max-width: 768px) {
     min-height: 200px;
-    border-radius: calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0 0;
+    border-radius: calc(var(--radius-panel) - 1px) calc(var(--radius-panel) - 1px) 0 0;
     padding: 12px;
   }
 }

@@ -119,6 +119,9 @@ Main props (`ISelectProps<O>`): `options: O[]`, `value`, `onChange(value)`, `lab
 </FormSelect>
 ```
 
+### `InfoItem` — `ui/InfoItem`
+Label/value pair (`<dt>`/`<dd>`) for detail pages, rendered inside a `<dl>` grid; empty values show “—”. Props: `label`, `children` (value), `mono` (monospace value), `action` (node next to the label, e.g. an edit button), `fullWidth`. Used by the user and streamer detail pages.
+
 ### `ListToolbar` — `ui/ListToolbar`
 The bar above every list/table: `start` (filters, `Tabs`) left, `end` (`SearchInput`, other controls) right; stacks under 576px. Owns the spacing to the table (16px) and the control height `--control-height-sm` (38px) that `SearchInput` and `Tabs` share — any new toolbar control must use that token so the bar never changes height between pages. Don't build ad-hoc `.toolbar` divs or put a form `Input` in a toolbar.
 

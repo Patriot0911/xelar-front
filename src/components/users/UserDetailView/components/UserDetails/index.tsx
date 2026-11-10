@@ -1,5 +1,5 @@
 import { formatDateTime } from '@/lib/utils';
-import UserInfoItem from '../UserInfoItem';
+import InfoItem from '@/components/ui/InfoItem';
 import UserBalanceItem from '../UserBalanceItem';
 import UserRolesItem from '../UserRolesItem';
 import { IUserDetailsProps } from './UserDetails';
@@ -11,10 +11,10 @@ const UserDetails = ({ user }: IUserDetailsProps) => (
     <section className={styles.group} aria-labelledby="user-details-account">
       <h3 id="user-details-account" className={styles.title}>Account</h3>
       <dl className={styles.grid}>
-        <UserInfoItem label="Email" mono>{user.email}</UserInfoItem>
-        <UserInfoItem label="Discord ID" mono>{user.discordId}</UserInfoItem>
-        <UserInfoItem label="Twitch" mono>{user.twitchLogin && `@${user.twitchLogin}`}</UserInfoItem>
-        <UserInfoItem label="Joined" mono>{formatDateTime(user.createdAt)}</UserInfoItem>
+        <InfoItem label="Email" mono>{user.email}</InfoItem>
+        <InfoItem label="Discord ID" mono>{user.discordId}</InfoItem>
+        <InfoItem label="Twitch" mono>{user.twitchLogin && `@${user.twitchLogin}`}</InfoItem>
+        <InfoItem label="Joined" mono>{formatDateTime(user.createdAt)}</InfoItem>
       </dl>
     </section>
 
@@ -22,11 +22,11 @@ const UserDetails = ({ user }: IUserDetailsProps) => (
       <h3 id="user-details-wallet" className={styles.title}>Wallet</h3>
       <dl className={styles.grid}>
         <UserBalanceItem userId={user.id} balance={user.balance} />
-        <UserInfoItem label="Personal subscriptions">
+        <InfoItem label="Personal subscriptions">
           <span className={styles.flag} data-enabled={String(user.allowPersonalSubscriptions)}>
             {user.allowPersonalSubscriptions ? 'Allowed' : 'Disabled'}
           </span>
-        </UserInfoItem>
+        </InfoItem>
       </dl>
     </section>
 

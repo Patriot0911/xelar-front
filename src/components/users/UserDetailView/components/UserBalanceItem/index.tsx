@@ -7,7 +7,7 @@ import IconButton from '@/components/ui/buttons/IconButton';
 import EditValuesModal from '@/components/common/EditValuesModal';
 import { IEditValueField } from '@/components/common/EditValuesModal/EditValuesModal';
 import { USER_BALANCE_MAX } from '@/lib/constants/users';
-import UserInfoItem from '../UserInfoItem';
+import InfoItem from '@/components/ui/InfoItem';
 import { TUserBalanceForm, TUserBalanceValues, userBalanceSchema } from './user-balance.scheme';
 import { IUserBalanceItemProps } from './UserBalanceItem';
 
@@ -38,7 +38,7 @@ const UserBalanceItem = ({ userId, balance }: IUserBalanceItemProps) => {
 
   return (
     <>
-      <UserInfoItem
+      <InfoItem
         label="Balance"
         action={
           <IconButton
@@ -54,7 +54,7 @@ const UserBalanceItem = ({ userId, balance }: IUserBalanceItemProps) => {
           {formatted}
           <span className={styles.unit}>tokens</span>
         </span>
-      </UserInfoItem>
+      </InfoItem>
 
       <EditValuesModal<TUserBalanceForm, TUserBalanceValues>
         isOpen={isOpen}

@@ -21,7 +21,7 @@
   gap: 28px;
   min-width: 0;
   padding-bottom: 24px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-panel);
   border: 1px solid var(--line);
   background: var(--panel);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
@@ -29,7 +29,7 @@
   @media (max-width: 768px) {
     gap: 20px;
     padding-bottom: 16px;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-panel);
   }
 }
 
@@ -37,11 +37,11 @@
 .banner {
   @extend %shimmer;
   height: 148px;
-  border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+  border-radius: calc(var(--radius-panel) - 1px) calc(var(--radius-panel) - 1px) 0 0;
 
   @media (max-width: 768px) {
     height: 116px;
-    border-radius: calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0 0;
+    border-radius: calc(var(--radius-panel) - 1px) calc(var(--radius-panel) - 1px) 0 0;
   }
 }
 

@@ -2,8 +2,10 @@ import { use } from 'react';
 import PageHeader from '@/components/ui/PageHeader';
 import PageContent from '@/components/ui/PageContent';
 import PermissionGuard from '@/components/common/PermissionGuard';
+import AsyncBoundary from '@/components/common/AsyncBoundary';
 import { Permission } from '@/lib/constants/permissions';
-import { StreamerDetailView } from '@/components/streamers/StreamerDetailView';
+import StreamerDetailView from '@/components/streamers/StreamerDetailView';
+import StreamerDetailSkeleton from '@/components/streamers/StreamerDetailView/components/StreamerDetailSkeleton';
 
 interface IProps {
   params: Promise<{ streamerId: string }>;
@@ -19,7 +21,9 @@ export default function StreamerDetailPage({ params }: IProps) {
         title="Streamer Details"
       />
       <PageContent>
-        <StreamerDetailView streamerId={streamerId} />
+        <AsyncBoundary loading={<StreamerDetailSkeleton />}>
+          <StreamerDetailView streamerId={streamerId} />
+        </AsyncBoundary>
       </PageContent>
     </PermissionGuard>
   );

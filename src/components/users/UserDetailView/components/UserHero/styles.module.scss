@@ -7,7 +7,7 @@
 .banner {
   height: 148px;
   // Top of the page panel: only the top corners are rounded, the bottom fades into the panel.
-  border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+  border-radius: calc(var(--radius-panel) - 1px) calc(var(--radius-panel) - 1px) 0 0;
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
@@ -16,7 +16,7 @@
   @media (max-width: 768px) {
     height: 116px;
     padding: 12px;
-    border-radius: calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0 0;
+    border-radius: calc(var(--radius-panel) - 1px) calc(var(--radius-panel) - 1px) 0 0;
   }
 }
 

@@ -1,6 +1,6 @@
 import { PropsWithChildren, ReactNode } from 'react';
 
-export interface IUserInfoItemProps extends PropsWithChildren {
+export interface IInfoItemProps extends PropsWithChildren {
   label: string;
   action?: ReactNode;
   fullWidth?: boolean;
