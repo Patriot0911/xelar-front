@@ -1,0 +1,202 @@
+// Each release draws its own segment of the timeline track, so the track
+// reflects the release status without being tied to a fixed number of columns.
+.release {
+  --release-color: var(--ink-3);
+  --node-size: 16px;
+  --track-offset: calc(var(--node-size) / 2 - 1px);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: var(--track-offset);
+    left: 0;
+    right: calc(-1 * var(--roadmap-gap, 16px));
+    height: 2px;
+    background: var(--track);
+  }
+
+  &:last-child::before {
+    right: 0;
+    mask-image: linear-gradient(90deg, black 60%, transparent);
+  }
+
+  @media (max-width: 992px) {
+    flex-direction: row;
+    gap: 16px;
+
+    &::before,
+    &:last-child::before {
+      top: 0;
+      bottom: calc(-1 * var(--roadmap-gap, 16px));
+      left: var(--track-offset);
+      right: auto;
+      width: 2px;
+      height: auto;
+      mask-image: none;
+    }
+
+    &:last-child::before {
+      bottom: 0;
+      mask-image: linear-gradient(180deg, black 60%, transparent);
+    }
+  }
+}
+
+.node {
+  position: relative;
+  z-index: 1;
+  width: var(--node-size);
+  height: var(--node-size);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--bg-0);
+  border: 2px solid var(--release-color);
+}
+
+.card {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background: var(--card);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.version {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink-0);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--ink-0);
+}
+
+.summary {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-1);
+}
+
+.features {
+  list-style: none;
+  margin: 0;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+// ─── Status variants ─────────────────────────────────────────────────────────
+.done {
+  --release-color: var(--status-ok);
+  --track: var(--status-ok);
+
+  .node {
+    color: var(--bg-0);
+    background: var(--status-ok);
+    box-shadow: 0 0 10px rgba(93, 211, 158, 0.5);
+  }
+}
+
+.in-progress {
+  --release-color: var(--accent);
+  --track: linear-gradient(90deg, var(--accent) 0%, var(--line-strong) 100%);
+
+  @media (max-width: 992px) {
+    --track: linear-gradient(180deg, var(--accent) 0%, var(--line-strong) 100%);
+  }
+
+  .node::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .node {
+    box-shadow: 0 0 0 4px var(--accent-softer), 0 0 14px var(--accent-glow);
+    animation: glow 2.4s ease-in-out infinite;
+  }
+
+  .card {
+    border-color: var(--accent-soft);
+    background:
+      linear-gradient(135deg, rgba(88, 101, 242, 0.10), rgba(155, 92, 255, 0.04)),
+      var(--card);
+    box-shadow: 0 0 40px var(--accent-softer);
+  }
+}
+
+.planned {
+  --release-color: var(--ink-3);
+  --track: repeating-linear-gradient(90deg, var(--ink-3) 0 6px, transparent 6px 12px);
+
+  @media (max-width: 992px) {
+    --track: repeating-linear-gradient(180deg, var(--ink-3) 0 6px, transparent 6px 12px);
+  }
+
+  .node {
+    border-style: dashed;
+  }
+
+  .card {
+    border-style: dashed;
+    border-color: var(--line-strong);
+    background: rgba(14, 19, 40, 0.6);
+
+    &:hover {
+      border-color: var(--accent-soft);
+    }
+  }
+
+  .version {
+    color: var(--ink-1);
+  }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 0 4px var(--accent-softer), 0 0 14px var(--accent-glow); }
+  50% { box-shadow: 0 0 0 7px var(--accent-softer), 0 0 22px var(--accent-glow); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .in-progress .node {
+    animation: none;
+  }
+}

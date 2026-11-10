@@ -1,8 +1,14 @@
-.list {
+.timeline {
+  --roadmap-gap: 20px;
+
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--roadmap-gap);
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+  }
 }
