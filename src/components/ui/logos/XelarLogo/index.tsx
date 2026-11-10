@@ -1,9 +1,11 @@
+import { cn } from '@/lib/utils';
+import { IXelarLogoProps } from './XelarLogo';
 
 import styles from './styles.module.scss';
 
-const XelarLogo = () => {
+const XelarLogo = ({ responsive = true, className }: IXelarLogoProps) => {
   return (
-    <div className={styles.brand}>
+    <div className={cn(styles.brand, responsive && styles.responsive, className)}>
       <span className={styles.wm}>
         <span className={styles.wmX}>X</span>
         <span className={styles.wmText}>elar</span>
