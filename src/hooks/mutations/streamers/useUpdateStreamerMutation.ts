@@ -13,14 +13,12 @@ const useUpdateStreamerMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation<IStreamerItem, Error, IUpdateStreamerVars>({
+    meta: { errorMessage: 'Failed to update streamer' },
     mutationFn: ({ streamerId, payload }) => StreamersService.updateStreamer(streamerId, payload),
     onSuccess: (_, { streamerId }) => {
       toast.success('Streamer updated');
       queryClient.invalidateQueries({ queryKey: [StreamersQueryKey.Detail, streamerId] });
       queryClient.invalidateQueries({ queryKey: [StreamersQueryKey.List] });
-    },
-    onError: (err) => {
-      toast.error(err.message ?? 'Failed to update streamer');
     },
   });
 };

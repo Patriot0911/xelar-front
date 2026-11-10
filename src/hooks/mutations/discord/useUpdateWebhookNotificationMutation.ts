@@ -5,7 +5,7 @@ import type {
   IWebhookNotificationModel,
   IUpdateWebhookNotificationPayload,
 } from '@/lib/models/discord';
-import { IGenericErrorResponseModel } from '@/lib/models/generic-response.model';
+import { ApiError } from '@/lib/errors';
 
 interface IUpdateWebhookArgs {
   id: string;
@@ -15,15 +15,12 @@ interface IUpdateWebhookArgs {
 const useUpdateWebhookNotificationMutation = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<IWebhookNotificationModel, IGenericErrorResponseModel, IUpdateWebhookArgs>({
+  return useMutation<IWebhookNotificationModel, ApiError, IUpdateWebhookArgs>({
     mutationFn: ({ id, data }) => DiscordService.updateWebhookNotification(id, data),
     onSuccess: () => {
       toast.success('Webhook notification updated');
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.GuildNotifications] });
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.AllNotifications] });
-    },
-    onError: (err) => {
-      toast.error(err.message ?? 'Something went wrong');
     },
   });
 };

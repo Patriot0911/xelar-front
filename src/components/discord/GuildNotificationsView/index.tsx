@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { LuPlus } from 'react-icons/lu';
+import Button from '@/components/ui/buttons/Button';
 import useGuildBotNotificationsQuery from '@/hooks/queries/discord/useGuildBotNotificationsQuery';
 import useGuildWebhookNotificationsQuery from '@/hooks/queries/discord/useGuildWebhookNotificationsQuery';
 import useDeleteDiscordNotificationMutation from '@/hooks/mutations/discord/useDeleteDiscordNotificationMutation';
@@ -30,6 +31,7 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
   const [botPage, setBotPage] = useState(1);
   const [webhookPage, setWebhookPage] = useState(1);
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [addTemplate, setAddTemplate] = useState<TNotificationTarget>(null);
   const [editTarget, setEditTarget] = useState<TNotificationTarget>(null);
   const [deleteTarget, setDeleteTarget] = useState<TNotificationTarget>(null);
 
@@ -55,6 +57,12 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
     },
   ];
 
+  // The template is set on open (not cleared on close) so the modal keeps its copy during the exit animation.
+  const openAdd = (template: TNotificationTarget = null) => {
+    setAddTemplate(template);
+    setIsAddOpen(true);
+  };
+
   const handleConfirmDelete = () => {
     if (!deleteTarget) return;
     const mutation = deleteTarget.type === 'bot' ? deleteBot : deleteWebhook;
@@ -65,10 +73,14 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
     <div className={styles.root}>
       <div className={styles.toolbar}>
         <Tabs<GuildNotificationType> items={tabs} value={activeType} onChange={setActiveType} />
-        <button type="button" className={styles.addBtn} onClick={() => setIsAddOpen(true)}>
-          <LuPlus size={14} />
+        <Button
+          variant="neon"
+          className={styles.addBtn}
+          leftIcon={<LuPlus size={15} />}
+          onClick={() => openAdd()}
+        >
           Add notification
-        </button>
+        </Button>
       </div>
 
       <div role="tabpanel" aria-label={GUILD_NOTIFICATION_TYPE_LABELS[activeType]}>
@@ -81,6 +93,7 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
             onPageChange={setBotPage}
             onEdit={(item) => setEditTarget({ type: 'bot', item })}
             onDelete={(item) => setDeleteTarget({ type: 'bot', item })}
+            onDuplicate={(item) => openAdd({ type: 'bot', item })}
           />
         ) : (
           <WebhookNotificationsTable
@@ -90,12 +103,14 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
             onPageChange={setWebhookPage}
             onEdit={(item) => setEditTarget({ type: 'webhook', item })}
             onDelete={(item) => setDeleteTarget({ type: 'webhook', item })}
+            onDuplicate={(item) => openAdd({ type: 'webhook', item })}
           />
         )}
       </div>
 
       <AddNotificationModal
         guildId={guildId}
+        template={addTemplate}
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
       />

@@ -1,0 +1,179 @@
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.banner {
+  height: 232px;
+  display: flex;
+  align-items: flex-start; // stats top-right; the bottom strip is left for the overlapping identity row
+  justify-content: flex-end;
+  padding: 16px;
+
+  @media (max-width: 1100px) {
+    height: 260px;
+  }
+
+  @media (max-width: 768px) {
+    height: auto;
+    padding: 64px 12px 48px; // top: some banner stays visible; bottom: room for the avatar overlap
+  }
+}
+
+/* Liquid-glass strip on top of the banner: blur + saturation lets the banner colour through,
+   the dark tint and inner highlight keep the numbers crisp. */
+.stats {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(110px, auto));
+  gap: 6px 28px;
+  margin: 0;
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  background: rgba(8, 10, 28, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 12px 36px rgba(0, 0, 0, 0.35);
+
+  @media (max-width: 1100px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 24px;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 12px 14px;
+  }
+}
+
+/* ── Identity: avatar overlaps the banner's bottom edge ── */
+.identity {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  margin-top: -64px;
+  padding: 0 24px;
+  min-width: 0;
+  pointer-events: none; // let clicks reach the banner area behind the empty part of this row
+
+  > * {
+    pointer-events: auto;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 4px;
+    gap: 14px;
+
+    margin-top: -40px;
+  }
+}
+
+.avatarRing {
+  flex-shrink: 0;
+  padding: 3px;
+  border-radius: calc(var(--radius-md) + 3px);
+  background: var(--neon-gradient);
+  box-shadow:
+    0 0 0 4px var(--bg-0),
+    0 0 28px var(--neon-pink-glow);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--bg-2);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+.initials {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--ink-0);
+}
+
+.identityText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding-bottom: 6px;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: var(--ink-0);
+  text-shadow: 0 2px 14px rgba(7, 9, 26, 0.7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    white-space: normal;
+  }
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.badge,
+.badgeLive {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.badge {
+  color: var(--ink-0);
+  background: rgba(8, 10, 28, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.badgeLive {
+  color: var(--neon-pink);
+  background: var(--neon-pink-soft);
+  border: 1px solid rgba(255, 111, 216, 0.4);
+  box-shadow: 0 0 14px rgba(255, 111, 216, 0.25);
+}

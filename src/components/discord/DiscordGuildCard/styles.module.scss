@@ -38,7 +38,7 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 2px;
-    background: linear-gradient(90deg, var(--accent) 0%, #FF6FD8 100%);
+    background: linear-gradient(90deg, var(--accent) 0%, var(--neon-pink) 100%);
     z-index: 1;
   }
 
@@ -292,7 +292,7 @@
   font-size: 12px;
   font-weight: 600;
   color: #fff;
-  background: linear-gradient(135deg, #FF6FD8, var(--accent));
+  background: var(--neon-gradient);
   border: none;
   text-decoration: none;
   cursor: pointer;

@@ -44,6 +44,11 @@ export interface IWebhookNotificationModel {
   streamerEvent: IStreamerEventRef;
 }
 
+/** A notification together with its delivery type — the unit edit / delete / duplicate act on. */
+export type TGuildNotificationRef =
+  | { type: 'bot'; item: IDiscordBotNotificationModel }
+  | { type: 'webhook'; item: IWebhookNotificationModel };
+
 export interface IGuildNotificationsResponse {
   bot: IDiscordBotNotificationModel[];
   webhook: IWebhookNotificationModel[];
@@ -54,8 +59,6 @@ export interface IGuildNotificationsParams extends IGenericPagination {}
 export interface IGuildBotNotificationsResponse extends IGenericList<IDiscordBotNotificationModel> {}
 
 export interface IGuildWebhookNotificationsResponse extends IGenericList<IWebhookNotificationModel> {}
-
-export type DiscordErrorCode = 'DISCORD_NOT_CONNECTED' | 'DISCORD_TOKEN_REVOKED';
 
 export interface ICreateDiscordNotificationPayload {
   broadcasterId: string;
@@ -92,8 +95,3 @@ export interface IUpdateWebhookNotificationPayload {
   gameFilters?: string[];
 }
 
-export function isDiscordAuthError(error: unknown): boolean {
-  if (!error || typeof error !== 'object') return false;
-  const code = (error as Record<string, unknown>).data;
-  return code === 'DISCORD_NOT_CONNECTED' || code === 'DISCORD_TOKEN_REVOKED';
-}

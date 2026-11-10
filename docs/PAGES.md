@@ -39,6 +39,14 @@ Metadata routes: `/robots.txt` (`app/robots.ts` — disallows `/dashboard` and t
 
 `app/providers.tsx` (client): `StoreProvider` → `QueryClientProvider` → `AuthProvider`.
 
+Error and 404 routes (see [STRUCTURE.md → Error handling](./STRUCTURE.md#error-handling)):
+| File | Catches |
+|---|---|
+| `app/dashboard/error.tsx` | anything a dashboard page throws; the dashboard shell stays visible |
+| `app/error.tsx` | errors on pages outside the dashboard |
+| `app/global-error.tsx` | a crash in the root layout (renders its own `<html>`) |
+| `app/not-found.tsx` | unknown routes and `notFound()` |
+
 ---
 
 ## `/` — Welcome page
@@ -111,14 +119,14 @@ Pages stay thin; data fetching happens inside the feature view. Dynamic segments
 
 | Route | Feature component(s) | Data |
 |---|---|---|
-| `/dashboard` | `OverviewStats` (4 × `StatCard`), `WeeklyStatsChart` (recharts), `BottomStatsRow` (`NotificationSplitCard`, `TopStreamersCard`) | `usePlatformStatsQuery`, `useDailyStatsQuery`, `useNotificationSplitQuery`, `useTopStreamersQuery` |
-| `/dashboard/discord` | `DiscordGuildGrid` → `DiscordGuildCard` (`Loading type="block"` while servers load); `DiscordReconnectBlocker` when Discord access must be re-granted. Header action: "Invite Bot" | `useDiscordGuildsQuery` |
-| `/dashboard/discord/[guildId]` | `GuildDashboardView`: `GuildInfoPanel` (+ `GuildSettings` / `ManagerPermissionSelect`) in the sidebar; tabs **Notifications** (`GuildNotificationsView`: sub-tabs **Bot messages** / **Webhooks**, each a paginated `BotNotificationsTable` / `WebhookNotificationsTable`; `AddNotificationModal`, `EditNotificationModal`, `ConfirmModal`) and **Logs** (`GuildLogsSection`) | `useDiscordGuildInfoQuery`, `useGuildBotNotificationsQuery`, `useGuildWebhookNotificationsQuery`, guild channel/role queries, notification mutations |
+| `/dashboard` | `OverviewStats` (4 × `StatCard`), `WeeklyStatsChart` (recharts), `BottomStatsRow` (`NotificationSplitCard`, `TopStreamersCard`) — each in its own `AsyncBoundary compact` | `usePlatformStatsQuery`, `useDailyStatsQuery`, `useNotificationSplitQuery`, `useTopStreamersQuery` |
+| `/dashboard/discord` | `AsyncBoundary` (`Loading type="block"` while servers load; `renderError` → `DiscordReconnectBlocker` when Discord access must be re-granted) → `DiscordGuildGrid` → `DiscordGuildCard`. Header action: "Invite Bot" | `useDiscordGuildsQuery` |
+| `/dashboard/discord/[guildId]` | `GuildDashboardView`: full-width `GuildHero` (Discord banner or generated gradient, neon-ringed icon, glass stats strip: notifications bot/webhook, subscriptions, members/online, balance; `GuildHeroSkeleton` while loading) → `GuildSectionNav` → tabs **Notifications** (`GuildNotificationsView`: sub-tabs **Bot messages** / **Webhooks**, each a paginated `BotNotificationsTable` / `WebhookNotificationsTable` with a **Duplicate** action; neon "Add notification"; `AddNotificationModal` (also used with `template` for duplicates), `EditNotificationModal`, `ConfirmModal`), **Logs** (`GuildLogsSection`), **Settings** (`GuildSettingsPanel` → `ManagerPermissionSelect`) | `useDiscordGuildInfoQuery`, `useGuildBotNotificationsQuery`, `useGuildWebhookNotificationsQuery`, guild channel/role queries, notification mutations |
 | `/dashboard/notifications` | `AllNotificationsView`: `BotNotificationsTable` / `WebhookNotificationsTable` without pagination (edit / delete via modals) | `useAllNotificationsQuery`, delete mutations |
 | `/dashboard/twitch-apps` | `TwitchAppsTable` (+ `EditTwitchAppModal`, `DeleteTwitchApp`); header: `AddTwitchApp` → `CreateTwitchAppModal`, `ExternalButton` to the Twitch dev console | `useListTwitchAppsQuery`, app mutations |
 | `/dashboard/twitch-subscriptions` | `TwitchSubscriptionsView`: `TwitchSubscriptionsTable` (local records) and `RawTwitchSubscriptionsTable` (raw EventSub) | twitch subscription queries / delete mutations |
 | `/dashboard/users` | `UsersTable` (paginated, row click → detail) | `useUsersQuery` |
-| `/dashboard/users/[userId]` | `UserDetailView`: `UserProfilePanel` (identity + block/unblock, info grid with `UserBalanceItem` → `EditValuesModal`, inline `UserRolesItem`), `UserActivityPanel` (sub-tabs: paginated `UserLogsTable`, `UserSessionsTable` with terminate action) | `useUserDetailQuery`, `useUserNotificationLogsQuery`, `useUserSessionsQuery`, `useRolesQuery`, user mutations |
+| `/dashboard/users/[userId]` | `AsyncBoundary` → `UserDetailView` (suspense): `UserProfilePanel` (identity + block/unblock, info grid with `UserBalanceItem` → `EditValuesModal`, inline `UserRolesItem`), `UserActivityPanel` in its own `AsyncBoundary` (sub-tabs: paginated `UserLogsTable`, `UserSessionsTable` with terminate action) | `useUserDetailQuery`, `useUserNotificationLogsQuery`, `useUserSessionsQuery`, `useRolesQuery`, user mutations |
 | `/dashboard/streamers` | `StreamersTable` | `useStreamersQuery` |
 | `/dashboard/streamers/[streamerId]` | `StreamerDetailView`: `AccountCard`, `FlagsCard`, `NotificationLogsCard`; sync action | `useStreamerDetailQuery`, `useStreamerNotificationLogsQuery`, sync/update mutations |
 | `/dashboard/roles` | `RolesTable` (+ `CreateRoleModal` for edit); header: `AddRole` | `useRolesQuery`, role mutations |
@@ -129,3 +137,4 @@ Pages stay thin; data fetching happens inside the feature view. Dynamic segments
 2. Dashboard page: use `PageHeader` + `PageContent`; wrap in `PermissionGuard` if restricted, and add the nav entry with the same `requiredPermissions` in `nav-data.ts`.
 3. Public page: export `metadata`, add it to `app/sitemap.ts`; keep content server-rendered.
 4. Put the feature UI in `src/components/<area>/<FeatureView>/`, data access in hooks/services (see [STRUCTURE.md](./STRUCTURE.md#data-layer)).
+5. Errors: the page's main entity uses a suspense query inside `<AsyncBoundary loading={…}>`; give independent sections their own `<AsyncBoundary compact>`. Anything uncaught lands in `dashboard/error.tsx`.

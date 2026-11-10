@@ -1,9 +1,10 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import AuthService from './services/auth.service';
 import { IGenericAxiosResponse } from './models/generic-response.model';
 import { IAuthResponseModel } from './models/auth';
 import { getGlobalStore } from '../store/storeRef';
 import { logout } from '@/store/slices/authSlice';
+import { toApiError } from './errors/api-error';
 
 let isRefreshing = false;
 let queue: (() => void)[] = [];
@@ -69,21 +70,6 @@ apiClient.interceptors.response.use(
     }
     return response.data?.data ?? response.data;
   },
-  (error: AxiosError) => {
-    if (error.response) {
-      return Promise.reject(error.response.data);
-    }
-
-    if (error.request) {
-      return Promise.reject({
-        status: false,
-        message: 'No response from server. Check your connection.',
-      });
-    }
-
-    return Promise.reject({
-      status: false,
-      message: error.message ?? 'Unexpected error occurred.',
-    });
-  },
+  // Every request rejects with an ApiError whose `message` is safe to show (see lib/errors/api-error.ts).
+  (error: unknown) => Promise.reject(toApiError(error)),
 );

@@ -5,20 +5,17 @@ import type {
   IDiscordBotNotificationModel,
   ICreateDiscordNotificationPayload,
 } from '@/lib/models/discord';
-import { IGenericErrorResponseModel } from '@/lib/models/generic-response.model';
+import { ApiError } from '@/lib/errors';
 
 const useCreateDiscordNotificationMutation = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<IDiscordBotNotificationModel, IGenericErrorResponseModel, ICreateDiscordNotificationPayload>({
+  return useMutation<IDiscordBotNotificationModel, ApiError, ICreateDiscordNotificationPayload>({
     mutationFn: DiscordService.createDiscordNotification,
     onSuccess: () => {
       toast.success('Notification created');
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.GuildNotifications] });
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.AllNotifications] });
-    },
-    onError: (err) => {
-      toast.error(err.message ?? 'Something went wrong');
     },
   });
 };

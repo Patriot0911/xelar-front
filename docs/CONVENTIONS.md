@@ -161,6 +161,9 @@ Rules:
 - **Use tokens, not literals:** colours `var(--accent)`, `var(--ink-1)`, `var(--line)`, `var(--card)`…; radii `var(--radius-lg)`; fonts `var(--font-display | --font-body | --font-mono)`. A raw `rgba()` is acceptable only for a translucent variant of an existing token colour (e.g. glow of `--status-ok`).
 - Typography roles: headings `--font-display` (700, negative letter-spacing), body `--font-body`, eyebrows/labels/badges `--font-mono` uppercase with wide letter-spacing (0.14–0.18em).
 - Status colours: `--status-ok` (done/success), `--status-warn`, `--status-error`; accent for "active / in progress".
+- Neon (`--neon-pink`, `--neon-pink-soft`, `--neon-pink-glow`, `--neon-gradient`) marks live / active Discord surfaces and a page's primary call to action (`Button variant="neon"`). Use it sparingly — one neon CTA per view.
+- Glass surfaces over imagery: dark tint (≈50%) + `backdrop-filter: blur(16–20px) saturate(160%+)` + a 1px inner top highlight. The tint is what keeps text readable; don't drop it below ~45%.
+- Discord images: build URLs with `getGuildIconUrl` / `getGuildBannerUrl`; when a guild has no banner use `getGuildGradient(guildId)` (stable per guild, analogous hues, never dark).
 - State via `data-*` attributes or modifier classes: `&[data-active='true']`, `styles[variant]`, `styles[status]`.
 - Breakpoints: 576 / 768 / 992 / 1200 px. Mobile side padding 16–20px; no horizontal page scroll.
 - **Mobile (≤576px) is vertical-first:** grids collapse to one column, headers stack. A text button or tab group that is the only action in its row (a sub-tab switch, a single "Block user" button) stretches to the full width so it doesn't look off-centre. Icon-only buttons keep their size.
@@ -177,8 +180,12 @@ Rules:
 - Components never import `apiClient`. Flow: **service → hook → component** (see [STRUCTURE.md](./STRUCTURE.md#data-layer)).
 - One hook per query / mutation, default export, in `hooks/queries/<area>` or `hooks/mutations/<area>`.
 - Query keys come from a `<Area>QueryKey` constant: `[StreamersQueryKey.Detail, id]`. Include params in the key.
-- Mutations: success toast + `invalidateQueries` for every affected key in `onSuccess`; error toast in `onError`.
-- Query errors are toasted globally (`lib/query-client.ts`) — don't toast them again.
+- Mutations: success toast + `invalidateQueries` for every affected key in `onSuccess`. **No `onError` toast** — `MutationCache` does it; pass `meta: { errorMessage: 'Failed to …' }` for a specific fallback, or `meta: { errorMode: 'silent' }` when the component shows the error inline.
+- Query errors are handled globally (see [STRUCTURE.md → Error handling](./STRUCTURE.md#error-handling)) — don't toast them in components. Auxiliary queries (modals, cells, shell widgets) set `meta: { errorMode: 'toast' }`.
+- Error type is always `ApiError` (registered as TanStack's `defaultError`). Show `error.message` or `getErrorMessage(error, fallback)`; never print raw backend text.
+- Every service GET ends with `.then(expectList | expectArray | expectObject<TResponse>(endpoint))`.
+- A page's main entity uses `useSuspenseQuery` and is rendered inside `AsyncBoundary` (in the route page); independent sections get their own `AsyncBoundary compact`. Never branch on `isLoading` / `!data` for suspense queries.
+- Don't show an empty state when a request failed: let the error reach a boundary (default) or render `ErrorFallback`.
 - Queries that require auth set `enabled: status === 'authenticated'` (see `useMeQuery`).
 - Pagination: `page` state in the view, page size from a `<AREA>_DEFAULT_PAGE_SIZE` constant, `TablePagination` with `meta.count`. Add `placeholderData: (prev) => prev` so the table keeps rows while the next page loads, and step back a page when the current one becomes empty after a delete.
 

@@ -8,4 +8,6 @@ export interface IWebhookNotificationsTableProps {
   onPageChange?: (page: number) => void;
   onEdit: (item: IWebhookNotificationModel) => void;
   onDelete: (item: IWebhookNotificationModel) => void;
+  /** Adds a "Duplicate" row action that starts a new notification from this one. */
+  onDuplicate?: (item: IWebhookNotificationModel) => void;
 };

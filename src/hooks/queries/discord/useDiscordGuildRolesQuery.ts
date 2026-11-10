@@ -4,6 +4,8 @@ import type { IDiscordRoleModel } from '@/lib/models/discord';
 
 const useDiscordGuildRolesQuery = (guildId: string | undefined) => {
   return useQuery<IDiscordRoleModel[], unknown>({
+    // Auxiliary data: a failure must not replace the page, so it is reported as a toast.
+    meta: { errorMode: 'toast' },
     queryKey: [DiscordQueryKey.GuildRoles, guildId],
     queryFn: () => DiscordService.getGuildRoles(guildId!),
     enabled: !!guildId,

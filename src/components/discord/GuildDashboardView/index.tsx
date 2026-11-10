@@ -1,45 +1,46 @@
 'use client';
 
 import { useState } from 'react';
-import GuildInfoPanel from './GuildInfoPanel';
+import AsyncBoundary from '@/components/common/AsyncBoundary';
+import DiscordReconnectBlocker from '@/components/discord/DiscordReconnectBlocker';
 import GuildNotificationsView from '@/components/discord/GuildNotificationsView';
 import GuildLogsSection from '@/components/discord/GuildManagementView/GuildLogsSection';
-import { IGuildDashboardViewProps, TGuildDashboardTab } from './GuildDashboardView';
+import Loading from '@/components/ui/Loading';
+import { GuildDashboardTab } from '@/lib/constants/guild-dashboard';
+import { isDiscordAuthError } from '@/lib/errors';
+import GuildHero from './components/GuildHero';
+import GuildHeroSkeleton from './components/GuildHeroSkeleton';
+import GuildSectionNav from './components/GuildSectionNav';
+import GuildSettingsPanel from './components/GuildSettingsPanel';
+import { IGuildDashboardViewProps } from './GuildDashboardView';
 
 import styles from './styles.module.scss';
 
+const renderDiscordAuthError = (error: unknown) => (isDiscordAuthError(error) ? <DiscordReconnectBlocker /> : undefined);
+
 const GuildDashboardView = ({ guildId }: IGuildDashboardViewProps) => {
-  const [activeTab, setActiveTab] = useState<TGuildDashboardTab>('notifications');
+  const [activeTab, setActiveTab] = useState<GuildDashboardTab>(GuildDashboardTab.Notifications);
 
   return (
     <div className={styles.layout}>
-      <aside className={styles.sidebar}>
-        <GuildInfoPanel guildId={guildId} />
-      </aside>
+      <AsyncBoundary loading={<GuildHeroSkeleton />} renderError={renderDiscordAuthError}>
+        <GuildHero guildId={guildId} />
+      </AsyncBoundary>
 
       <div className={styles.main}>
-        <div className={styles.tabsRow}>
-          <button
-            className={`${styles.tab} ${activeTab === 'notifications' ? styles.tabActive : ''}`}
-            onClick={() => setActiveTab('notifications')}
-          >
-            Notifications
-          </button>
-          <button
-            className={`${styles.tab} ${activeTab === 'logs' ? styles.tabActive : ''}`}
-            onClick={() => setActiveTab('logs')}
-          >
-            Logs
-          </button>
-        </div>
+        <GuildSectionNav value={activeTab} onChange={setActiveTab} />
 
-        <div className={styles.content}>
-          {activeTab === 'notifications' ? (
-            <GuildNotificationsView guildId={guildId} />
-          ) : (
-            <GuildLogsSection guildId={guildId} />
-          )}
-        </div>
+        {/* Keyed by tab so switching tabs also clears an error shown for the other one. */}
+        <AsyncBoundary
+          key={activeTab}
+          compact
+          loading={<Loading type="block" tone="discord" />}
+          renderError={renderDiscordAuthError}
+        >
+          {activeTab === GuildDashboardTab.Notifications && <GuildNotificationsView guildId={guildId} />}
+          {activeTab === GuildDashboardTab.Logs && <GuildLogsSection guildId={guildId} />}
+          {activeTab === GuildDashboardTab.Settings && <GuildSettingsPanel guildId={guildId} />}
+        </AsyncBoundary>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { apiClient } from '@/lib/api-client';
+import { expectList, expectObject } from '@/lib/errors';
 import { IGenericResponseModel } from '@/lib/models/generic-response.model';
 import {
   ICreateRolePayload,
@@ -10,16 +11,11 @@ import {
 
 const RolesService = {
   getRoles: async (params?: IRolesListParams): Promise<IRolesListResponse> => {
-    return await apiClient.get(
-      '/api/roles',
-      { params },
-    );
+    return apiClient.get('/api/roles', { params }).then(expectList<IRolesListResponse>('/api/roles'));
   },
 
   getRoleById: async (id: string): Promise<IRoleItem> => {
-    return await apiClient.get(
-      `/api/roles/${id}`,
-    );
+    return apiClient.get(`/api/roles/${id}`).then(expectObject<IRoleItem>(`/api/roles/${id}`));
   },
 
   createRole: async (payload: ICreateRolePayload): Promise<IRoleItem> => {

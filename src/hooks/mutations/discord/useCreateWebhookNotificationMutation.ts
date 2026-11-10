@@ -5,7 +5,7 @@ import type {
   IWebhookNotificationModel,
   ICreateWebhookNotificationPayload,
 } from '@/lib/models/discord';
-import { IGenericErrorResponseModel } from '@/lib/models/generic-response.model';
+import { ApiError } from '@/lib/errors';
 
 interface ICreateWebhookArgs {
   guildId: string;
@@ -15,15 +15,12 @@ interface ICreateWebhookArgs {
 const useCreateWebhookNotificationMutation = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<IWebhookNotificationModel, IGenericErrorResponseModel, ICreateWebhookArgs>({
+  return useMutation<IWebhookNotificationModel, ApiError, ICreateWebhookArgs>({
     mutationFn: ({ guildId, data }) => DiscordService.createWebhookNotification(guildId, data),
     onSuccess: () => {
       toast.success('Webhook notification created');
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.GuildNotifications] });
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.AllNotifications] });
-    },
-    onError: (err) => {
-      toast.error(err.message ?? 'Something went wrong');
     },
   });
 };

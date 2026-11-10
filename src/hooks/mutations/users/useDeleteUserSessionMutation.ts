@@ -12,13 +12,11 @@ const useDeleteUserSessionMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation<void, Error, IDeleteUserSessionVars>({
+    meta: { errorMessage: 'Failed to revoke session' },
     mutationFn: ({ userId, sessionId }) => UsersService.deleteUserSession(userId, sessionId),
     onSuccess: (_, { userId }) => {
       toast.success('Session revoked');
       queryClient.invalidateQueries({ queryKey: [UsersQueryKey.Sessions, userId] });
-    },
-    onError: (err) => {
-      toast.error(err.message ?? 'Failed to revoke session');
     },
   });
 };

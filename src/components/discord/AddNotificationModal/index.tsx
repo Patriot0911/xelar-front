@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SiDiscord } from 'react-icons/si';
@@ -24,6 +24,9 @@ import StreamerSearchField from './StreamerSearchField';
 import ChannelSearchField from './ChannelSearchField';
 import GameFilterField from './GameFilterField';
 import PayloadSection from './PayloadSection';
+import { parsePayloadToFormValues } from '../EditNotificationModal/payload-parse';
+import type { TGuildNotificationRef } from '@/lib/models/discord';
+import type { ITwitchChannelModel } from '@/lib/models/twitch/twitch-channel.model';
 import type { IAddNotificationModalProps } from './AddNotificationModal';
 import styles from './styles.module.scss';
 
@@ -73,6 +76,42 @@ const DEFAULT_VALUES: TAddNotificationForm = {
   gameFilters:        [],
 };
 
+const isEnumValue = <T extends string>(values: Record<string, T>, value: unknown): value is T =>
+  Object.values(values).includes(value as T);
+
+/**
+ * Form values copied from an existing notification. The webhook URL is never returned by the API,
+ * so it stays empty and has to be entered again.
+ */
+const buildTemplateValues = ({ type, item }: TGuildNotificationRef): TAddNotificationForm => {
+  const event = item.streamerEvent?.event;
+
+  return {
+    ...DEFAULT_VALUES,
+    ...parsePayloadToFormValues(item.messagePayload),
+    type,
+    broadcasterId: item.streamerEvent?.streamer.broadcasterId ?? '',
+    event: isEnumValue(TwitchStreamerEvent, event) ? event : DEFAULT_VALUES.event,
+    costType: isEnumValue(NotificationCostType, item.costType) ? item.costType : DEFAULT_VALUES.costType,
+    channelId: type === 'bot' ? item.channelId : '',
+    webhookUrl: '',
+    gameFilters: item.gameFilters ?? [],
+  };
+};
+
+const templateToChannel = (template: TGuildNotificationRef | null): ITwitchChannelModel | null => {
+  const streamer = template?.item.streamerEvent?.streamer;
+  if (!streamer) return null;
+
+  return {
+    broadcasterId: streamer.broadcasterId,
+    broadcasterLogin: streamer.twitchLogin,
+    displayName: streamer.displayName,
+    thumbnailUrl: streamer.profileImageUrl ?? '',
+    isLive: false,
+  };
+};
+
 const buildPayload = (data: TAddNotificationForm): Record<string, unknown> => {
   const payload: Record<string, unknown> = {};
 
@@ -118,7 +157,7 @@ const buildPayload = (data: TAddNotificationForm): Record<string, unknown> => {
   return payload;
 };
 
-const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModalProps) => {
+const AddNotificationModal = ({ guildId, isOpen, onClose, template = null }: IAddNotificationModalProps) => {
   const botMutation     = useCreateDiscordNotificationMutation();
   const webhookMutation = useCreateWebhookNotificationMutation();
 
@@ -140,13 +179,17 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
   const eventOptions    = PUBLIC_EVENT_OPTIONS; // todo
   const costTypeOptions = PERSONAL_COST_TYPE_OPTIONS; // todo
 
+  const initialChannel = useMemo(() => templateToChannel(template), [template]);
+  const isDuplicate = Boolean(template);
+
   useEffect(() => {
-    if (!isOpen) {
-      botMutation.reset();
-      webhookMutation.reset();
-      methods.reset(DEFAULT_VALUES);
+    if (isOpen) {
+      methods.reset(template ? buildTemplateValues(template) : DEFAULT_VALUES);
+      return;
     }
-  }, [isOpen]);
+    botMutation.reset();
+    webhookMutation.reset();
+  }, [isOpen, template]);
 
   useEffect(() => {
     if (isSuccess) onClose();
@@ -201,8 +244,12 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
     <Modal isOpen={isOpen} onClose={onClose} isLoading={isPending}>
       <Modal.ModalHeader
         category="Notifications · Discord · Server"
-        title="Add Notification"
-        description="Subscribe to a Twitch streamer event and deliver it to a Discord channel or webhook."
+        title={isDuplicate ? 'Duplicate Notification' : 'Add Notification'}
+        description={
+          isDuplicate
+            ? 'Pre-filled from an existing notification — change what differs and save it as a new one.'
+            : 'Subscribe to a Twitch streamer event and deliver it to a Discord channel or webhook.'
+        }
       />
 
       <FormProvider {...methods}>
@@ -226,7 +273,7 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
             </button>
           </div>
 
-          <StreamerSearchField />
+          <StreamerSearchField initialChannel={initialChannel} />
 
           <FormSelect<TAddNotificationForm, ISelectOption>
             name="event"
@@ -280,7 +327,11 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
               label="Webhook URL"
               required
               placeholder="https://discord.com/api/webhooks/…"
-              hint="Discord webhook URL that will receive the event payload."
+              hint={
+                isDuplicate
+                  ? 'Webhook URLs are kept private by the server — paste the URL again.'
+                  : 'Discord webhook URL that will receive the event payload.'
+              }
               hideErrorMessage
             />
           )}
@@ -301,7 +352,7 @@ const AddNotificationModal = ({ guildId, isOpen, onClose }: IAddNotificationModa
             disabled={isPending || isSuccess}
             isLoading={isPending}
           >
-            Add Notification
+            {isDuplicate ? 'Create Copy' : 'Add Notification'}
           </Button>
         </Modal.ModalFooter>
       </FormProvider>

@@ -20,7 +20,7 @@ A `<button type="button">` with variants and loading state. Extends all native b
 
 | Prop | Type | Default |
 |---|---|---|
-| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'success'` | `'primary'` |
+| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'success' \| 'neon'` — `neon` is the pink→violet glowing CTA for a page's main action | `'primary'` |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` |
 | `isLoading` | `boolean` — shows a spinner, disables, sets `aria-busy` | `false` |
 | `leftIcon` / `rightIcon` | `ReactNode` | — |
@@ -143,6 +143,27 @@ Parts:
 
 `IModalBaseProps` (`isOpen`, `onClose`) is the base for every feature modal's props.
 
+### `AsyncBoundary` — `common/AsyncBoundary`
+Error boundary (Next `unstable_catchError`) + `Suspense` + TanStack `QueryErrorResetBoundary` for one independent part of a page. Retry resets failed queries and re-renders the children.
+
+| Prop | Purpose |
+|---|---|
+| `loading?` | Suspense fallback; default `<Loading type="block" />`, `null` for none |
+| `renderError?(error, retry)` | Custom fallback for specific errors; return `undefined` to use `ErrorFallback` |
+| `compact?` | Smaller error state for sections |
+
+```tsx
+<AsyncBoundary
+  loading={<Loading type="block" tone="discord" title="Loading servers" />}
+  renderError={(error) => (isDiscordAuthError(error) ? <DiscordReconnectBlocker /> : undefined)}
+>
+  <DiscordGuildGrid />
+</AsyncBoundary>
+```
+
+### `ErrorFallback` — `common/ErrorFallback`
+Turns any caught error into an `ErrorState`: title and text by `ApiError.kind`, retry hidden for errors a retry can't fix (404, 403, validation, business), technical details in development only. Props: `error`, `onRetry?`, `actions?`, `compact?`, `className?`. Used by `AsyncBoundary` and the route `error.tsx` files.
+
 ### `ConfirmModal` — `common/ConfirmModal`
 Ready-made confirmation dialog: `title`, `description`, `isOpen`, `isLoading`, `onConfirm`, `onCancel`, `onClose`.
 
@@ -246,6 +267,19 @@ Gradient "X" + "elar" wordmark + glowing dot. `responsive` (default `true`) coll
 
 ### `WorkspaceCard` — `ui/WorkspaceCard`
 "Active workspace" card (gradient "X" mark + server name). Currently not rendered anywhere — kept for the dashboard sidebar.
+
+### `ErrorState` — `ui/ErrorState`
+Presentational error block (counterpart of `Loading type="block"`): icon, `title`, `description`, optional "Try again" button and `actions`. Domain-agnostic — for API errors use `ErrorFallback`.
+
+| Prop | Type | Default |
+|---|---|---|
+| `title` | `string` (required) | — |
+| `description` | `string` | — |
+| `variant` | `'error' \| 'offline' \| 'not-found' \| 'forbidden'` — icon and tone | `'error'` |
+| `onRetry`, `retryLabel` | show the retry button | label `"Try again"` |
+| `actions` | `ReactNode` — extra buttons/links | — |
+| `details` | `string` — collapsed technical details | — |
+| `compact` | smaller min-height for sections | `false` |
 
 ### `Loading` — `ui/Loading`
 The one loader for every waiting state (ring spinner from the OAuth callback screens). Renders `role="status"`; when there is no visible text it adds a screen-reader label.

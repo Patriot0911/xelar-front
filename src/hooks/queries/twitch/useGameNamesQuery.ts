@@ -6,6 +6,8 @@ const useGameNamesQuery = (gameIds: string[]) => {
   const key = [...gameIds].sort().join(',');
 
   return useQuery<ITwitchCategoryModel[]>({
+    // Auxiliary data: a failure must not replace the page, so it is reported as a toast.
+    meta: { errorMode: 'toast' },
     queryKey: ['twitch-game-names', key],
     queryFn: () => TwitchAppService.getGamesByIds(gameIds),
     enabled: gameIds.length > 0,
