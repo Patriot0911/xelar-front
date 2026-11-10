@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import AuthBgEffects from '@/components/auth/AuthBgEffects';
+import SupportUkraineBanner from '../SupportUkraineBanner';
 import WelcomeHeader from '../WelcomeHeader';
 import HeroSection from '../HeroSection';
 import WelcomeJsonLd from '../WelcomeJsonLd';
@@ -20,6 +21,7 @@ const WelcomeView = () => {
     <div className={styles.page}>
       <WelcomeJsonLd />
       <AuthBgEffects />
+      <SupportUkraineBanner />
       <WelcomeHeader />
 
       <main className={styles.main}>
