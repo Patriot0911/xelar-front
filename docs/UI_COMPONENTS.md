@@ -44,6 +44,20 @@ Navigation that looks like a button. Internal `href` → `next/link`; `http(s):/
 
 Use `LinkButton` for navigation, `Button` for actions. Never nest a `<button>` inside a link.
 
+### `IconButton`
+Square icon-only button for compact inline actions (edit pencil, add plus). Extends native button attributes except `children`.
+
+| Prop | Type | Default |
+|---|---|---|
+| `icon` | `ReactNode` (required) | — |
+| `label` | `string` (required) — used as `aria-label` and `title` | — |
+| `variant` | `'default' \| 'accent' \| 'danger'` — hover colour | `'default'` |
+| `size` | `'sm'` (26px) \| `'md'` (32px) | `'sm'` |
+
+```tsx
+<IconButton icon={<LuPencil size={13} />} label="Edit balance" variant="accent" onClick={open} />
+```
+
 ### `DiscordButton`
 Full-width Discord-branded button (logo + label + arrow). Props: native button attributes + `label` (default `"Continue with Discord"`). Used inside a POST `<form>` for Discord OAuth.
 
@@ -123,7 +137,7 @@ Portal + overlay, framer-motion enter/exit, closes on `Escape` and overlay click
 | `className` | `string` |
 
 Parts:
-- `Modal.ModalHeader` — `category` (eyebrow), `title`, `description`.
+- `Modal.ModalHeader` — `category` (eyebrow), `title`, optional `description`.
 - `Modal.ModalBody` — renders a `<form>`; accepts form attributes (`onSubmit`).
 - `Modal.ModalFooter` — action row.
 
@@ -131,6 +145,35 @@ Parts:
 
 ### `ConfirmModal` — `common/ConfirmModal`
 Ready-made confirmation dialog: `title`, `description`, `isOpen`, `isLoading`, `onConfirm`, `onCancel`, `onClose`.
+
+### `EditValuesModal<TForm, TResult>` — `common/EditValuesModal`
+Reusable "edit a few values" dialog. The caller describes the fields, passes a zod schema and initial values, and receives the **parsed** values in `onSubmit`. The form remounts on every open, so it always starts from `defaultValues`. Enter submits; the submit button is disabled until the form is valid and dirty.
+
+| Prop | Purpose |
+|---|---|
+| `isOpen`, `onClose`, `isLoading` | Modal state (`isLoading` → overlay + button spinner) |
+| `category`, `title`, `description?` | Header copy |
+| `fields: IEditValueField<TForm>[]` | `{ name, label, type?: 'text' \| 'number', hint?, placeholder?, min?, max?, step? }` |
+| `schema: ZodType<TResult, TForm>` | Validation; may transform (e.g. string → number) |
+| `defaultValues` | Initial raw values (`TForm`) |
+| `submitLabel?` | Default `"Save"` |
+| `onSubmit(values: TResult)` | Called with parsed values; close the modal from the mutation's `onSuccess` |
+
+`TForm` is what the inputs hold (strings for number inputs), `TResult` is the schema output. Keep the schema in a `*.scheme.ts` and export both `z.input` and `z.output` types:
+
+```tsx
+<EditValuesModal<TUserBalanceForm, TUserBalanceValues>
+  isOpen={isOpen}
+  onClose={close}
+  category="Users · Balance"
+  title="Edit balance"
+  fields={BALANCE_FIELDS}
+  schema={userBalanceSchema}
+  defaultValues={{ balance: '12.0' }}
+  isLoading={mutation.isPending}
+  onSubmit={({ balance }) => mutation.mutate({ userId, payload: { balance } }, { onSuccess: close })}
+/>
+```
 
 ### `PortalDropdown` — `ui/PortalDropdown`
 Positions `children` in a portal under `anchorRef` while `isOpen`, tracking scroll/resize. Used by `Select`; use it for any custom popover that must escape `overflow: hidden`.
@@ -161,7 +204,7 @@ Context-driven table. Configure with props, render with parts.
 Define `columns` as a module-level constant typed `ITableColumn<Row>[]`.
 
 ### `Tabs<T>` — `ui/Tabs`
-Segmented tabs: `items: { key: T; label; count? }[]`, `value: T`, `onChange(key)`.
+Segmented tabs: `items: { key: T; label; count? }[]`, `value: T`, `onChange(key)`. Below 576px the tabs stretch to the full width (each tab `flex: 1`).
 
 ### `StatCard` — `ui/StatCard`
 Metric tile: `label` (mono eyebrow), `value`, optional `sub`, `className`.
@@ -172,6 +215,22 @@ Metric tile: `label` (mono eyebrow), `value`, optional `sub`, `className`.
 
 ### `PageHeader` — `ui/PageHeader`
 Dashboard page header: `eyebrow` (with accent dot), `title` (`h1`), optional `count` chip, `description`, `actions` (right side), `children` (extra right-side content).
+
+### `Panel` — `ui/Panel`
+Solid section container for dashboard pages (`--card` background, `--line` border, `--radius-md`). Use it for every content block on a detail page so sections look the same.
+
+| Prop | Purpose |
+|---|---|
+| `title?` | Mono uppercase heading (`h2`) |
+| `titleId?` | `id` for the heading; the section gets `aria-labelledby` |
+| `actions?` | Right side of the header (tabs, buttons). Below 576px the header stacks and actions stretch to full width |
+| `className`, `children` | |
+
+```tsx
+<Panel title="Activity" titleId="user-activity-title" actions={<Tabs … />}>
+  …
+</Panel>
+```
 
 ### `PageContent` — `ui/PageContent`
 Padded content container under `PageHeader`.

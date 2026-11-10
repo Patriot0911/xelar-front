@@ -118,7 +118,7 @@ Pages stay thin; data fetching happens inside the feature view. Dynamic segments
 | `/dashboard/twitch-apps` | `TwitchAppsTable` (+ `EditTwitchAppModal`, `DeleteTwitchApp`); header: `AddTwitchApp` → `CreateTwitchAppModal`, `ExternalButton` to the Twitch dev console | `useListTwitchAppsQuery`, app mutations |
 | `/dashboard/twitch-subscriptions` | `TwitchSubscriptionsView`: `TwitchSubscriptionsTable` (local records) and `RawTwitchSubscriptionsTable` (raw EventSub) | twitch subscription queries / delete mutations |
 | `/dashboard/users` | `UsersTable` (paginated, row click → detail) | `useUsersQuery` |
-| `/dashboard/users/[userId]` | `UserDetailView`: account, `RolesCard`, `BalanceCard`, `SessionsCard`, `NotificationLogsCard` | `useUserDetailQuery`, `useUserSessionsQuery`, `useRolesQuery`, user mutations |
+| `/dashboard/users/[userId]` | `UserDetailView`: `UserProfilePanel` (identity + block/unblock, info grid with `UserBalanceItem` → `EditValuesModal`, inline `UserRolesItem`), `UserActivityPanel` (sub-tabs: paginated `UserLogsTable`, `UserSessionsTable` with terminate action) | `useUserDetailQuery`, `useUserNotificationLogsQuery`, `useUserSessionsQuery`, `useRolesQuery`, user mutations |
 | `/dashboard/streamers` | `StreamersTable` | `useStreamersQuery` |
 | `/dashboard/streamers/[streamerId]` | `StreamerDetailView`: `AccountCard`, `FlagsCard`, `NotificationLogsCard`; sync action | `useStreamerDetailQuery`, `useStreamerNotificationLogsQuery`, sync/update mutations |
 | `/dashboard/roles` | `RolesTable` (+ `CreateRoleModal` for edit); header: `AddRole` | `useRolesQuery`, role mutations |

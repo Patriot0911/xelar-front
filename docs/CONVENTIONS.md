@@ -163,6 +163,9 @@ Rules:
 - Status colours: `--status-ok` (done/success), `--status-warn`, `--status-error`; accent for "active / in progress".
 - State via `data-*` attributes or modifier classes: `&[data-active='true']`, `styles[variant]`, `styles[status]`.
 - Breakpoints: 576 / 768 / 992 / 1200 px. Mobile side padding 16–20px; no horizontal page scroll.
+- **Mobile (≤576px) is vertical-first:** grids collapse to one column, headers stack. A text button or tab group that is the only action in its row (a sub-tab switch, a single "Block user" button) stretches to the full width so it doesn't look off-centre. Icon-only buttons keep their size.
+- Content sections on dashboard pages use `Panel` (solid `--card` background, `--radius-md`); inner cells use `--surface` + `--radius-sm`. Don't leave sections transparent.
+- Dates in tables and detail views: `formatDateTime` from `lib/utils.ts`.
 - Global styles (`.react-flow …`) from inside a module: `:global(.class)` nested under a local class.
 - Respect `prefers-reduced-motion` for looping animations; wrap framer-motion trees in `MotionConfig reducedMotion="user"` where appropriate.
 
@@ -206,8 +209,10 @@ Older code does not always follow the rules above. Don't copy these patterns int
 | Props declared inline in `index.tsx` (`PortalDropdown`, page `IProps`) | `ComponentName.d.ts` |
 | Query keys as `enum` inside service files (`AuthQueryKey`, `DiscordQueryKey`, `TwitchAppsQueryKey`, …) vs `as const` objects in `lib/constants` (`StreamersQueryKey`, `UsersQueryKey`, …) | `as const` object in `lib/constants/<area>.ts` |
 | Child components nested directly in the parent folder (`AddNotificationModal/ChannelSearchField/`) or as loose files (`GuildManagementView/GuildLogsSection.tsx`) | `Parent/components/Child/` |
-| Small helper components defined inside a view file (`StatusBadge` in `UsersTable`) | Own folder under `components/` once reused or non-trivial |
-| `Button` variants `ghost` / `danger` and `Loading` reference undefined variables (`--color-primary`, `--color-error-500`, `--color-light`) | Tokens from `_colors.scss` |
+| Small helper components defined inside a view file (e.g. inline helpers in `StreamerDetailView`; `UserStatusBadge` is the extracted example) | Own folder under `components/` once reused or non-trivial |
+| `Loading` references undefined variables; some modules use non-existent `--surface-1` (renders transparent) | Tokens from `_colors.scss` (`--surface`, `--surface-2`, `--card`) |
+| `Button` `size` prop has no matching styles (`sm` / `md` / `lg` look the same) | Size via `className` until sizes are implemented |
+| Local `formatDate` helpers (`StreamerDetailView`, `ProfileModal` tabs) | `formatDateTime` from `lib/utils.ts` |
 | Hard-coded colours in some modules (`#2633c0` in `Button`) | Tokens |
 | `getInitials` duplicated in `lib/utils.ts` and `components/dashboard/nav-data.ts` | `lib/utils.ts` |
 | Both `next.config.ts` and `next.config.js` exist | One config file |

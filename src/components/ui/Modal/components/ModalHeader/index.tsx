@@ -9,9 +9,11 @@ const ModalHeader = ({ category, description, title, }: IModalHeaderProps) => {
       <span className={styles.headerTitle}>
         {title}
       </span>
-      <p className={styles.headerSub}>
-        {description}
-      </p>
+      {description && (
+        <p className={styles.headerSub}>
+          {description}
+        </p>
+      )}
     </header>
   );
 }

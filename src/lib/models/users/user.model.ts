@@ -1,3 +1,5 @@
+import { IGenericList, IGenericPagination } from '@/lib/models/generic-response.model';
+
 export type AccountStatus = 'active' | 'blocked';
 export type NotificationCostType = 'personal' | 'credit' | 'guild';
 export type NotificationStatus = 'active' | 'suspended';
@@ -75,6 +77,10 @@ export interface IUserNotificationLog {
   errorMessage: string | null;
   createdAt: string;
 }
+
+export interface IUserNotificationLogsParams extends IGenericPagination {}
+
+export interface IUserNotificationLogsResponse extends IGenericList<IUserNotificationLog> {}
 
 export interface IUpdateUserRolesPayload {
   roleIds: string[];

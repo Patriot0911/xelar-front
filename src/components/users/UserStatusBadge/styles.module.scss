@@ -1,0 +1,32 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.active {
+  color: var(--status-ok);
+  background: rgba(93, 211, 158, 0.1);
+  border: 1px solid rgba(93, 211, 158, 0.22);
+}
+
+.blocked {
+  color: var(--status-error);
+  background: rgba(255, 107, 149, 0.1);
+  border: 1px solid rgba(255, 107, 149, 0.22);
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
