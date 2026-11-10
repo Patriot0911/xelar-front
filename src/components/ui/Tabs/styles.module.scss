@@ -2,7 +2,8 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 4px;
+  height: var(--control-height-sm); // same height as SearchInput & co. in a ListToolbar
+  padding: 3px;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
@@ -13,7 +14,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 32px;
+  height: 100%;
   padding: 0 12px;
   border: none;
   border-radius: var(--radius-sm);

@@ -7,6 +7,7 @@ import { ITableColumn } from '@/components/ui/Table/Table';
 import Table from '@/components/ui/Table';
 import UserStatusBadge from '@/components/users/UserStatusBadge';
 import SearchInput from '@/components/ui/SearchInput';
+import ListToolbar from '@/components/ui/ListToolbar';
 import useListSearch from '@/hooks/shared/useListSearch';
 import TablePagination from '@/components/ui/Table/TablePagination';
 import useUsersQuery from '@/hooks/queries/users/useUsersQuery';
@@ -76,15 +77,17 @@ const UsersTable = () => {
 
   return (
     <>
-      <div className={styles.toolbar}>
-        <SearchInput
-          value={value}
-          onChange={setValue}
-          placeholder="Search by name, email, Discord, Twitch or ID"
-          label="Search users"
-          isSearching={isFetching && !isLoading}
-        />
-      </div>
+      <ListToolbar
+        end={(
+          <SearchInput
+            value={value}
+            onChange={setValue}
+            placeholder="Search by name, email, Discord, Twitch or ID"
+            label="Search users"
+            isSearching={isFetching && !isLoading}
+          />
+        )}
+      />
       <Table<IUserListItem>
         columns={columns}
         data={data?.items ?? []}

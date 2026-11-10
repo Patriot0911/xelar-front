@@ -5,6 +5,9 @@
   // General
   --glow-intensity: 0.22;
 
+  // Control heights — one size for everything that sits in a row together (list toolbars: search, tabs, filters)
+  --control-height-sm: 38px;
+
   // Radius
   --radius-sm:   8px;
   --radius-md:   14px;

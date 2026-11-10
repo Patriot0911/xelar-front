@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LuSearch } from 'react-icons/lu';
 import { ITableColumn } from '@/components/ui/Table/Table';
 import Table from '@/components/ui/Table';
 import TablePagination from '@/components/ui/Table/TablePagination';
-import Input from '@/components/ui/Input';
+import SearchInput from '@/components/ui/SearchInput';
+import ListToolbar from '@/components/ui/ListToolbar';
+import useListSearch from '@/hooks/shared/useListSearch';
 import useStreamersQuery from '@/hooks/queries/streamers/useStreamersQuery';
 import { STREAMERS_DEFAULT_PAGE_SIZE } from '@/lib/constants/streamers';
 import { IStreamerListItem } from '@/lib/models/streamers/streamer.model';
@@ -77,25 +78,22 @@ const columns: ITableColumn<IStreamerListItem>[] = [
 export function StreamersTable() {
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
-  const { data, isLoading } = useStreamersQuery({ page, pageSize: STREAMERS_DEFAULT_PAGE_SIZE, search: search || undefined });
+  const { value, setValue, search } = useListSearch(() => setPage(1));
+  const { data, isLoading, isFetching } = useStreamersQuery({ page, pageSize: STREAMERS_DEFAULT_PAGE_SIZE, search: search || undefined });
 
   return (
     <>
-      <div className={styles.toolbar}>
-        <Input
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
-          }}
-          placeholder="Search by name or login…"
-          autoComplete="off"
-          hideOptionalFlag
-          className={styles.searchWrap}
-          icon={<LuSearch size={14} />}
-        />
-      </div>
+      <ListToolbar
+        end={(
+          <SearchInput
+            value={value}
+            onChange={setValue}
+            placeholder="Search by name or login"
+            label="Search streamers"
+            isSearching={isFetching && !isLoading}
+          />
+        )}
+      />
 
       <Table<IStreamerListItem>
         columns={columns}
@@ -103,7 +101,7 @@ export function StreamersTable() {
         rowKey="id"
         isLoading={isLoading}
         pageSize={STREAMERS_DEFAULT_PAGE_SIZE}
-        emptyText="No streamers found"
+        emptyText={search ? `No streamers match “${search}”` : 'No streamers found'}
         onRowClick={(streamer) => router.push(`/dashboard/streamers/${streamer.id}`)}
       >
         <Table.Header />

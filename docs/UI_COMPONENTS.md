@@ -119,6 +119,16 @@ Main props (`ISelectProps<O>`): `options: O[]`, `value`, `onChange(value)`, `lab
 </FormSelect>
 ```
 
+### `ListToolbar` — `ui/ListToolbar`
+The bar above every list/table: `start` (filters, `Tabs`) left, `end` (`SearchInput`, other controls) right; stacks under 576px. Owns the spacing to the table (16px) and the control height `--control-height-sm` (38px) that `SearchInput` and `Tabs` share — any new toolbar control must use that token so the bar never changes height between pages. Don't build ad-hoc `.toolbar` divs or put a form `Input` in a toolbar.
+
+```tsx
+<ListToolbar
+  start={<Tabs items={tabs} value={tab} onChange={setTab} />}
+  end={<SearchInput value={value} onChange={setValue} label="Search users" isSearching={isFetching && !isLoading} />}
+/>
+```
+
 ### `SearchInput` — `ui/SearchInput`
 Compact toolbar search: leading icon (spinner while `isSearching`), clear button, Escape clears, full width under 576px. Controlled: `value`, `onChange(value)`, `placeholder`, `label` (a11y name), `isSearching`, `className` + native input attributes. Pair it with `useListSearch` (`hooks/shared`), which debounces the term (300 ms) and resets paging:
 

@@ -10,6 +10,7 @@ import useListSearch from '@/hooks/shared/useListSearch';
 import Tabs from '@/components/ui/Tabs';
 import { TabItem } from '@/components/ui/Tabs/Tabs';
 import SearchInput from '@/components/ui/SearchInput';
+import ListToolbar from '@/components/ui/ListToolbar';
 import EditNotificationModal from '@/components/discord/EditNotificationModal';
 import ConfirmModal from '@/components/common/ConfirmModal';
 import BotNotificationsTable from '@/components/discord/BotNotificationsTable';
@@ -57,16 +58,18 @@ const AllNotificationsView = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.toolbar}>
-        <Tabs<GuildNotificationType> items={tabs} value={activeType} onChange={setActiveType} />
-        <SearchInput
-          value={value}
-          onChange={setValue}
-          placeholder="Search by streamer or event"
-          label="Search notifications"
-          isSearching={activeQuery.isFetching && !activeQuery.isLoading}
-        />
-      </div>
+      <ListToolbar
+        start={<Tabs<GuildNotificationType> items={tabs} value={activeType} onChange={setActiveType} />}
+        end={(
+          <SearchInput
+            value={value}
+            onChange={setValue}
+            placeholder="Search by streamer or event"
+            label="Search notifications"
+            isSearching={activeQuery.isFetching && !activeQuery.isLoading}
+          />
+        )}
+      />
 
       <div role="tabpanel" aria-label={GUILD_NOTIFICATION_TYPE_LABELS[activeType]}>
         {activeType === GuildNotificationType.Bot ? (
