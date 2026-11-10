@@ -13,14 +13,12 @@ const useUpdateUserBalanceMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation<void, Error, IUpdateUserBalanceVars>({
+    meta: { errorMessage: 'Failed to update balance' },
     mutationFn: ({ userId, payload }) => UsersService.updateUserBalance(userId, payload),
     onSuccess: (_, { userId }) => {
       toast.success('Balance updated');
       queryClient.invalidateQueries({ queryKey: [UsersQueryKey.Detail, userId] });
       queryClient.invalidateQueries({ queryKey: [UsersQueryKey.List] });
-    },
-    onError: (err) => {
-      toast.error(err.message ?? 'Failed to update balance');
     },
   });
 };

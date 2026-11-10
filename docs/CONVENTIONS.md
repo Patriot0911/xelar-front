@@ -177,8 +177,12 @@ Rules:
 - Components never import `apiClient`. Flow: **service → hook → component** (see [STRUCTURE.md](./STRUCTURE.md#data-layer)).
 - One hook per query / mutation, default export, in `hooks/queries/<area>` or `hooks/mutations/<area>`.
 - Query keys come from a `<Area>QueryKey` constant: `[StreamersQueryKey.Detail, id]`. Include params in the key.
-- Mutations: success toast + `invalidateQueries` for every affected key in `onSuccess`; error toast in `onError`.
-- Query errors are toasted globally (`lib/query-client.ts`) — don't toast them again.
+- Mutations: success toast + `invalidateQueries` for every affected key in `onSuccess`. **No `onError` toast** — `MutationCache` does it; pass `meta: { errorMessage: 'Failed to …' }` for a specific fallback, or `meta: { errorMode: 'silent' }` when the component shows the error inline.
+- Query errors are handled globally (see [STRUCTURE.md → Error handling](./STRUCTURE.md#error-handling)) — don't toast them in components. Auxiliary queries (modals, cells, shell widgets) set `meta: { errorMode: 'toast' }`.
+- Error type is always `ApiError` (registered as TanStack's `defaultError`). Show `error.message` or `getErrorMessage(error, fallback)`; never print raw backend text.
+- Every service GET ends with `.then(expectList | expectArray | expectObject<TResponse>(endpoint))`.
+- A page's main entity uses `useSuspenseQuery` and is rendered inside `AsyncBoundary` (in the route page); independent sections get their own `AsyncBoundary compact`. Never branch on `isLoading` / `!data` for suspense queries.
+- Don't show an empty state when a request failed: let the error reach a boundary (default) or render `ErrorFallback`.
 - Queries that require auth set `enabled: status === 'authenticated'` (see `useMeQuery`).
 - Pagination: `page` state in the view, page size from a `<AREA>_DEFAULT_PAGE_SIZE` constant, `TablePagination` with `meta.count`. Add `placeholderData: (prev) => prev` so the table keeps rows while the next page loads, and step back a page when the current one becomes empty after a delete.
 

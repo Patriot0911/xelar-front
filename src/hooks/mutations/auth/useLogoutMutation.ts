@@ -2,19 +2,16 @@ import { useMutation } from '@tanstack/react-query';
 import { useAppDispatch } from '../../redux';
 import AuthService from '@/lib/services/auth.service';
 import { logout } from '@/store/slices/authSlice';
-import { IGenericErrorResponseModel } from '@/lib/models/generic-response.model';
-import { toast } from 'sonner';
+import { ApiError } from '@/lib/errors';
 
 const useLogoutMutation = () => {
   const dispatch = useAppDispatch();
 
-  return useMutation<void, IGenericErrorResponseModel, void>({
+  return useMutation<void, ApiError, void>({
+    meta: { errorMessage: 'Failed to logout' },
     mutationFn: AuthService.logout,
     onSuccess: () => {
       dispatch(logout());
-    },
-    onError: (err) => {
-      toast.error(err.message ?? 'Failed to logout');
     },
   });
 };

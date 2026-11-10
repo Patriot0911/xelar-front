@@ -8,14 +8,12 @@ const useSyncStreamerMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation<IStreamerItem, Error, string>({
+    meta: { errorMessage: 'Failed to sync streamer' },
     mutationFn: (streamerId) => StreamersService.syncStreamer(streamerId),
     onSuccess: (_, streamerId) => {
       toast.success('Streamer synced from Twitch');
       queryClient.invalidateQueries({ queryKey: [StreamersQueryKey.Detail, streamerId] });
       queryClient.invalidateQueries({ queryKey: [StreamersQueryKey.List] });
-    },
-    onError: (err) => {
-      toast.error(err.message ?? 'Failed to sync streamer');
     },
   });
 };

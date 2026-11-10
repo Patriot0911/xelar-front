@@ -1,4 +1,5 @@
 import { apiClient } from '@/lib/api-client';
+import { expectArray, expectList, expectObject } from '@/lib/errors';
 import {
   IUpdateUserBalancePayload,
   IUpdateUserRolesPayload,
@@ -14,15 +15,15 @@ import {
 
 const UsersService = {
   getUsers: async (params?: IUsersListParams): Promise<IUsersListResponse> => {
-    return apiClient.get('/api/users', { params });
+    return apiClient.get('/api/users', { params }).then(expectList<IUsersListResponse>('/api/users'));
   },
 
   getUserById: async (id: string): Promise<IUserItem> => {
-    return apiClient.get(`/api/users/${id}`);
+    return apiClient.get(`/api/users/${id}`).then(expectObject<IUserItem>(`/api/users/${id}`));
   },
 
   getUserSessions: async (userId: string): Promise<IUserSession[]> => {
-    return apiClient.get(`/api/users/${userId}/sessions`);
+    return apiClient.get(`/api/users/${userId}/sessions`).then(expectArray<IUserSession[]>(`/api/users/${userId}/sessions`));
   },
 
   deleteUserSession: async (userId: string, sessionId: string): Promise<void> => {
@@ -42,14 +43,14 @@ const UsersService = {
   },
 
   getUserSubscriptions: async (userId: string): Promise<IUserSubscriptions> => {
-    return apiClient.get(`/api/users/${userId}/subscriptions`);
+    return apiClient.get(`/api/users/${userId}/subscriptions`).then(expectObject<IUserSubscriptions>(`/api/users/${userId}/subscriptions`));
   },
 
   getUserNotificationLogs: async (
     userId: string,
     params?: IUserNotificationLogsParams,
   ): Promise<IUserNotificationLogsResponse> => {
-    return apiClient.get(`/api/users/${userId}/notification-logs`, { params });
+    return apiClient.get(`/api/users/${userId}/notification-logs`, { params }).then(expectList<IUserNotificationLogsResponse>(`/api/users/${userId}/notification-logs`));
   },
 };
 

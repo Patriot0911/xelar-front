@@ -8,9 +8,9 @@ import GuildSettings from './GuildSettings';
 import styles from '../styles.module.scss';
 
 const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
-  const { data: guild,  isLoading: infoLoading } = useDiscordGuildInfoQuery(guildId);
+  const { data: guild } = useDiscordGuildInfoQuery(guildId);
 
-  const iconUrl = guild?.icon
+  const iconUrl = guild.icon
     ? `https://cdn.discordapp.com/icons/${guildId}/${guild.icon}${guild.icon.startsWith('a_') ? '.gif' : '.png'}?size=128`
     : null;
 
@@ -19,13 +19,13 @@ const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
       {/* Guild identity */}
       <div className={styles.identity}>
         {iconUrl ? (
-          <img src={iconUrl} alt={guild?.name ?? ''} className={styles.guildIcon} />
+          <img src={iconUrl} alt={guild.name} className={styles.guildIcon} />
         ) : (
           <div className={styles.guildIconFallback}>
-            {guild?.name?.[0]?.toUpperCase() ?? '?'}
+            {guild.name?.[0]?.toUpperCase() ?? '?'}
           </div>
         )}
-        <h2 className={styles.guildName}>{guild?.name ?? '—'}</h2>
+        <h2 className={styles.guildName}>{guild.name ?? '—'}</h2>
       </div>
 
       {/* Stats */}
@@ -33,22 +33,22 @@ const GuildInfoPanel = ({ guildId }: IGuildInfoPanelProps) => {
         <div className={styles.stat}>
           <LuUsers size={12} className={styles.statIcon} />
           <span className={styles.statLabel}>Members</span>
-          <span className={styles.statValue}>{guild?.memberCount ?? '—'}</span>
+          <span className={styles.statValue}>{guild.memberCount ?? '—'}</span>
         </div>
         <div className={styles.stat}>
           <LuCircleDot size={12} className={styles.statIcon} />
           <span className={styles.statLabel}>Online</span>
-          <span className={styles.statValue}>{guild?.presenceCount ?? '—'}</span>
+          <span className={styles.statValue}>{guild.presenceCount ?? '—'}</span>
         </div>
         <div className={styles.stat}>
           <LuBell size={12} className={styles.statIcon} />
           <span className={styles.statLabel}>Notifications</span>
-          <span className={styles.statValue}>{guild?.notificationCount ?? '—'}</span>
+          <span className={styles.statValue}>{guild.notificationCount ?? '—'}</span>
         </div>
         <div className={styles.stat}>
           <LuCoins size={12} className={styles.statIcon} />
           <span className={styles.statLabel}>Balance</span>
-          <span className={styles.statValue}>{guild?.balance ?? '—'}</span>
+          <span className={styles.statValue}>{guild.balance ?? '—'}</span>
         </div>
       </div>
 

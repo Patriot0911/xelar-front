@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { apiClient, apiConfig } from '../api-client';
+import { expectArray, expectObject } from '@/lib/errors';
 import { IAuthMeResponse, IAuthResponseModel, ILoginByEmailModel, IRegisterByEmailModel, ISessionModel, IUpdateProfilePayload } from '../models/auth';
 
 export const REFRESH_TOKEN_KEY = 'refresh_token';
@@ -59,7 +60,7 @@ class AuthService {
   }
 
   static getMeUser(): Promise<IAuthMeResponse> {
-    return apiClient.get('/api/auth/me');
+    return apiClient.get('/api/auth/me').then(expectObject<IAuthMeResponse>('/api/auth/me'));
   }
 
   static logout(): Promise<void> {
@@ -71,7 +72,7 @@ class AuthService {
   }
 
   static getSessions(): Promise<ISessionModel[]> {
-    return apiClient.get('/api/auth/sessions');
+    return apiClient.get('/api/auth/sessions').then(expectArray<ISessionModel[]>('/api/auth/sessions'));
   }
 
   static revokeSession(sessionId: string): Promise<boolean> {

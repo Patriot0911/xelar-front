@@ -1,4 +1,5 @@
 import { apiClient } from '@/lib/api-client';
+import { expectList, expectObject } from '@/lib/errors';
 import { IGenericPagination } from '@/lib/models/generic-response.model';
 import {
   IDeleteTwitchSubscriptionPayload,
@@ -13,7 +14,7 @@ export enum TwitchSubscriptionQueryKey {
 
 class TwitchSubscriptionService {
   static getLocalSubscriptions(params?: IGenericPagination): Promise<TTwitchLocalSubscriptionsList> {
-    return apiClient.get('/api/admin/twitch/events', { params });
+    return apiClient.get('/api/admin/twitch/events', { params }).then(expectList<TTwitchLocalSubscriptionsList>('/api/admin/twitch/events'));
   }
 
   static deleteLocalSubscription(id: string): Promise<void> {
@@ -21,7 +22,7 @@ class TwitchSubscriptionService {
   }
 
   static getRawSubscriptions(clientId: string, after?: string): Promise<IRawTwitchSubscriptionsResponse> {
-    return apiClient.get('/api/admin/twitch/subscriptions/raw', { params: { clientId, after } });
+    return apiClient.get('/api/admin/twitch/subscriptions/raw', { params: { clientId, after } }).then(expectObject<IRawTwitchSubscriptionsResponse>('/api/admin/twitch/subscriptions/raw'));
   }
 
   static deleteTwitchSubscription(payload: IDeleteTwitchSubscriptionPayload): Promise<void> {

@@ -4,6 +4,8 @@ import { ITwitchAppShortModel } from '@/lib/models/twitch/twitch-app.model';
 
 const useGetTwitchAppQuery = (appId: string = '', enabled: boolean) => {
   return useQuery<ITwitchAppShortModel>({
+    // Auxiliary data: a failure must not replace the page, so it is reported as a toast.
+    meta: { errorMode: 'toast' },
     queryKey: [TwitchAppsQueryKey.Selected],
     enabled,
     queryFn: () => TwitchAppService.getTwitchApp(appId!),

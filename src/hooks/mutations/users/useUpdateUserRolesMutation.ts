@@ -13,14 +13,12 @@ const useUpdateUserRolesMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation<void, Error, IUpdateUserRolesVars>({
+    meta: { errorMessage: 'Failed to update roles' },
     mutationFn: ({ userId, payload }) => UsersService.updateUserRoles(userId, payload),
     onSuccess: (_, { userId }) => {
       toast.success('Roles updated');
       queryClient.invalidateQueries({ queryKey: [UsersQueryKey.Detail, userId] });
       queryClient.invalidateQueries({ queryKey: [UsersQueryKey.List] });
-    },
-    onError: (err) => {
-      toast.error(err.message ?? 'Failed to update roles');
     },
   });
 };

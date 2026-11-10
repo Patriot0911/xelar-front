@@ -102,7 +102,8 @@ Older feature folders sometimes nest sub-components directly (`AddNotificationMo
 ```
 lib/
 ├── api-client.ts     # Axios instance + interceptors
-├── query-client.ts   # TanStack QueryClient (default staleTime 60s, retry 1, global error toast)
+├── query-client.ts   # TanStack QueryClient: retry / throwOnError / toast policy, typed meta (see Error handling)
+├── errors/           # ApiError, toApiError, getErrorMessage, query error policy, response contract checks
 ├── utils.ts          # cn(), getInitials(), bit-flag helpers
 ├── services/         # One object/class per backend resource: <resource>.service.ts
 ├── models/           # API request/response types: <area>/<entity>.model.ts (+ index.ts barrel)
@@ -132,14 +133,14 @@ Component ──► use<Thing>Query / use<Action>Mutation ──► <Resource>Se
 - Adds `Authorization: Bearer <token>` from `AuthService`.
 - On `401` it refreshes the token once, queues parallel requests while refreshing, and dispatches `logout()` if the refresh fails.
 - Unwraps the backend envelope `{ status, message, data }` → resolves with **`data` directly**. Service return types are therefore the payload type, not `AxiosResponse`.
-- Rejects with the backend error body (`{ status: false, message }`), so `error.message` is always displayable.
+- Rejects with an **`ApiError`** (`lib/errors/api-error.ts`) — never a raw Axios error or backend body. `error.message` is always safe to show.
 
 **Services** (`lib/services/*.service.ts`) — thin, typed wrappers, one method per endpoint:
 
 ```ts
 const StreamersService = {
   getStreamers: async (params?: IStreamersListParams): Promise<IStreamersListResponse> =>
-    apiClient.get('/api/streamers', { params }),
+    apiClient.get('/api/streamers', { params }).then(expectList<IStreamersListResponse>('/api/streamers')),
 };
 export default StreamersService;
 ```
@@ -154,9 +155,37 @@ const useStreamersQuery = (params?: IStreamersListParams) =>
   });
 ```
 
-**Mutation hooks** — own their success / error toasts and invalidate the affected query keys in `onSuccess`.
+Every GET checks the response envelope with `expectList` / `expectArray` / `expectObject` (`lib/errors/contract.ts`). A mismatch becomes an `ApiError` of kind `contract`, so a client deployed ahead of the API fails the *query* (handled below) instead of crashing a component on `undefined.items`.
 
-Query errors are already toasted globally by `queryClient`; do not add another toast in components for query failures.
+**Mutation hooks** — own their success toast and invalidate the affected query keys in `onSuccess`. Error toasts are global; a hook only sets `meta: { errorMessage }` (fallback text) or `meta: { errorMode: 'silent' }` (the UI shows the error inline).
+
+## Error handling
+
+```
+apiClient ──► ApiError { kind, status, code, message (user-safe), details }
+                 │
+   queryFn ──────┤  (+ contract checks)                 mutationFn ──► MutationCache.onError ──► toast
+                 ▼
+   QueryClient defaults (lib/query-client.ts, policy in lib/errors/query-errors.ts)
+     retry        network / 5xx only, max 2
+     throwOnError first load failed (no data yet) ──► nearest boundary
+     onError      data already on screen (background refetch) ──► toast, deduplicated by kind
+                 ▼
+   AsyncBoundary (section)  →  app/dashboard/error.tsx (page, shell stays)  →  app/error.tsx  →  app/global-error.tsx
+```
+
+**`ApiError.kind`**: `network`, `canceled`, `unauthorized`, `forbidden`, `not_found`, `validation`, `business`, `server`, `contract`, `unknown`. Messages and titles per kind: `lib/constants/errors.ts`. The backend's message is shown only for 4xx (`fromServer: true`); 5xx and contract errors always get our own text. A Nest "Cannot GET /api/…" 404 (route missing on an older backend) is classified as `contract`.
+
+**Query `meta.errorMode`**
+| Mode | First-load error | Background error | Use for |
+|---|---|---|---|
+| `boundary` (default) | thrown to the nearest boundary | toast | page / section data |
+| `toast` | toast, never thrown | toast | auxiliary data: modals, shell widgets (`useMeQuery`), table cells |
+| `silent` | nothing | nothing | the component renders `error` itself |
+
+Never thrown or toasted: `unauthorized` (api-client refreshes or logs out), `canceled`, Discord re-auth codes (rendered as `DiscordReconnectBlocker`).
+
+**Suspense queries** (`useSuspenseQuery`) are used for the main entity of a page (`useUserDetailQuery`, `useDiscordGuildsQuery`, `useDiscordGuildInfoQuery`): `data` is always defined, loading and errors belong to the surrounding `AsyncBoundary`. Paginated tables keep `useQuery` + `placeholderData` so changing pages doesn't re-suspend.
 
 ## Auth flow
 

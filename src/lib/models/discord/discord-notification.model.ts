@@ -55,8 +55,6 @@ export interface IGuildBotNotificationsResponse extends IGenericList<IDiscordBot
 
 export interface IGuildWebhookNotificationsResponse extends IGenericList<IWebhookNotificationModel> {}
 
-export type DiscordErrorCode = 'DISCORD_NOT_CONNECTED' | 'DISCORD_TOKEN_REVOKED';
-
 export interface ICreateDiscordNotificationPayload {
   broadcasterId: string;
   event: string;
@@ -92,8 +90,3 @@ export interface IUpdateWebhookNotificationPayload {
   gameFilters?: string[];
 }
 
-export function isDiscordAuthError(error: unknown): boolean {
-  if (!error || typeof error !== 'object') return false;
-  const code = (error as Record<string, unknown>).data;
-  return code === 'DISCORD_NOT_CONNECTED' || code === 'DISCORD_TOKEN_REVOKED';
-}

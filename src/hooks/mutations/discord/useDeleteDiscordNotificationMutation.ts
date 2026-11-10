@@ -6,14 +6,12 @@ const useDeleteDiscordNotificationMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation<void, Error, string>({
+    meta: { errorMessage: 'Failed to delete notification' },
     mutationFn: DiscordService.deleteDiscordNotification,
     onSuccess: () => {
       toast.success('Notification deleted');
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.GuildNotifications] });
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.AllNotifications] });
-    },
-    onError: () => {
-      toast.error('Failed to delete notification');
     },
   });
 };

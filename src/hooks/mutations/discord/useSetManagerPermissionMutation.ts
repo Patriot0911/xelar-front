@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import DiscordService, { DiscordQueryKey } from '@/lib/services/discord.service';
-import { IGenericErrorResponseModel } from '@/lib/models/generic-response.model';
+import { ApiError } from '@/lib/errors';
 
 interface ISetManagerPermissionVars {
   guildId: string;
@@ -11,15 +11,12 @@ interface ISetManagerPermissionVars {
 const useSetManagerPermissionMutation = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<{ success: boolean; }, IGenericErrorResponseModel, ISetManagerPermissionVars>({
+  return useMutation<{ success: boolean; }, ApiError, ISetManagerPermissionVars>({
     mutationFn: ({ guildId, permission }: ISetManagerPermissionVars) =>
       DiscordService.setManagerPermission(guildId, permission),
     onSuccess: (_, { guildId }) => {
       toast.success('Manager permission updated');
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.GuildInfo, guildId] });
-    },
-    onError: (err) => {
-      toast.error(err.message ?? 'Something went wrong');
     },
   });
 };

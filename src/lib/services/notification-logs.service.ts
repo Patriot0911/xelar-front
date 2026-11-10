@@ -1,4 +1,5 @@
 import { apiClient } from '../api-client';
+import { expectList } from '@/lib/errors';
 import type { INotificationLogsResponse } from '../models/notification-log.model';
 
 export enum NotificationLogsQueryKey {
@@ -12,13 +13,14 @@ class NotificationLogsService {
     page: number,
     pageSize: number,
   ): Promise<INotificationLogsResponse> {
-    return apiClient.get(`/api/notification-logs/guild/${guildId}`, {
-      params: { page, pageSize },
-    });
+    const endpoint = `/api/notification-logs/guild/${guildId}`;
+    return apiClient
+      .get(endpoint, { params: { page, pageSize } })
+      .then(expectList<INotificationLogsResponse>(endpoint));
   }
 
   static getMyLogs(page: number, pageSize: number): Promise<INotificationLogsResponse> {
-    return apiClient.get('/api/notification-logs/my', { params: { page, pageSize } });
+    return apiClient.get('/api/notification-logs/my', { params: { page, pageSize } }).then(expectList<INotificationLogsResponse>('/api/notification-logs/my'));
   }
 }
 

@@ -3,10 +3,7 @@
 import { useMemo, useState } from 'react';
 import { LuSearch } from 'react-icons/lu';
 import useDiscordGuildsQuery from '@/hooks/queries/discord/useDiscordGuildsQuery';
-import { isDiscordAuthError } from '@/lib/models/discord';
 import DiscordGuildCard from '../DiscordGuildCard';
-import DiscordReconnectBlocker from '../DiscordReconnectBlocker';
-import Loading from '@/components/ui/Loading';
 import Tabs from '@/components/ui/Tabs';
 import type { TabItem } from '@/components/ui/Tabs/Tabs';
 import Input from '@/components/ui/Input';
@@ -22,19 +19,18 @@ const FILTERS: TabItem<TGuildFilter>[] = [
 ];
 
 const DiscordGuildGrid = () => {
-  const { data, isLoading, error } = useDiscordGuildsQuery();
+  // Suspense query: loading, errors and Discord re-auth are handled by the AsyncBoundary on the page.
+  const { data } = useDiscordGuildsQuery();
   const [filter, setFilter] = useState<TGuildFilter>('all');
   const [search, setSearch] = useState('');
 
   const counts = useMemo(() => ({
-    all: data?.length ?? 0,
-    active: data?.filter((guild) => guild.hasBot).length ?? 0,
-    'needs-bot': data?.filter((guild) => !guild.hasBot).length ?? 0,
+    all: data.length,
+    active: data.filter((guild) => guild.hasBot).length,
+    'needs-bot': data.filter((guild) => !guild.hasBot).length,
   }), [data]);
 
   const filteredGuilds = useMemo(() => {
-    if (!data) return [];
-
     const query = search.trim().toLowerCase();
 
     return data.filter((guild) => {
@@ -45,22 +41,7 @@ const DiscordGuildGrid = () => {
     }).sort((a, b) => a.hasBot === b.hasBot ? 0 : a.hasBot ? -1 : 1);
   }, [data, filter, search]);
 
-  if (isDiscordAuthError(error)) {
-    return <DiscordReconnectBlocker />;
-  }
-
-  if (isLoading) {
-    return (
-      <Loading
-        type="block"
-        tone="discord"
-        title="Loading servers"
-        description="Fetching the Discord servers you manage…"
-      />
-    );
-  }
-
-  if (!data?.length) {
+  if (!data.length) {
     return (
       <div className={styles.empty}>
         <p>No Discord servers found where you have management access.</p>

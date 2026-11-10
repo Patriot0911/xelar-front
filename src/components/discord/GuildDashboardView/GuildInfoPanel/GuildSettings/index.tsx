@@ -8,16 +8,11 @@ import { useMemo } from 'react';
 import styles from './styles.module.scss';
 
 const GuildSettings = ({ guildId, }: IGuildSettingsProps) => {
-  const { data: guild,  isLoading: infoLoading } = useDiscordGuildInfoQuery(guildId);
+  const { data: guild } = useDiscordGuildInfoQuery(guildId);
 
   const isAdmin = useMemo<boolean>(
-    () => !infoLoading && (
-      !!guild?.owner
-      || !!(
-        guild?.permissions
-        && hasBitFlagPermission(guild?.permissions, ADMINISTRATOR)
-      )
-    ), [guild]
+    () => guild.owner || Boolean(guild.permissions && hasBitFlagPermission(guild.permissions, ADMINISTRATOR)),
+    [guild],
   );
 
   return (
@@ -25,8 +20,8 @@ const GuildSettings = ({ guildId, }: IGuildSettingsProps) => {
       {/* <span className={styles['settings-title']}>Settings</span> */}
       <ManagerPermissionSelect
         guildId={guildId}
-        managerPermission={guild?.managerPermission}
-        disabled={!isAdmin || infoLoading}
+        managerPermission={guild.managerPermission}
+        disabled={!isAdmin}
       />
     </div>
   );

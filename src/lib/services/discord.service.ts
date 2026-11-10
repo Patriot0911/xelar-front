@@ -1,4 +1,5 @@
 import { apiClient } from '../api-client';
+import { expectArray, expectList, expectObject } from '@/lib/errors';
 import type { IDiscordGuildModel } from '../models/discord/discord-guild.model';
 import type { IDiscordChannelModel } from '../models/discord/discord-channel.model';
 import type { IDiscordRoleModel } from '../models/discord/discord-role.model';
@@ -27,25 +28,25 @@ export enum DiscordQueryKey {
 
 class DiscordService {
   static getGuilds(): Promise<IDiscordGuildModel[]> {
-    return apiClient.get('/api/discord/guilds');
+    return apiClient.get('/api/discord/guilds').then(expectArray<IDiscordGuildModel[]>('/api/discord/guilds'));
   }
 
   static getGuildBotNotifications(
     discordGuildId: string,
     params: IGuildNotificationsParams,
   ): Promise<IGuildBotNotificationsResponse> {
-    return apiClient.get(`/api/twitch-notifications/discord/${discordGuildId}/bot`, { params });
+    return apiClient.get(`/api/twitch-notifications/discord/${discordGuildId}/bot`, { params }).then(expectList<IGuildBotNotificationsResponse>(`/api/twitch-notifications/discord/${discordGuildId}/bot`));
   }
 
   static getGuildWebhookNotifications(
     discordGuildId: string,
     params: IGuildNotificationsParams,
   ): Promise<IGuildWebhookNotificationsResponse> {
-    return apiClient.get(`/api/twitch-notifications/discord/${discordGuildId}/webhook`, { params });
+    return apiClient.get(`/api/twitch-notifications/discord/${discordGuildId}/webhook`, { params }).then(expectList<IGuildWebhookNotificationsResponse>(`/api/twitch-notifications/discord/${discordGuildId}/webhook`));
   }
 
   static getAllNotifications(): Promise<IGuildNotificationsResponse> {
-    return apiClient.get('/api/twitch-notifications');
+    return apiClient.get('/api/twitch-notifications').then(expectObject<IGuildNotificationsResponse>('/api/twitch-notifications'));
   }
 
   static createDiscordNotification(data: ICreateDiscordNotificationPayload): Promise<IDiscordBotNotificationModel> {
@@ -73,15 +74,15 @@ class DiscordService {
   }
 
   static getGuildChannels(guildId: string): Promise<IDiscordChannelModel[]> {
-    return apiClient.get(`/api/discord/guilds/${guildId}/channels`);
+    return apiClient.get(`/api/discord/guilds/${guildId}/channels`).then(expectArray<IDiscordChannelModel[]>(`/api/discord/guilds/${guildId}/channels`));
   }
 
   static getGuildRoles(guildId: string): Promise<IDiscordRoleModel[]> {
-    return apiClient.get(`/api/discord/guilds/${guildId}/roles`);
+    return apiClient.get(`/api/discord/guilds/${guildId}/roles`).then(expectArray<IDiscordRoleModel[]>(`/api/discord/guilds/${guildId}/roles`));
   }
 
   static getGuildInfo(guildId: string): Promise<IDiscordGuildInfoModel> {
-    return apiClient.get(`/api/discord/guilds/${guildId}`);
+    return apiClient.get(`/api/discord/guilds/${guildId}`).then(expectObject<IDiscordGuildInfoModel>(`/api/discord/guilds/${guildId}`));
   }
 
   static setManagerPermission(guildId: string, permission: string | null): Promise<{ success: boolean }> {

@@ -5,7 +5,7 @@ import type {
   IDiscordBotNotificationModel,
   IUpdateDiscordNotificationPayload,
 } from '@/lib/models/discord';
-import { IGenericErrorResponseModel } from '@/lib/models/generic-response.model';
+import { ApiError } from '@/lib/errors';
 
 interface IUpdateDiscordArgs {
   id: string;
@@ -15,15 +15,12 @@ interface IUpdateDiscordArgs {
 const useUpdateDiscordNotificationMutation = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<IDiscordBotNotificationModel, IGenericErrorResponseModel, IUpdateDiscordArgs>({
+  return useMutation<IDiscordBotNotificationModel, ApiError, IUpdateDiscordArgs>({
     mutationFn: ({ id, data }) => DiscordService.updateDiscordNotification(id, data),
     onSuccess: () => {
       toast.success('Notification updated');
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.GuildNotifications] });
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.AllNotifications] });
-    },
-    onError: (err) => {
-      toast.error(err.message ?? 'Something went wrong');
     },
   });
 };
