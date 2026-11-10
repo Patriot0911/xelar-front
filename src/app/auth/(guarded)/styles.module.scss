@@ -8,6 +8,7 @@
 }
 
 .toggleBtn {
+  position: relative;
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: 500;
@@ -17,13 +18,35 @@
   cursor: pointer;
   background: transparent;
   color: var(--ink-2);
-  transition: background 0.18s, color 0.18s;
+  transition: color 0.18s;
+
+  &:hover:not([data-active='true']) {
+    color: var(--ink-1);
+  }
 
   &[data-active='true'] {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
     color: #fff;
-    box-shadow: 0 0 14px var(--accent-glow);
   }
+}
+
+// Shared between tabs via framer-motion layoutId — slides to the active tab.
+.togglePill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+
+.toggleLabel {
+  position: relative;
+  z-index: 1;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .headline {

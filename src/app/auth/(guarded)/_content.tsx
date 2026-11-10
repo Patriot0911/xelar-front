@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -13,10 +14,18 @@ import { LuArrowRight, LuEye, LuEyeOff } from 'react-icons/lu';
 import { TSignInForm, TSignUpForm, signInSchema, signUpSchema } from './auth.scheme';
 import useLoginByEmailMutation from '@/hooks/mutations/auth/useLoginByEmailMutation';
 import useRegisterByEmailMutation from '@/hooks/mutations/auth/useRegisterByEmailMutation';
+import AnimatedHeight from '@/components/ui/AnimatedHeight';
+import {
+  AUTH_MODE_ORDER,
+  AUTH_TOGGLE_TRANSITION,
+  AuthMode,
+  AuthSlideDirection,
+  authFormVariants,
+  authHeadlineVariants,
+  authLabelVariants,
+} from './auth.motion';
 
 import styles from './styles.module.scss';
-
-type AuthMode = 'sign-in' | 'sign-up';
 
 const DISCORD_AUTH_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'}/api/auth/discord`;
 
@@ -143,8 +152,26 @@ function SignUpForm() {
   );
 }
 
+const AUTH_TABS: Array<{ mode: AuthMode; label: string }> = [
+  { mode: 'sign-in', label: 'Sign in' },
+  { mode: 'sign-up', label: 'Sign up' },
+];
+
 export function AuthPageContent() {
-  const [mode, setMode] = useState<AuthMode>('sign-up');
+  const [{ mode, direction }, setState] = useState<{ mode: AuthMode; direction: AuthSlideDirection }>({
+    mode: 'sign-up',
+    direction: 1,
+  });
+
+  const setMode = (next: AuthMode) => {
+    if (next === mode) {
+      return;
+    }
+    setState({
+      mode: next,
+      direction: AUTH_MODE_ORDER[next] > AUTH_MODE_ORDER[mode] ? 1 : -1,
+    });
+  };
 
   const footer = (
     <>
@@ -153,79 +180,127 @@ export function AuthPageContent() {
         <Link href="/privacy">Privacy</Link>
         <Link href="/status">Status</Link>
       </div>
-      <p className={styles.footCta}>
-        {mode === 'sign-up' ? (
-          <>
-            Have an account?{' '}
-            <button className={styles.footLink} onClick={() => setMode('sign-in')}>
-              Sign in
-            </button>
-          </>
-        ) : (
-          <>
-            No account yet?{' '}
-            <button className={styles.footLink} onClick={() => setMode('sign-up')}>
-              Sign up
-            </button>
-          </>
-        )}
-      </p>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.p
+          key={mode}
+          className={styles.footCta}
+          variants={authLabelVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+        >
+          {mode === 'sign-up' ? (
+            <>
+              Have an account?{' '}
+              <button className={styles.footLink} onClick={() => setMode('sign-in')}>
+                Sign in
+              </button>
+            </>
+          ) : (
+            <>
+              No account yet?{' '}
+              <button className={styles.footLink} onClick={() => setMode('sign-up')}>
+                Sign up
+              </button>
+            </>
+          )}
+        </motion.p>
+      </AnimatePresence>
     </>
   );
 
   return (
-    <AuthWrapper>
-      <AuthWrapper.Content footer={footer}>
-        <div className={styles.toggle}>
-          <button
-            className={styles.toggleBtn}
-            data-active={mode === 'sign-in'}
-            onClick={() => setMode('sign-in')}
-          >
-            Sign in
-          </button>
-          <button
-            className={styles.toggleBtn}
-            data-active={mode === 'sign-up'}
-            onClick={() => setMode('sign-up')}
-          >
-            Sign up
-          </button>
-        </div>
+    <MotionConfig reducedMotion="user">
+      <AuthWrapper>
+        <AuthWrapper.Content footer={footer}>
+          <div className={styles.toggle} role="tablist" aria-label="Authentication mode">
+            {AUTH_TABS.map((tab) => {
+              const isActive = tab.mode === mode;
 
-        {mode === 'sign-up' ? (
-          <>
-            <h1 className={styles.headline}>
-              Wire your first{' '}
-              <span className={styles.grad}>bridge.</span>
-            </h1>
-            <p className={styles.sub}>
-              Pick how you want in. You don&apos;t have to stream — just follow channels you care about.
-            </p>
-          </>
-        ) : (
-          <>
-            <h1 className={styles.headline}>
-              Welcome{' '}
-              <span className={styles.grad}>back.</span>
-            </h1>
-            <p className={styles.sub}>
-              Sign back in to pick up where you left off.
-            </p>
-          </>
-        )}
+              return (
+                <button
+                  key={tab.mode}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  className={styles.toggleBtn}
+                  data-active={isActive}
+                  onClick={() => setMode(tab.mode)}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="auth-toggle-pill"
+                      className={styles.togglePill}
+                      transition={AUTH_TOGGLE_TRANSITION}
+                    />
+                  )}
+                  <span className={styles.toggleLabel}>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
 
-        <form method="post" action={DISCORD_AUTH_URL} style={{ width: '100%' }}>
-          <DiscordButton
-            type="submit"
-            label={mode === 'sign-up' ? 'Sign up with Discord' : 'Sign in with Discord'}
-          />
-        </form>
+          <AnimatedHeight>
+            <AnimatePresence mode="wait" initial={false} custom={direction}>
+              <motion.div
+                key={mode}
+                className={styles.heading}
+                custom={direction}
+                variants={authHeadlineVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+              >
+                {mode === 'sign-up' ? (
+                  <>
+                    <h1 className={styles.headline}>
+                      Wire your first{' '}
+                      <span className={styles.grad}>bridge.</span>
+                    </h1>
+                    <p className={styles.sub}>
+                      Pick how you want in. You don&apos;t have to stream — just follow channels you care about.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h1 className={styles.headline}>
+                      Welcome{' '}
+                      <span className={styles.grad}>back.</span>
+                    </h1>
+                    <p className={styles.sub}>
+                      Sign back in to pick up where you left off.
+                    </p>
+                  </>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </AnimatedHeight>
 
-        <div className={styles.divider}>or with email</div>
+          <form method="post" action={DISCORD_AUTH_URL} style={{ width: '100%' }}>
+            <DiscordButton
+              type="submit"
+              label={mode === 'sign-up' ? 'Sign up with Discord' : 'Sign in with Discord'}
+            />
+          </form>
 
-        {mode === 'sign-in' ? <SignInForm /> : <SignUpForm />}
-      </AuthWrapper.Content>
-    </AuthWrapper>
+          <div className={styles.divider}>or with email</div>
+
+          <AnimatedHeight>
+            <AnimatePresence mode="wait" initial={false} custom={direction}>
+              <motion.div
+                key={mode}
+                custom={direction}
+                variants={authFormVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+              >
+                {mode === 'sign-in' ? <SignInForm /> : <SignUpForm />}
+              </motion.div>
+            </AnimatePresence>
+          </AnimatedHeight>
+        </AuthWrapper.Content>
+      </AuthWrapper>
+    </MotionConfig>
   );
 }
