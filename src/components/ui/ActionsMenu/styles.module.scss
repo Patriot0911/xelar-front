@@ -15,12 +15,12 @@
 
   &:hover,
   &[data-state='open'] {
-    border-color: rgba(255, 111, 216, 0.5);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 18px rgba(255, 111, 216, 0.25);
+    border-color: color-mix(in srgb, var(--neon) 50%, transparent);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 18px color-mix(in srgb, var(--neon) 25%, transparent);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--neon-pink-glow);
+    outline: 2px solid var(--neon-glow);
     outline-offset: 2px;
   }
 }

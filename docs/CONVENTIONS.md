@@ -161,7 +161,7 @@ Rules:
 - **Use tokens, not literals:** colours `var(--accent)`, `var(--ink-1)`, `var(--line)`, `var(--card)`…; radii `var(--radius-lg)`; fonts `var(--font-display | --font-body | --font-mono)`. A raw `rgba()` is acceptable only for a translucent variant of an existing token colour (e.g. glow of `--status-ok`).
 - Typography roles: headings `--font-display` (700, negative letter-spacing), body `--font-body`, eyebrows/labels/badges `--font-mono` uppercase with wide letter-spacing (0.14–0.18em).
 - Status colours: `--status-ok` (done/success), `--status-warn`, `--status-error`; accent for "active / in progress".
-- Neon (`--neon-pink`, `--neon-pink-soft`, `--neon-pink-glow`, `--neon-gradient`) marks live / active Discord surfaces and a page's primary call to action (`Button variant="neon"`). Use it sparingly — one neon CTA per view.
+- Neon (`--neon`, `--neon-soft`, `--neon-glow`, `--neon-gradient` — a brighter lilac from the accent's violet family, never pink; other alphas via `color-mix(in srgb, var(--neon) N%, transparent)`) marks live / active Discord surfaces and a page's primary call to action (`Button variant="neon"`). Use it sparingly — one neon CTA per view.
 - Glass surfaces over imagery: dark tint (≈50%) + `backdrop-filter: blur(16–20px) saturate(160%+)` + a 1px inner top highlight. The tint is what keeps text readable; don't drop it below ~45%.
 - Discord images: build URLs with `getGuildIconUrl` / `getGuildBannerUrl`. Entities without a banner get `getSeedGradient(id)` via `HeroBanner` (stable per id — snowflake or UUID — analogous hues, never dark).
 - State via `data-*` attributes or modifier classes: `&[data-active='true']`, `styles[variant]`, `styles[status]`.

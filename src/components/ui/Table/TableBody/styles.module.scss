@@ -1,5 +1,5 @@
 .body {
-  tr {
+  tr:not(.filler) {
     transition: background 0.15s ease;
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 
@@ -46,6 +46,20 @@
   font-size: var(--text-sm);
   font-family: var(--font-mono);
   letter-spacing: 0.06em;
+}
+
+// Every body row is at least this tall, so filler rows and single-cell states match real rows.
+.tbody {
+  --table-row-height: 49px;
+
+  > tr {
+    height: var(--table-row-height);
+  }
+}
+
+// Pads a short page up to `minRows`: takes the space, no divider, no hover.
+.filler td {
+  padding: 0;
 }
 
 // ── Skeleton ───────────────────────────────────────────────────────

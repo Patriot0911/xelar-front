@@ -117,7 +117,7 @@ const TwitchSubscriptionsTable = () => {
         data={data?.items ?? []}
         rowKey="id"
         isLoading={isLoading}
-        skeletonRows={PAGE_SIZE}
+        pageSize={PAGE_SIZE}
         actions={actions}
         emptyText="No local subscriptions found"
       >

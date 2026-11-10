@@ -60,7 +60,7 @@ const UserLogsTable = ({ userId }: IUserLogsTableProps) => {
         data={data?.items ?? []}
         rowKey="id"
         isLoading={isLoading}
-        skeletonRows={USER_LOGS_PAGE_SIZE}
+        pageSize={USER_LOGS_PAGE_SIZE}
         emptyText="No notification logs yet"
       >
         <Table.Header />

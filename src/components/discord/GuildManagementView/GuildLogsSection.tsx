@@ -4,7 +4,6 @@ import { useState } from 'react';
 import useGuildNotificationLogsQuery from '@/hooks/queries/useGuildNotificationLogsQuery';
 import Table from '@/components/ui/Table';
 import TablePagination from '@/components/ui/Table/TablePagination';
-import Loading from '@/components/ui/Loading';
 import type { INotificationLogModel } from '@/lib/models/notification-log.model';
 import type { ITableColumn } from '@/components/ui/Table/Table';
 import styles from './styles.module.scss';
@@ -75,30 +74,24 @@ const GuildLogsSection = ({ guildId }: IProps) => {
         </p>
       </div>
 
-      {isLoading ? (
-        <Loading type="block" title="Loading activity logs" />
-      ) : !data?.items.length ? (
-        <div className={styles.empty}><p>No activity logs yet.</p></div>
-      ) : (
-        <>
-          <Table<INotificationLogModel>
-            columns={columns}
-            data={data.items}
-            rowKey="id"
-            isLoading={isLoading}
-          >
-            <Table.Header />
-            <Table.Body />
-          </Table>
+      <Table<INotificationLogModel>
+        columns={columns}
+        data={data?.items ?? []}
+        rowKey="id"
+        isLoading={isLoading}
+        pageSize={PAGE_SIZE}
+        emptyText="No activity logs yet."
+      >
+        <Table.Header />
+        <Table.Body />
+      </Table>
 
-          <TablePagination
-            page={page}
-            pageSize={PAGE_SIZE}
-            total={data.meta.count}
-            onChange={setPage}
-          />
-        </>
-      )}
+      <TablePagination
+        page={page}
+        pageSize={PAGE_SIZE}
+        total={data?.meta.count ?? 0}
+        onChange={setPage}
+      />
     </section>
   );
 };

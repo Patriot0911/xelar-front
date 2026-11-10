@@ -32,7 +32,14 @@ export interface ITableProps<T> {
   data: T[];
   rowKey: keyof T | ((row: T) => string);
   isLoading?: boolean;
+  /** Rows per page of a paginated table — pass the same value as `TablePagination`'s `pageSize`.
+   *  It's the default for both `skeletonRows` and `minRows`, so the table always holds one full page of height. */
+  pageSize?: number;
+  /** Skeleton rows while loading. Defaults to `pageSize`, otherwise 5. */
   skeletonRows?: number;
+  /** Rows of height the body always reserves (filler rows / taller empty & loading states), so the
+   *  table doesn't change height between pages, loading and empty. Defaults to `pageSize`, otherwise `skeletonRows`. */
+  minRows?: number;
   emptyText?: ReactNode;
   emptyComponent?: ReactNode;
   loadingComponent?: ReactNode;

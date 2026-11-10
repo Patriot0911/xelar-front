@@ -102,7 +102,7 @@ export function StreamersTable() {
         data={data?.items ?? []}
         rowKey="id"
         isLoading={isLoading}
-        skeletonRows={STREAMERS_DEFAULT_PAGE_SIZE}
+        pageSize={STREAMERS_DEFAULT_PAGE_SIZE}
         emptyText="No streamers found"
         onRowClick={(streamer) => router.push(`/dashboard/streamers/${streamer.id}`)}
       >

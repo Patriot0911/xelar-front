@@ -48,12 +48,20 @@
   border-radius: calc(var(--radius-md) + 2px);
   background: linear-gradient(
     135deg,
+<<<<<<< HEAD
     color-mix(in srgb, var(--neon-pink) 45%, transparent) 0%,
+=======
+    color-mix(in srgb, var(--neon) 45%, transparent) 0%,
+>>>>>>> master
     color-mix(in srgb, var(--accent) 35%, transparent) 100%
   );
   box-shadow:
     0 0 0 4px var(--panel),
+<<<<<<< HEAD
     0 0 18px color-mix(in srgb, var(--neon-pink) 16%, transparent);
+=======
+    0 0 18px color-mix(in srgb, var(--neon) 16%, transparent);
+>>>>>>> master
 
   // A blocked account loses the neon: the state is visible before reading the badge.
   &[data-status='blocked'] {

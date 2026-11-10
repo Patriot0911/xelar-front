@@ -14,6 +14,7 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
     rowKey,
     isLoading,
     skeletonRows,
+    minRows,
     onRowClick,
     emptyText,
     emptyComponent,
@@ -21,6 +22,15 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
   } = useTableContext<T>();
 
   const colSpan = columns.length + (actions?.length ? 1 : 0);
+  // Single-cell states (empty / custom loading) stretch to the height of `minRows` rows.
+  const stateStyle = minRows > 0 ? { height: `calc(var(--table-row-height) * ${minRows})` } : undefined;
+
+  // Non-interactive rows that pad a short page up to `minRows`, so the table keeps its height.
+  const renderFillerRows = (count: number) => Array.from({ length: Math.max(0, count) }, (_, i) => (
+    <tr key={`filler-${i}`} className={styles.filler} aria-hidden>
+      <td colSpan={colSpan} />
+    </tr>
+  ));
 
   const getRowKey = (row: T, index: number) =>
     typeof rowKey === 'function'
@@ -36,9 +46,9 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
   if (isLoading) {
     if (loadingComponent) {
       return (
-        <tbody className={className}>
+        <tbody className={cn(styles.tbody, className)}>
           <tr>
-            <td colSpan={colSpan} className={styles.state}>
+            <td colSpan={colSpan} className={styles.state} style={stateStyle}>
               {loadingComponent}
             </td>
           </tr>
@@ -47,8 +57,8 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
     }
 
     return (
-      <tbody className={className}>
-        {Array.from({ length: skeletonRows }).map((_, rowIndex) => (
+      <tbody className={cn(styles.tbody, className)}>
+        {Array.from({ length: Math.max(skeletonRows, minRows) }).map((_, rowIndex) => (
           <tr key={rowIndex} className={styles['skeleton-row']}>
             {columns.map((col) => (
               <td
@@ -70,9 +80,9 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
 
   if (data.length === 0) {
     return (
-      <tbody className={className}>
+      <tbody className={cn(styles.tbody, className)}>
         <tr>
-          <td colSpan={colSpan} className={styles.state}>
+          <td colSpan={colSpan} className={styles.state} style={stateStyle}>
             {emptyComponent ?? emptyText ?? 'No data found'}
           </td>
         </tr>
@@ -81,7 +91,7 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
   }
 
   return (
-    <tbody className={cn(className, styles['body'])}>
+    <tbody className={cn(styles.tbody, styles.body, className)}>
       {data.map((row, index) => (
         <tr
           key={getRowKey(row, index)}
@@ -106,6 +116,7 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
           ) : null}
         </tr>
       ))}
+      {renderFillerRows(minRows - data.length)}
     </tbody>
   );
 };

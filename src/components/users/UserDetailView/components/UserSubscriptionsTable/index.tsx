@@ -77,7 +77,7 @@ const UserSubscriptionsTable = (props: IUserSubscriptionsTableProps) => {
           data={props.data?.items ?? []}
           rowKey="id"
           isLoading={isLoading}
-          skeletonRows={USER_SUBSCRIPTIONS_PAGE_SIZE}
+          pageSize={USER_SUBSCRIPTIONS_PAGE_SIZE}
           emptyText="No bot message subscriptions"
         >
           <Table.Header />
@@ -89,7 +89,7 @@ const UserSubscriptionsTable = (props: IUserSubscriptionsTableProps) => {
           data={props.data?.items ?? []}
           rowKey="id"
           isLoading={isLoading}
-          skeletonRows={USER_SUBSCRIPTIONS_PAGE_SIZE}
+          pageSize={USER_SUBSCRIPTIONS_PAGE_SIZE}
           emptyText="No webhook subscriptions"
         >
           <Table.Header />

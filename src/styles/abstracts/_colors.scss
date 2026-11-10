@@ -33,11 +33,13 @@
   --accent-glow-2: rgba(107, 134, 255, 0.20);
   --accent-ink:    #CFC2FF;
 
-  // Neon — highlight for "live / active" surfaces (active guild cards, guild hero, primary CTAs)
-  --neon-pink:      #FF6FD8;
-  --neon-pink-soft: rgba(255, 111, 216, 0.14);
-  --neon-pink-glow: rgba(255, 111, 216, 0.38);
-  --neon-gradient:  linear-gradient(135deg, var(--neon-pink) 0%, var(--accent) 100%);
+  // Neon — a brighter lilac from the accent's violet family; highlight for "live / active" surfaces
+  // (active guild cards, guild hero, primary CTAs). Use `color-mix(in srgb, var(--neon) N%, transparent)`
+  // for other alphas instead of hard-coding rgba.
+  --neon:          #C084FC;
+  --neon-soft:     rgba(192, 132, 252, 0.14);
+  --neon-glow:     rgba(192, 132, 252, 0.38);
+  --neon-gradient: linear-gradient(135deg, var(--neon) 0%, var(--accent) 55%, var(--accent-2) 100%);
 
   // Service colors
   --twitch:       #A371F7;

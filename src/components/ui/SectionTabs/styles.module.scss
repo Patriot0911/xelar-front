@@ -37,7 +37,7 @@
     height: 2px;
     border-radius: 2px;
     background: var(--neon-gradient);
-    box-shadow: 0 0 12px var(--neon-pink-glow);
+    box-shadow: 0 0 12px var(--neon-glow);
     opacity: 0;
     transform: scaleX(0.4);
     transition: opacity 0.2s, transform 0.2s;
@@ -51,7 +51,7 @@
     color: var(--ink-0);
 
     svg {
-      color: var(--neon-pink);
+      color: var(--neon);
     }
 
     &::after {
@@ -61,7 +61,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--neon-pink-glow);
+    outline: 2px solid var(--neon-glow);
     outline-offset: -2px;
     border-radius: var(--radius-sm);
   }

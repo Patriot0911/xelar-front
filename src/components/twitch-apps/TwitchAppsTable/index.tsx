@@ -89,7 +89,7 @@ const TwitchAppsTable = () => {
         data={data?.items ?? []}
         rowKey={'id'}
         isLoading={isLoading}
-        skeletonRows={PAGE_SIZE}
+        pageSize={PAGE_SIZE}
         actions={appActions}
       >
         <Table.Header />

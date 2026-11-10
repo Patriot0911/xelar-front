@@ -20,7 +20,7 @@ A `<button type="button">` with variants and loading state. Extends all native b
 
 | Prop | Type | Default |
 |---|---|---|
-| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'success' \| 'neon'` — `neon` is the pink→violet glowing CTA for a page's main action | `'primary'` |
+| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'success' \| 'neon'` — `neon` is the lilac→violet→blue glowing CTA for a page's main action | `'primary'` |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` |
 | `isLoading` | `boolean` — shows a spinner, disables, sets `aria-busy` | `false` |
 | `leftIcon` / `rightIcon` | `ReactNode` | — |
@@ -232,18 +232,20 @@ Context-driven table. Configure with props, render with parts.
 | `columns: ITableColumn<T>[]` | `{ key, title, dataBind?, render?(row, i), width?, align?, className? }` |
 | `data: T[]`, `rowKey` | Rows and key (`keyof T` or `(row) => string`) |
 | `actions?: ITableAction<T>[]` | Row action buttons: `{ key, icon, label, variant?, disabled?, onClick(row) }` |
-| `isLoading`, `skeletonRows` | Skeleton rows while loading |
+| `isLoading`, `skeletonRows` (default `pageSize`, else 5) | Skeleton rows while loading |
+| `pageSize` | Rows per page of a paginated table — the same value as `TablePagination`'s `pageSize`. Default for `skeletonRows` and `minRows`. |
+| `minRows` (default `pageSize`, else `skeletonRows`) | Height the body always reserves, in rows: a short page is padded with non-interactive filler rows, and the empty / custom-loading state stretches to the same height — so the table never jumps between loading, empty and pages. Every body row is at least `--table-row-height` (49px) tall. |
 | `emptyText` / `emptyComponent` / `loadingComponent` | States |
 | `onRowClick(row)` | Makes rows clickable |
 
 ```tsx
-<Table<IUserListItem> columns={columns} data={data?.items ?? []} rowKey="id" isLoading={isLoading}>
+<Table<IUserListItem> columns={columns} data={data?.items ?? []} rowKey="id" isLoading={isLoading} pageSize={PAGE_SIZE}>
   <Table.Header />
   <Table.Body />
 </Table>
 <TablePagination page={page} pageSize={PAGE_SIZE} total={data?.meta.count ?? 0} onChange={setPage} />
 ```
-Define `columns` as a module-level constant typed `ITableColumn<Row>[]`.
+Define `columns` as a module-level constant typed `ITableColumn<Row>[]`. For a paginated table pass `pageSize={PAGE_SIZE}` — the same constant as `TablePagination` (it sets `skeletonRows` and `minRows`), always render the `Table` (let it show loading / empty itself) and always render `TablePagination`, so the block keeps one height.
 
 ### `Tabs<T>` — `ui/Tabs`
 Segmented tabs: `items: { key: T; label; count? }[]`, `value: T`, `onChange(key)`. Below 576px the tabs stretch to the full width (each tab `flex: 1`).
