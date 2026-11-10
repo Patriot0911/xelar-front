@@ -19,7 +19,7 @@
   inset: 0;
   background:
     radial-gradient(60% 120% at 85% 0%, rgba(255, 255, 255, 0.28), transparent 60%),
-    radial-gradient(50% 90% at 10% 110%, var(--neon-pink-glow), transparent 70%),
+    radial-gradient(50% 90% at 10% 110%, var(--neon-glow), transparent 70%),
     repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.06) 0 2px, transparent 2px 22px);
   mix-blend-mode: soft-light;
 }

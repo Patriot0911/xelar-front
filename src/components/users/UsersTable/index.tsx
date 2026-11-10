@@ -90,7 +90,7 @@ const UsersTable = () => {
         data={data?.items ?? []}
         rowKey="id"
         isLoading={isLoading}
-        skeletonRows={USERS_DEFAULT_PAGE_SIZE}
+        pageSize={USERS_DEFAULT_PAGE_SIZE}
         emptyText={search ? `No users match “${search}”` : 'No users found'}
         onRowClick={(user) => router.push(`/dashboard/users/${user.id}`)}
       >

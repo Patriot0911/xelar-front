@@ -112,7 +112,7 @@ export function RolesTable() {
         data={data?.items ?? []}
         rowKey="id"
         isLoading={isLoading}
-        skeletonRows={ROLES_DEFAULT_PAGE_SIZE}
+        pageSize={ROLES_DEFAULT_PAGE_SIZE}
         emptyText="No roles found"
       >
         <Table.Header />

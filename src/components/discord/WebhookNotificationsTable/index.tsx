@@ -65,7 +65,7 @@ const WebhookNotificationsTable = ({
         data={data?.items ?? []}
         rowKey="id"
         isLoading={isLoading}
-        skeletonRows={page !== undefined ? GUILD_NOTIFICATIONS_PAGE_SIZE : 3}
+        {...(page !== undefined ? { pageSize: GUILD_NOTIFICATIONS_PAGE_SIZE } : { skeletonRows: 3 })}
         emptyText={emptyText ?? 'No webhook notifications yet'}
       >
         <Table.Header />

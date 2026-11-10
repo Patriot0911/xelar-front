@@ -7,6 +7,7 @@ interface ITableContext<T = unknown> {
   data: T[];
   isLoading: boolean;
   skeletonRows: number;
+  minRows: number;
   rowKey: keyof T | ((row: T) => string);
   onRowClick?: (row: T) => void;
   emptyText?: ReactNode;

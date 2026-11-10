@@ -55,12 +55,12 @@
   border-radius: calc(var(--radius-md) + 2px);
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--neon-pink) 45%, transparent) 0%,
+    color-mix(in srgb, var(--neon) 45%, transparent) 0%,
     color-mix(in srgb, var(--accent) 35%, transparent) 100%
   );
   box-shadow:
     0 0 0 4px var(--panel),
-    0 0 18px color-mix(in srgb, var(--neon-pink) 16%, transparent);
+    0 0 18px color-mix(in srgb, var(--neon) 16%, transparent);
 }
 
 .avatar {
@@ -155,8 +155,8 @@
 }
 
 .badgeLive {
-  color: var(--neon-pink);
-  background: var(--neon-pink-soft);
-  border: 1px solid rgba(255, 111, 216, 0.4);
-  box-shadow: 0 0 14px rgba(255, 111, 216, 0.25);
+  color: var(--neon);
+  background: var(--neon-soft);
+  border: 1px solid color-mix(in srgb, var(--neon) 40%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--neon) 25%, transparent);
 }
