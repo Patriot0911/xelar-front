@@ -67,9 +67,6 @@ $ua-yellow: #ffd700;
   font-weight: 600;
   transition: filter 0.15s ease;
 
-  &:hover {
-    filter: brightness(1.08);
-  }
 
   &:focus-visible {
     outline: 2px solid $ua-yellow;
