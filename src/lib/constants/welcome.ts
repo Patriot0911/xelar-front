@@ -1,6 +1,6 @@
 import { LuActivity, LuDatabaseZap, LuKeyRound, LuLayers, LuShieldCheck, LuZap } from 'react-icons/lu';
 import {
-  IRoadmapItem,
+  IRoadmapRelease,
   IWelcomeNavLink,
   IWelcomeStep,
   IWelcomeTrustPoint,
@@ -89,24 +89,51 @@ export const WELCOME_TRUST_POINTS: IWelcomeTrustPoint[] = [
   },
 ];
 
-// TODO: replace with the real roadmap once it is defined.
-export const ROADMAP_ITEMS: IRoadmapItem[] = [
+export const ROADMAP_RELEASES: IRoadmapRelease[] = [
   {
-    id: 'discord-delivery',
-    title: 'Discord delivery',
-    description: 'Bot messages and Discord webhooks for Twitch go-live events.',
-    status: RoadmapStatus.Done,
-  },
-  {
-    id: 'more-events',
-    title: 'More Twitch events',
-    description: 'Details coming soon.',
+    id: 'v1.0',
+    version: '1.0',
+    title: 'The bridge',
+    summary: 'Everything you need to announce streams in Discord automatically.',
     status: RoadmapStatus.InProgress,
+    features: [
+      { id: 'go-live',   label: 'Go-live alerts from Twitch to your Discord channels', status: RoadmapStatus.Done },
+      { id: 'webhooks',  label: 'Delivery through the Xelar bot or a Discord webhook', status: RoadmapStatus.Done },
+      { id: 'templates', label: 'Custom message templates with role mentions',         status: RoadmapStatus.Done },
+      { id: 'filters',   label: 'Game filters — notify only for the categories you want', status: RoadmapStatus.Done },
+      { id: 'logs',      label: 'Delivery logs and notification statistics',           status: RoadmapStatus.Done },
+      { id: 'sign-in',   label: 'Sign in with Discord or email, link your Twitch',      status: RoadmapStatus.Done },
+    ],
   },
   {
-    id: 'custom-webhooks',
-    title: 'Custom webhooks',
-    description: 'Details coming soon.',
+    id: 'v1.1',
+    version: '1.1',
+    title: 'Closer to streamers',
+    summary: 'A smoother experience for admins, streamers and partner communities.',
     status: RoadmapStatus.Planned,
+    features: [
+      { id: 'admin',          label: 'A better admin panel' },
+      { id: 'weekly-tokens',  label: 'Weekly token allowance for creating new subscriptions' },
+      { id: 'streamers',      label: 'Deeper integration with streamers' },
+      { id: 'preview',        label: 'Custom stream preview images set by streamers' },
+      { id: 'partners',       label: 'Partner servers program' },
+      { id: 'i18n',           label: 'Multi-language interface' },
+    ],
+  },
+  {
+    id: 'v1.2',
+    version: '1.2',
+    title: 'Beyond Twitch',
+    summary: 'New platforms and interactive notifications your community can act on.',
+    status: RoadmapStatus.Planned,
+    features: [
+      { id: 'platforms',      label: 'New platforms, starting with YouTube' },
+      { id: 'streamer-page',  label: 'A personal page for streamers with their own statistics' },
+      { id: 'announcements',  label: 'Custom announcements from streamers to server owners — giveaways and more' },
+      { id: 'events',         label: 'More events to notify about' },
+      { id: 'discord-actions', label: 'Discord actions for streams: likes, boosting streamers to the top, interest-based digests' },
+      { id: 'giveaways',      label: 'Platform-wide giveaways' },
+      { id: 'interactive',    label: 'Interactive notifications: role buttons and custom actions' },
+    ],
   },
 ];

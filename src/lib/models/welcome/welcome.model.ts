@@ -19,11 +19,20 @@ export enum RoadmapStatus {
   Planned    = 'planned',
 };
 
-export interface IRoadmapItem {
+export interface IRoadmapFeature {
   id: string;
+  label: string;
+  /** Falls back to the release status when omitted. */
+  status?: RoadmapStatus;
+};
+
+export interface IRoadmapRelease {
+  id: string;
+  version: string;
   title: string;
-  description: string;
+  summary: string;
   status: RoadmapStatus;
+  features: IRoadmapFeature[];
 };
 
 export interface IWelcomeNavLink {

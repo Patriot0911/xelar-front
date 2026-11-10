@@ -1,0 +1,58 @@
+.badge {
+  --badge-color: var(--ink-2);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--badge-color) 30%, transparent);
+  background: color-mix(in srgb, var(--badge-color) 10%, transparent);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--badge-color);
+  white-space: nowrap;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--badge-color);
+}
+
+.done {
+  --badge-color: var(--status-ok);
+}
+
+.in-progress {
+  --badge-color: var(--accent-ink);
+
+  .dot {
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+}
+
+.planned {
+  --badge-color: var(--ink-2);
+
+  .dot {
+    background: transparent;
+    border: 1px solid var(--badge-color);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.8); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .in-progress .dot {
+    animation: none;
+  }
+}
