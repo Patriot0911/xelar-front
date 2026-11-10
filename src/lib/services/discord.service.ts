@@ -4,7 +4,6 @@ import type { IDiscordGuildModel } from '../models/discord/discord-guild.model';
 import type { IDiscordChannelModel } from '../models/discord/discord-channel.model';
 import type { IDiscordRoleModel } from '../models/discord/discord-role.model';
 import type {
-  IGuildNotificationsResponse,
   IGuildNotificationsParams,
   IGuildBotNotificationsResponse,
   IGuildWebhookNotificationsResponse,
@@ -46,8 +45,16 @@ class DiscordService {
     return apiClient.get(`/api/twitch-notifications/discord/${discordGuildId}/webhook`, { params }).then(expectList<IGuildWebhookNotificationsResponse>(`/api/twitch-notifications/discord/${discordGuildId}/webhook`));
   }
 
-  static getAllNotifications(): Promise<IGuildNotificationsResponse> {
-    return apiClient.get('/api/twitch-notifications').then(expectObject<IGuildNotificationsResponse>('/api/twitch-notifications'));
+  /** Bot notifications created by the current user, across all servers. */
+  static getMyBotNotifications(params: IGuildNotificationsParams): Promise<IGuildBotNotificationsResponse> {
+    const endpoint = '/api/twitch-notifications/bot';
+    return apiClient.get(endpoint, { params }).then(expectList<IGuildBotNotificationsResponse>(endpoint));
+  }
+
+  /** Webhook notifications created by the current user. */
+  static getMyWebhookNotifications(params: IGuildNotificationsParams): Promise<IGuildWebhookNotificationsResponse> {
+    const endpoint = '/api/twitch-notifications/webhook';
+    return apiClient.get(endpoint, { params }).then(expectList<IGuildWebhookNotificationsResponse>(endpoint));
   }
 
   static createDiscordNotification(data: ICreateDiscordNotificationPayload): Promise<IDiscordBotNotificationModel> {

@@ -1,0 +1,75 @@
+.root {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 320px;
+  max-width: 100%;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background: rgba(8, 10, 28, 0.55);
+  border: 1px solid var(--line-strong);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:focus-within {
+    border-color: rgba(255, 111, 216, 0.5);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 0 3px var(--neon-pink-soft);
+  }
+
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+}
+
+.leading {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  flex-shrink: 0;
+  color: var(--ink-2);
+
+  .root:focus-within & {
+    color: var(--neon-pink);
+  }
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 4px 0 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--ink-0);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+
+  &::placeholder {
+    color: var(--ink-3);
+  }
+
+  // Native clear button duplicates ours.
+  &::-webkit-search-cancel-button {
+    appearance: none;
+  }
+}
+
+.clear {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-right: 5px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink-2);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--surface-2);
+    color: var(--ink-0);
+  }
+}

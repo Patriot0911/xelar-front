@@ -120,7 +120,8 @@ hooks/
 ├── mutations/<area>/use<Action>Mutation.ts   # useMutation wrappers (+ toasts + invalidation)
 ├── redux/                                    # typed useAppDispatch / useAppSelector, selectors
 └── shared/                                   # generic hooks: useInView, useMediaQuery, useOnClickOutside,
-                                              # useIsAuthenticated, useHasPermission, useFilteredNavSections
+                                              # useIsAuthenticated, useHasPermission, useFilteredNavSections,
+                                              # useDebouncedValue, useListSearch, useClampPage
 ```
 
 ## Data layer

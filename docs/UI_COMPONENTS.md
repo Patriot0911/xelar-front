@@ -119,6 +119,17 @@ Main props (`ISelectProps<O>`): `options: O[]`, `value`, `onChange(value)`, `lab
 </FormSelect>
 ```
 
+### `SearchInput` — `ui/SearchInput`
+Compact toolbar search: leading icon (spinner while `isSearching`), clear button, Escape clears, full width under 576px. Controlled: `value`, `onChange(value)`, `placeholder`, `label` (a11y name), `isSearching`, `className` + native input attributes. Pair it with `useListSearch` (`hooks/shared`), which debounces the term (300 ms) and resets paging:
+
+```tsx
+const [page, setPage] = useState(1);
+const { value, setValue, search } = useListSearch(() => setPage(1));
+const { data, isLoading, isFetching } = useUsersQuery({ page, pageSize, search });
+
+<SearchInput value={value} onChange={setValue} isSearching={isFetching && !isLoading} />
+```
+
 ### `Switch` — `ui/Switch`
 Toggle. Props: `checked`, `onChange(checked)`, `label`, `hint`, `disabled`.
 

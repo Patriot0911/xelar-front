@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import useClampPage from '@/hooks/shared/useClampPage';
 import { LuPlus } from 'react-icons/lu';
 import Button from '@/components/ui/buttons/Button';
 import useGuildBotNotificationsQuery from '@/hooks/queries/discord/useGuildBotNotificationsQuery';
@@ -18,13 +19,6 @@ import WebhookNotificationsTable from '@/components/discord/WebhookNotifications
 import { IGuildNotificationsViewProps, TNotificationTarget } from './GuildNotificationsView';
 
 import styles from './styles.module.scss';
-
-/** Steps back a page when the current one becomes empty (e.g. its last item was deleted). */
-const useClampPage = (page: number, setPage: (page: number) => void, itemsOnPage?: number) => {
-  useEffect(() => {
-    if (page > 1 && itemsOnPage === 0) setPage(page - 1);
-  }, [page, setPage, itemsOnPage]);
-};
 
 const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
   const [activeType, setActiveType] = useState<GuildNotificationType>(GuildNotificationType.Bot);

@@ -14,7 +14,9 @@ const DashboardSidebar = () => {
 
   return (
     <aside className={styles.sidebar}>
-      <XelarLogo />
+      <Link href="/" aria-label="Xelar home" className={styles.logoLink}>
+        <XelarLogo />
+      </Link>
 
       {filteredSections.map((section) => (
         <nav className={styles.navSection} key={section.label}>

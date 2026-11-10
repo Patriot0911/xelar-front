@@ -191,6 +191,7 @@ Rules:
 - Boundaries go around the smallest part that can fail on its own. A decorative or statistical sub-block (e.g. `GuildHeroStats`) gets its own boundary with a tiny inline fallback; a page's main block falls back in its own shape (`GuildHeroFallback` keeps the generated banner) rather than a generic error replacing everything.
 - Optional numbers from the API are `number | null` in models and rendered as "—" when null; never call `.toLocaleString()` / `.toFixed()` on a value the schema doesn't guarantee.
 - Queries that require auth set `enabled: status === 'authenticated'` (see `useMeQuery`).
+- Search: list endpoints accept `?search=` (backend `SearchPaginationDto` + `applySearch`, case-insensitive substring). In the view use `useListSearch(() => setPage(1))` + `SearchInput`; pass `search` into the query params and the query key, keep `placeholderData`, and show "Nothing matches …" instead of the default empty text while searching.
 - Pagination: `page` state in the view, page size from a `<AREA>_DEFAULT_PAGE_SIZE` constant, `TablePagination` with `meta.count`. Add `placeholderData: (prev) => prev` so the table keeps rows while the next page loads, and step back a page when the current one becomes empty after a delete.
 
 ## Forms
