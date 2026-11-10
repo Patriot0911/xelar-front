@@ -36,7 +36,9 @@
 
 
 @media (max-width: 1180px) and (min-width: 900px) {
-  .wmDot, .wmText {
-    display: none;
+  .responsive {
+    .wmDot, .wmText {
+      display: none;
+    }
   }
 }

@@ -1,0 +1,28 @@
+.canvas {
+  width: 100%;
+  height: 100%;
+
+  :global(.react-flow) {
+    --xy-background-color: transparent;
+    --xy-edge-label-background-color: var(--bg-2);
+    --xy-edge-label-color: var(--ink-1);
+  }
+
+  :global(.react-flow__node-service) {
+    cursor: default;
+  }
+
+  :global(.react-flow__edge-text) {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  :global(.react-flow__attribution) {
+    background: transparent;
+  }
+
+  :global(.react-flow__attribution a) {
+    color: var(--ink-3);
+  }
+}

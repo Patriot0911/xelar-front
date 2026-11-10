@@ -1,0 +1,13 @@
+.page {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}

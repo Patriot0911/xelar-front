@@ -3,12 +3,18 @@ import type { Metadata } from 'next';
 import { Toaster } from 'sonner';
 import { Providers } from './providers';
 import { cn } from '@/lib/utils';
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/constants/site';
 
 import '@/styles/global.scss';
 
 export const metadata: Metadata = {
-  title: 'Xelar',
-  description: 'Wire your stream bridges',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_NAME,
+    template: `%s · ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

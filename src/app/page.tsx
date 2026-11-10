@@ -1,16 +1,33 @@
-'use client';
+import type { Metadata } from 'next';
+import WelcomeView from '@/components/welcome/WelcomeView';
+import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_NAME, SITE_TITLE } from '@/lib/constants/site';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useIsAuthenticated } from '@/hooks/shared/useIsAuthenticated';
+export const metadata: Metadata = {
+  title: { absolute: SITE_TITLE },
+  description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    url: '/',
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
-export default function RootPage() {
-  const router = useRouter();
-  const isAuthenticated = useIsAuthenticated();
-
-  useEffect(() => {
-    router.replace(isAuthenticated ? '/dashboard' : '/auth');
-  }, [isAuthenticated, router]);
-
-  return null;
+export default function WelcomePage() {
+  return <WelcomeView />;
 }

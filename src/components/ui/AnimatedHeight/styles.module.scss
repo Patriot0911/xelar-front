@@ -1,0 +1,10 @@
+.root {
+  position: relative;
+}
+
+// Clip only vertically and only while resizing, so focus rings and glows
+// are not cut off at rest and horizontal slides are not boxed in.
+.animating {
+  overflow-x: visible;
+  overflow-y: clip;
+}

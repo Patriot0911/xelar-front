@@ -1,0 +1,41 @@
+.footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--line);
+  padding: 28px 20px;
+
+  @media (max-width: 768px) {
+    padding: 24px 16px;
+  }
+}
+
+.inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  a {
+    font-size: 13px;
+    color: var(--ink-2);
+
+    &:hover {
+      color: var(--ink-0);
+    }
+  }
+}
+
+.copy {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}

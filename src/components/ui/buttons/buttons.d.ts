@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from 'react';
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
 
 export interface IBaseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
@@ -28,4 +28,17 @@ export interface IButtonProps
 export interface IExternalButtonProps {
   label: string;
   href: string;
+};
+
+export type LinkButtonVariant =
+  | 'primary'
+  | 'outline';
+
+export interface ILinkButtonProps
+  extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
+  href: string;
+  variant?: LinkButtonVariant;
+  size?: ButtonSize;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
 };
