@@ -33,6 +33,12 @@
   --accent-glow-2: rgba(107, 134, 255, 0.20);
   --accent-ink:    #CFC2FF;
 
+  // Neon — highlight for "live / active" surfaces (active guild cards, guild hero, primary CTAs)
+  --neon-pink:      #FF6FD8;
+  --neon-pink-soft: rgba(255, 111, 216, 0.14);
+  --neon-pink-glow: rgba(255, 111, 216, 0.38);
+  --neon-gradient:  linear-gradient(135deg, var(--neon-pink) 0%, var(--accent) 100%);
+
   // Service colors
   --twitch:       #A371F7;
   --discord:      #5865F2;

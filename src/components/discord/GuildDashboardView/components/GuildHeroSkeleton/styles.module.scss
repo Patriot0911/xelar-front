@@ -1,0 +1,85 @@
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+%shimmer {
+  background: linear-gradient(90deg, var(--surface) 0%, var(--surface-3) 50%, var(--surface) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+}
+
+.banner {
+  @extend %shimmer;
+  display: grid;
+  place-items: center;
+  height: 232px;
+  border-radius: var(--radius-md);
+
+  @media (max-width: 768px) {
+    height: 150px;
+  }
+}
+
+.identity {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  margin-top: -48px;
+  padding: 0 24px;
+
+  @media (max-width: 768px) {
+    margin-top: -36px;
+    padding: 0;
+  }
+}
+
+.avatar {
+  width: 102px;
+  height: 102px;
+  border-radius: calc(var(--radius-md) + 3px);
+  background: var(--bg-2);
+  box-shadow: 0 0 0 4px var(--bg-0);
+
+  @media (max-width: 768px) {
+    width: 78px;
+    height: 78px;
+  }
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 8px;
+}
+
+.line,
+.lineShort {
+  @extend %shimmer;
+  display: block;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.line {
+  width: 220px;
+  height: 22px;
+
+  @media (max-width: 768px) {
+    width: 160px;
+  }
+}
+
+.lineShort {
+  width: 120px;
+}

@@ -10,4 +10,6 @@ export interface IBotNotificationsTableProps {
   onPageChange?: (page: number) => void;
   onEdit: (item: IDiscordBotNotificationModel) => void;
   onDelete: (item: IDiscordBotNotificationModel) => void;
+  /** Adds a "Duplicate" row action that starts a new notification from this one. */
+  onDuplicate?: (item: IDiscordBotNotificationModel) => void;
 };

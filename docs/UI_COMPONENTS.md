@@ -20,7 +20,7 @@ A `<button type="button">` with variants and loading state. Extends all native b
 
 | Prop | Type | Default |
 |---|---|---|
-| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'success'` | `'primary'` |
+| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'success' \| 'neon'` — `neon` is the pink→violet glowing CTA for a page's main action | `'primary'` |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` |
 | `isLoading` | `boolean` — shows a spinner, disables, sets `aria-busy` | `false` |
 | `leftIcon` / `rightIcon` | `ReactNode` | — |

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { LuPencil, LuTrash2 } from 'react-icons/lu';
+import { LuCopyPlus, LuPencil, LuTrash2 } from 'react-icons/lu';
 import Table from '@/components/ui/Table';
 import TablePagination from '@/components/ui/Table/TablePagination';
 import { ITableAction, ITableColumn } from '@/components/ui/Table/Table';
@@ -56,10 +56,14 @@ const BotNotificationsTable = ({
   onPageChange,
   onEdit,
   onDelete,
+  onDuplicate,
 }: IBotNotificationsTableProps) => {
   const columns = useMemo(() => getColumns(guildId), [guildId]);
 
   const actions: ITableAction<IDiscordBotNotificationModel>[] = [
+    ...(onDuplicate
+      ? [{ key: 'duplicate', icon: <LuCopyPlus size={13} />, label: 'Duplicate', variant: 'primary' as const, onClick: onDuplicate }]
+      : []),
     { key: 'edit', icon: <LuPencil size={13} />, label: 'Edit', variant: 'primary', onClick: onEdit },
     { key: 'delete', icon: <LuTrash2 size={13} />, label: 'Delete', variant: 'danger', onClick: onDelete },
   ];

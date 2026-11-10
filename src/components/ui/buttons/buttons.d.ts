@@ -9,7 +9,8 @@ export type ButtonVariant =
   | 'secondary'
   | 'ghost'
   | 'danger'
-  | 'success';
+  | 'success'
+  | 'neon';
 
 export type ButtonSize =
   | 'sm'

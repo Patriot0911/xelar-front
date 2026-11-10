@@ -161,6 +161,9 @@ Rules:
 - **Use tokens, not literals:** colours `var(--accent)`, `var(--ink-1)`, `var(--line)`, `var(--card)`…; radii `var(--radius-lg)`; fonts `var(--font-display | --font-body | --font-mono)`. A raw `rgba()` is acceptable only for a translucent variant of an existing token colour (e.g. glow of `--status-ok`).
 - Typography roles: headings `--font-display` (700, negative letter-spacing), body `--font-body`, eyebrows/labels/badges `--font-mono` uppercase with wide letter-spacing (0.14–0.18em).
 - Status colours: `--status-ok` (done/success), `--status-warn`, `--status-error`; accent for "active / in progress".
+- Neon (`--neon-pink`, `--neon-pink-soft`, `--neon-pink-glow`, `--neon-gradient`) marks live / active Discord surfaces and a page's primary call to action (`Button variant="neon"`). Use it sparingly — one neon CTA per view.
+- Glass surfaces over imagery: dark tint (≈50%) + `backdrop-filter: blur(16–20px) saturate(160%+)` + a 1px inner top highlight. The tint is what keeps text readable; don't drop it below ~45%.
+- Discord images: build URLs with `getGuildIconUrl` / `getGuildBannerUrl`; when a guild has no banner use `getGuildGradient(guildId)` (stable per guild, analogous hues, never dark).
 - State via `data-*` attributes or modifier classes: `&[data-active='true']`, `styles[variant]`, `styles[status]`.
 - Breakpoints: 576 / 768 / 992 / 1200 px. Mobile side padding 16–20px; no horizontal page scroll.
 - **Mobile (≤576px) is vertical-first:** grids collapse to one column, headers stack. A text button or tab group that is the only action in its row (a sub-tab switch, a single "Block user" button) stretches to the full width so it doesn't look off-centre. Icon-only buttons keep their size.

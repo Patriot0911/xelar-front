@@ -44,6 +44,11 @@ export interface IWebhookNotificationModel {
   streamerEvent: IStreamerEventRef;
 }
 
+/** A notification together with its delivery type — the unit edit / delete / duplicate act on. */
+export type TGuildNotificationRef =
+  | { type: 'bot'; item: IDiscordBotNotificationModel }
+  | { type: 'webhook'; item: IWebhookNotificationModel };
+
 export interface IGuildNotificationsResponse {
   bot: IDiscordBotNotificationModel[];
   webhook: IWebhookNotificationModel[];

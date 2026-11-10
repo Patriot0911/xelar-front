@@ -11,13 +11,18 @@ import styles from './styles.module.scss';
 const DEBOUNCE_MS = 350;
 const MIN_LENGTH = 3;
 
-const StreamerSearchField = () => {
+interface IStreamerSearchFieldProps {
+  /** Pre-selected streamer (e.g. when duplicating a notification). Read once on mount. */
+  initialChannel?: ITwitchChannelModel | null;
+}
+
+const StreamerSearchField = ({ initialChannel = null }: IStreamerSearchFieldProps) => {
   const { control } = useFormContext<TAddNotificationForm>();
   const { field } = useController({ name: 'broadcasterId', control });
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<ITwitchChannelModel[]>([]);
-  const [selected, setSelected] = useState<ITwitchChannelModel | null>(null);
+  const [selected, setSelected] = useState<ITwitchChannelModel | null>(initialChannel);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 

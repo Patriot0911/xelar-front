@@ -105,6 +105,7 @@ lib/
 ├── query-client.ts   # TanStack QueryClient: retry / throwOnError / toast policy, typed meta (see Error handling)
 ├── errors/           # ApiError, toApiError, getErrorMessage, query error policy, response contract checks
 ├── utils.ts          # cn(), getInitials(), bit-flag helpers
+├── guild-visuals.ts  # Discord CDN icon/banner URLs, deterministic guild banner gradient
 ├── services/         # One object/class per backend resource: <resource>.service.ts
 ├── models/           # API request/response types: <area>/<entity>.model.ts (+ index.ts barrel)
 └── constants/        # Enums, labels, query keys, page sizes, static content: <area>.ts
