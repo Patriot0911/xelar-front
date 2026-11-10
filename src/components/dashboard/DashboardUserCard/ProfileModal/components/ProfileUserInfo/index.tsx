@@ -1,12 +1,14 @@
+import { ReactNode } from 'react';
 import { IAuthMeResponse } from '@/lib/models/auth';
 import { getInitials } from '@/lib/utils';
 import styles from './styles.module.scss';
 
 interface IProfileUserInfoProps {
   meData?: IAuthMeResponse;
+  action?: ReactNode;
 }
 
-const ProfileUserInfo = ({ meData }: IProfileUserInfoProps) => {
+const ProfileUserInfo = ({ meData, action }: IProfileUserInfoProps) => {
   const displayName = meData?.displayName ?? 'User';
 
   return (
@@ -20,6 +22,7 @@ const ProfileUserInfo = ({ meData }: IProfileUserInfoProps) => {
           {(meData?.balance ?? 0).toLocaleString()} credits
         </span>
       </div>
+      {action}
     </div>
   );
 };
