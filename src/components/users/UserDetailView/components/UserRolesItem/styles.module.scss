@@ -1,0 +1,97 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  white-space: normal;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(154, 107, 255, 0.22);
+  background: var(--accent-softer);
+  color: var(--accent-ink);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, padding 0.15s;
+
+  &:not(.suggestion) {
+    .chipIcon {
+      width: 0;
+      opacity: 0;
+      transition: width 0.15s, opacity 0.15s;
+    }
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      background: rgba(255, 107, 149, 0.1);
+      border-color: rgba(255, 107, 149, 0.35);
+      color: var(--status-error);
+
+      .chipIcon {
+        width: 11px;
+        opacity: 1;
+      }
+    }
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.55;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  // Touch screens have no hover: always show the remove icon there.
+  @media (hover: none) {
+    &:not(.suggestion) .chipIcon {
+      width: 11px;
+      opacity: 0.7;
+    }
+  }
+}
+
+.suggestion {
+  border-style: dashed;
+  border-color: var(--line-strong);
+  background: transparent;
+  color: var(--ink-1);
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    border-color: var(--accent-glow);
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+}
+
+.toggle {
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-full);
+
+  svg {
+    transition: transform 0.2s;
+  }
+}
+
+.toggleActive {
+  border-color: var(--accent-glow);
+  color: var(--accent);
+
+  svg {
+    transform: rotate(45deg);
+  }
+}
+
+.empty {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}

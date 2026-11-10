@@ -51,36 +51,6 @@
   color: var(--ink-3);
 }
 
-.statusBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11.5px;
-  font-family: var(--font-mono);
-  padding: 3px 8px;
-  border-radius: var(--radius-full);
-
-  &[data-status='active'] {
-    background: rgba(52, 211, 153, 0.1);
-    color: #34d399;
-    border: 1px solid rgba(52, 211, 153, 0.2);
-  }
-
-  &[data-status='blocked'] {
-    background: rgba(255, 80, 80, 0.08);
-    color: var(--status-error);
-    border: 1px solid rgba(255, 80, 80, 0.18);
-  }
-}
-
-.dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: currentColor;
-  flex-shrink: 0;
-}
-
 .twitchCell {
   display: flex;
   align-items: center;

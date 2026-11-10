@@ -11,6 +11,7 @@ import {
 } from 'recharts';
 import useDailyStatsQuery from '@/hooks/queries/statistics/useDailyStatsQuery';
 
+import Loading from '@/components/ui/Loading';
 import styles from './styles.module.scss';
 
 const formatDay = (date: string) => new Date(date).toLocaleDateString('en-US', { weekday: 'short' });
@@ -32,7 +33,7 @@ const WeeklyStatsChart = () => {
 
       <div className={styles.chart}>
         {isLoading ? (
-          <div className={styles.placeholder}>Loading…</div>
+          <div className={styles.placeholder}><Loading size="sm" /></div>
         ) : (
           <ResponsiveContainer width="100%" height={260}>
             <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>

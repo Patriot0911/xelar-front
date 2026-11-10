@@ -11,6 +11,7 @@
 .tab {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   height: 32px;
   padding: 0 12px;
@@ -53,4 +54,14 @@
   font-size: 11px;
   font-weight: 700;
   transition: background 0.15s, color 0.15s;
+}
+
+@media (max-width: 576px) {
+  .tabs {
+    width: 100%;
+  }
+
+  .tab {
+    flex: 1;
+  }
 }

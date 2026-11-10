@@ -1,0 +1,24 @@
+.all {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 220px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: var(--radius-full);
+  background: var(--surface-3);
+  border: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--ink-1);
+  white-space: nowrap;
+}

@@ -2,8 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { LuUser, LuArrowRight } from 'react-icons/lu';
-import { ITableAction, ITableColumn } from '@/components/ui/Table/Table';
+import { ITableColumn } from '@/components/ui/Table/Table';
 import Table from '@/components/ui/Table';
+import UserStatusBadge from '@/components/users/UserStatusBadge';
 import TablePagination from '@/components/ui/Table/TablePagination';
 import useUsersQuery from '@/hooks/queries/users/useUsersQuery';
 import { USERS_DEFAULT_PAGE_SIZE } from '@/lib/constants/users';
@@ -11,15 +12,6 @@ import { IUserListItem } from '@/lib/models/users/user.model';
 import { useState } from 'react';
 
 import styles from './styles.module.scss';
-
-function StatusBadge({ status }: { status: IUserListItem['status'] }) {
-  return (
-    <span className={styles.statusBadge} data-status={status}>
-      <span className={styles.dot} />
-      {status === 'active' ? 'Active' : 'Blocked'}
-    </span>
-  );
-}
 
 function RolesList({ roles }: { roles: string[] }) {
   if (!roles.length) return <span className={styles.noRoles}>No roles</span>;
@@ -48,7 +40,7 @@ const columns: ITableColumn<IUserListItem>[] = [
   {
     key: 'status',
     title: 'Status',
-    render: (user) => <StatusBadge status={user.status} />,
+    render: (user) => <UserStatusBadge status={user.status} />,
   },
   {
     key: 'roles',

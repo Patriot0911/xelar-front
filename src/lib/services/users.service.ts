@@ -4,7 +4,8 @@ import {
   IUpdateUserRolesPayload,
   IUpdateUserStatusPayload,
   IUserItem,
-  IUserNotificationLog,
+  IUserNotificationLogsParams,
+  IUserNotificationLogsResponse,
   IUserSession,
   IUserSubscriptions,
   IUsersListParams,
@@ -44,8 +45,11 @@ const UsersService = {
     return apiClient.get(`/api/users/${userId}/subscriptions`);
   },
 
-  getUserNotificationLogs: async (userId: string): Promise<IUserNotificationLog[]> => {
-    return apiClient.get(`/api/users/${userId}/notification-logs`);
+  getUserNotificationLogs: async (
+    userId: string,
+    params?: IUserNotificationLogsParams,
+  ): Promise<IUserNotificationLogsResponse> => {
+    return apiClient.get(`/api/users/${userId}/notification-logs`, { params });
   },
 };
 

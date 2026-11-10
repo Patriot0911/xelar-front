@@ -3,6 +3,7 @@
 import { Cell, Pie, PieChart, Tooltip } from 'recharts';
 import useNotificationSplitQuery from '@/hooks/queries/statistics/useNotificationSplitQuery';
 
+import Loading from '@/components/ui/Loading';
 import styles from './styles.module.scss';
 
 const DISCORD_COLOR = '#5865f2';
@@ -26,7 +27,7 @@ const NotificationSplitCard = () => {
     <div className={styles.card}>
       <div className={styles.title}>Notification Type Split</div>
 
-      {isLoading && <div className={styles.placeholder}>Loading…</div>}
+      {isLoading && <div className={styles.placeholder}><Loading size="sm" /></div>}
       {isEmpty && <div className={styles.placeholder}>No data yet</div>}
 
       {!isLoading && !isEmpty && (

@@ -76,7 +76,7 @@ const GuildLogsSection = ({ guildId }: IProps) => {
       </div>
 
       {isLoading ? (
-        <div className={styles.center}><Loading /></div>
+        <Loading type="block" title="Loading activity logs" />
       ) : !data?.items.length ? (
         <div className={styles.empty}><p>No activity logs yet.</p></div>
       ) : (

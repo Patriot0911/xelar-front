@@ -51,9 +51,12 @@ const DiscordGuildGrid = () => {
 
   if (isLoading) {
     return (
-      <div className={styles.center}>
-        <Loading />
-      </div>
+      <Loading
+        type="block"
+        tone="discord"
+        title="Loading servers"
+        description="Fetching the Discord servers you manage…"
+      />
     );
   }
 

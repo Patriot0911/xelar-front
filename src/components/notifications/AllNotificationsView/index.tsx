@@ -7,8 +7,8 @@ import useDeleteWebhookNotificationMutation from '@/hooks/mutations/discord/useD
 import Loading from '@/components/ui/Loading';
 import EditNotificationModal from '@/components/discord/EditNotificationModal';
 import ConfirmModal from '@/components/common/ConfirmModal';
-import BotNotificationsList from '@/components/discord/GuildNotificationsView/BotNotificationsList';
-import WebhookNotificationsList from '@/components/discord/GuildNotificationsView/WebhookNotificationsList';
+import BotNotificationsTable from '@/components/discord/BotNotificationsTable';
+import WebhookNotificationsTable from '@/components/discord/WebhookNotificationsTable';
 import type { IDiscordBotNotificationModel, IWebhookNotificationModel } from '@/lib/models/discord';
 import styles from './styles.module.scss';
 
@@ -62,16 +62,18 @@ const AllNotificationsView = () => {
 
       <div className={styles.content}>
         {isLoading ? (
-          <div className={styles.center}><Loading /></div>
+          <Loading type="block" title="Loading notifications" />
         ) : activeTab === 'bot' ? (
-          <BotNotificationsList
-            items={data?.bot ?? []}
+          <BotNotificationsTable
+            data={{ items: data?.bot ?? [], meta: { count: data?.bot.length ?? 0 } }}
+            isLoading={false}
             onEdit={(item) => setEditTarget({ type: 'bot', item })}
             onDelete={(item) => setDeleteTarget({ type: 'bot', item })}
           />
         ) : (
-          <WebhookNotificationsList
-            items={data?.webhook ?? []}
+          <WebhookNotificationsTable
+            data={{ items: data?.webhook ?? [], meta: { count: data?.webhook.length ?? 0 } }}
+            isLoading={false}
             onEdit={(item) => setEditTarget({ type: 'webhook', item })}
             onDelete={(item) => setDeleteTarget({ type: 'webhook', item })}
           />
@@ -82,7 +84,7 @@ const AllNotificationsView = () => {
         <EditNotificationModal
           type={editTarget.type}
           notification={editTarget.item as any}
-          guildId={editTarget.type === 'bot' ? (editTarget.item as any).guild.discordGuildId : ''}
+          guildId={editTarget.type === 'bot' ? editTarget.item.guild?.discordGuildId ?? '' : ''}
           isOpen={!!editTarget}
           onClose={() => setEditTarget(null)}
         />

@@ -19,3 +19,13 @@ export const ADMINISTRATOR = 0x8;
 export const hasBitFlagPermission = (permissions: string, flag: number): boolean => {
   return (BigInt(permissions) & BigInt(flag)) === BigInt(flag);
 };
+
+export const formatDateTime = (date: string | Date): string => {
+  return new Date(date).toLocaleString('uk-UA', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
