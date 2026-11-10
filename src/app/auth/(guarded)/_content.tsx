@@ -5,7 +5,6 @@ import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import FormInput from '@/components/ui/FormInput';
 import DiscordButton from '@/components/ui/buttons/DiscordButton';
 import Button from '@/components/ui/buttons/Button';
@@ -175,11 +174,6 @@ export function AuthPageContent() {
 
   const footer = (
     <>
-      <div className={styles.footLinks}>
-        <Link href="/terms">Terms</Link>
-        <Link href="/privacy">Privacy</Link>
-        <Link href="/status">Status</Link>
-      </div>
       <AnimatePresence mode="wait" initial={false}>
         <motion.p
           key={mode}

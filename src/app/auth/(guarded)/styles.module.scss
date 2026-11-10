@@ -119,21 +119,6 @@
   margin: 0;
 }
 
-.footLinks {
-  display: flex;
-  gap: 16px;
-
-  a {
-    color: var(--ink-2);
-    text-decoration: none;
-    transition: color 0.15s;
-
-    &:hover {
-      color: var(--ink-0);
-    }
-  }
-}
-
 .footCta {
   margin: 0;
   color: var(--ink-2);
