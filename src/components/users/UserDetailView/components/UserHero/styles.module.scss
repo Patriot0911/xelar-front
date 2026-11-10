@@ -6,6 +6,8 @@
 
 .banner {
   height: 148px;
+  // Top of the page panel: only the top corners are rounded, the bottom fades into the panel.
+  border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
@@ -14,6 +16,7 @@
   @media (max-width: 768px) {
     height: 116px;
     padding: 12px;
+    border-radius: calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0 0;
   }
 }
 
@@ -35,23 +38,27 @@
   @media (max-width: 768px) {
     gap: 14px;
     margin-top: -40px;
-    padding: 0 4px;
+    padding: 0 12px;
   }
 }
 
 .avatarRing {
   flex-shrink: 0;
-  padding: 3px;
-  border-radius: calc(var(--radius-md) + 3px);
-  background: var(--neon-gradient);
+  padding: 2px;
+  border-radius: calc(var(--radius-md) + 2px);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--neon-pink) 45%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 35%, transparent) 100%
+  );
   box-shadow:
-    0 0 0 4px var(--bg-0),
-    0 0 26px var(--neon-pink-glow);
+    0 0 0 4px var(--panel),
+    0 0 18px color-mix(in srgb, var(--neon-pink) 16%, transparent);
 
   // A blocked account loses the neon: the state is visible before reading the badge.
   &[data-status='blocked'] {
     background: linear-gradient(135deg, var(--ink-3), var(--bg-4));
-    box-shadow: 0 0 0 4px var(--bg-0);
+    box-shadow: 0 0 0 4px var(--panel);
   }
 }
 

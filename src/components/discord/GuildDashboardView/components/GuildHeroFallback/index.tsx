@@ -11,7 +11,7 @@ import styles from './styles.module.scss';
  * keeps its generated banner and the error sits on top of it instead of replacing the whole block.
  */
 const GuildHeroFallback = ({ guildId, error, onRetry }: IGuildHeroFallbackProps) => (
-  <HeroBanner seed={guildId} className={styles.banner}>
+  <HeroBanner seed={guildId} className={styles.banner} fadeInto="var(--panel)">
     <div className={styles.glass}>
       <ErrorFallback error={error} onRetry={onRetry} compact className={styles.state} />
     </div>

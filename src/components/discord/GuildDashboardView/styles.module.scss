@@ -1,12 +1,20 @@
+/* The whole page is one solid panel: the hero banner fades into it and the tabs/content sit inside. */
 .layout {
   display: flex;
   flex-direction: column;
   gap: 28px;
   width: 100%;
   min-width: 0;
+  padding-bottom: 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
 
   @media (max-width: 768px) {
     gap: 20px;
+    padding-bottom: 16px;
+    border-radius: var(--radius-md);
   }
 }
 
@@ -15,4 +23,9 @@
   flex-direction: column;
   gap: 20px;
   min-width: 0;
+  padding: 0 24px;
+
+  @media (max-width: 768px) {
+    padding: 0 12px;
+  }
 }

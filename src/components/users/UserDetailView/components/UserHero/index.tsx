@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { LuBan, LuCircleCheck, LuCopy } from 'react-icons/lu';
+import { LuAtSign, LuBan, LuCircleCheck, LuCopy } from 'react-icons/lu';
+import { SiDiscord, SiTwitch } from 'react-icons/si';
 import useUpdateUserStatusMutation from '@/hooks/mutations/users/useUpdateUserStatusMutation';
 import HeroBanner from '@/components/ui/HeroBanner';
 import ActionsMenu from '@/components/ui/ActionsMenu';
@@ -26,17 +27,40 @@ const UserHero = ({ user }: IUserHeroProps) => {
     );
   };
 
-  const copyId = async () => {
+  const copy = async (value: string, what: string) => {
     try {
-      await navigator.clipboard.writeText(user.id);
-      toast.success('User ID copied');
+      await navigator.clipboard.writeText(value);
+      toast.success(`${what} copied`);
     } catch {
       toast.error('Couldn’t copy to the clipboard');
     }
   };
 
+  // Copy items appear only for the identifiers the account actually has.
+  const copyActions: IActionsMenuItem[] = [
+    { key: 'copy-id', label: 'Copy user ID', icon: LuCopy, onSelect: () => copy(user.id, 'User ID') },
+    ...(user.discordId ? [{
+      key: 'copy-discord-id',
+      label: 'Copy Discord ID',
+      icon: SiDiscord,
+      onSelect: () => copy(user.discordId!, 'Discord ID'),
+    }] : []),
+    ...(user.twitchLogin ? [{
+      key: 'copy-twitch-login',
+      label: 'Copy Twitch login',
+      icon: SiTwitch,
+      onSelect: () => copy(user.twitchLogin!, 'Twitch login'),
+    }] : []),
+    ...(user.email ? [{
+      key: 'copy-email',
+      label: 'Copy email',
+      icon: LuAtSign,
+      onSelect: () => copy(user.email!, 'Email'),
+    }] : []),
+  ];
+
   const actions: IActionsMenuItem[] = [
-    { key: 'copy-id', label: 'Copy user ID', icon: LuCopy, onSelect: copyId },
+    ...copyActions,
     isActive
       ? {
         key: 'block',
@@ -59,7 +83,7 @@ const UserHero = ({ user }: IUserHeroProps) => {
 
   return (
     <section className={styles.hero} aria-labelledby="user-hero-title">
-      <HeroBanner seed={user.id} className={styles.banner}>
+      <HeroBanner seed={user.id} className={styles.banner} fadeInto="var(--panel)">
         <ActionsMenu items={actions} label="User actions" className={styles.actions} />
       </HeroBanner>
 

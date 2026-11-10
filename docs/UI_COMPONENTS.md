@@ -275,7 +275,7 @@ Solid section container for dashboard pages (`--card` background, `--line` borde
 ```
 
 ### `HeroBanner` — `ui/HeroBanner`
-Wide banner for detail-page heroes: `imageUrl` if given (falls back on load error), otherwise a gradient from `getSeedGradient(seed)` with a light/neon pattern. The bottom fades into the page so overlapping content stays readable; children render on top. Props: `seed` (required), `imageUrl?`, `className`, `children`. No border by design.
+Wide banner for detail-page heroes: `imageUrl` if given (falls back on load error), otherwise a gradient from `getSeedGradient(seed)` with a light/neon pattern. The bottom fades into the page so overlapping content stays readable; children render on top. Props: `seed` (required), `imageUrl?`, `fadeInto?` (CSS colour the bottom dissolves into completely, e.g. `var(--panel)`, so the banner flows into the surface below), `className`, `children`. No border by design.
 
 ### `SectionTabs<T>` — `ui/SectionTabs`
 Page-level section tabs with a neon underline and optional icons (`role="tablist"`). Props: `items: { key: T; label; icon? }[]`, `value`, `onChange`, `label` (accessible name), `className`. Stretches to full width under 576px; scrolls horizontally if it doesn't fit. For a secondary switch inside a section use `Tabs`.

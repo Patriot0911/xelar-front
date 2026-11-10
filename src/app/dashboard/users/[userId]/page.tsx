@@ -5,7 +5,7 @@ import PermissionGuard from '@/components/common/PermissionGuard';
 import { Permission } from '@/lib/constants/permissions';
 import UserDetailView from '@/components/users/UserDetailView';
 import AsyncBoundary from '@/components/common/AsyncBoundary';
-import Loading from '@/components/ui/Loading';
+import UserDetailSkeleton from '@/components/users/UserDetailView/components/UserDetailSkeleton';
 
 interface IProps {
   params: Promise<{ userId: string }>;
@@ -21,7 +21,7 @@ export default function UserDetailPage({ params }: IProps) {
         title="User Details"
       />
       <PageContent>
-        <AsyncBoundary loading={<Loading type="block" title="Loading user" />}>
+        <AsyncBoundary loading={<UserDetailSkeleton />}>
           <UserDetailView userId={userId} />
         </AsyncBoundary>
       </PageContent>
