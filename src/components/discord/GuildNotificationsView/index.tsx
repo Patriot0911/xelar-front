@@ -1,44 +1,59 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LuPlus } from 'react-icons/lu';
-import useGuildNotificationsQuery from '@/hooks/queries/discord/useGuildNotificationsQuery';
+import useGuildBotNotificationsQuery from '@/hooks/queries/discord/useGuildBotNotificationsQuery';
+import useGuildWebhookNotificationsQuery from '@/hooks/queries/discord/useGuildWebhookNotificationsQuery';
 import useDeleteDiscordNotificationMutation from '@/hooks/mutations/discord/useDeleteDiscordNotificationMutation';
 import useDeleteWebhookNotificationMutation from '@/hooks/mutations/discord/useDeleteWebhookNotificationMutation';
-import Loading from '@/components/ui/Loading';
+import Tabs from '@/components/ui/Tabs';
+import { TabItem } from '@/components/ui/Tabs/Tabs';
 import AddNotificationModal from '@/components/discord/AddNotificationModal';
 import EditNotificationModal from '@/components/discord/EditNotificationModal';
 import ConfirmModal from '@/components/common/ConfirmModal';
-import type { IDiscordBotNotificationModel, IWebhookNotificationModel } from '@/lib/models/discord';
-import BotNotificationsList from './BotNotificationsList';
-import WebhookNotificationsList from './WebhookNotificationsList';
+import { GUILD_NOTIFICATION_TYPE_LABELS, GuildNotificationType } from '@/lib/constants/guild-notifications';
+import BotNotificationsTable from '@/components/discord/BotNotificationsTable';
+import WebhookNotificationsTable from '@/components/discord/WebhookNotificationsTable';
+import { IGuildNotificationsViewProps, TNotificationTarget } from './GuildNotificationsView';
+
 import styles from './styles.module.scss';
 
-type Tab = 'bot' | 'webhook';
-
-type EditTarget =
-  | { type: 'bot';     item: IDiscordBotNotificationModel }
-  | { type: 'webhook'; item: IWebhookNotificationModel }
-  | null;
-
-type DeleteTarget =
-  | { type: 'bot';     item: IDiscordBotNotificationModel }
-  | { type: 'webhook'; item: IWebhookNotificationModel }
-  | null;
-
-interface IGuildNotificationsViewProps {
-  guildId: string;
-}
+/** Steps back a page when the current one becomes empty (e.g. its last item was deleted). */
+const useClampPage = (page: number, setPage: (page: number) => void, itemsOnPage?: number) => {
+  useEffect(() => {
+    if (page > 1 && itemsOnPage === 0) setPage(page - 1);
+  }, [page, setPage, itemsOnPage]);
+};
 
 const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
-  const [activeTab, setActiveTab]    = useState<Tab>('bot');
-  const [modalOpen, setModalOpen]    = useState(false);
-  const [editTarget, setEditTarget]   = useState<EditTarget>(null);
-  const [deleteTarget, setDeleteTarget] = useState<DeleteTarget>(null);
+  const [activeType, setActiveType] = useState<GuildNotificationType>(GuildNotificationType.Bot);
+  const [botPage, setBotPage] = useState(1);
+  const [webhookPage, setWebhookPage] = useState(1);
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<TNotificationTarget>(null);
+  const [deleteTarget, setDeleteTarget] = useState<TNotificationTarget>(null);
 
-  const { data, isLoading } = useGuildNotificationsQuery(guildId);
+  // Both run so each tab shows its total before it is opened.
+  const botQuery = useGuildBotNotificationsQuery(guildId, botPage);
+  const webhookQuery = useGuildWebhookNotificationsQuery(guildId, webhookPage);
   const deleteBot = useDeleteDiscordNotificationMutation();
   const deleteWebhook = useDeleteWebhookNotificationMutation();
+
+  useClampPage(botPage, setBotPage, botQuery.data?.items.length);
+  useClampPage(webhookPage, setWebhookPage, webhookQuery.data?.items.length);
+
+  const tabs: TabItem<GuildNotificationType>[] = [
+    {
+      key: GuildNotificationType.Bot,
+      label: GUILD_NOTIFICATION_TYPE_LABELS[GuildNotificationType.Bot],
+      count: botQuery.data?.meta.count,
+    },
+    {
+      key: GuildNotificationType.Webhook,
+      label: GUILD_NOTIFICATION_TYPE_LABELS[GuildNotificationType.Webhook],
+      count: webhookQuery.data?.meta.count,
+    },
+  ];
 
   const handleConfirmDelete = () => {
     if (!deleteTarget) return;
@@ -46,46 +61,33 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
     mutation.mutate(deleteTarget.item.id, { onSuccess: () => setDeleteTarget(null) });
   };
 
-  const isDeleting = deleteBot.isPending || deleteWebhook.isPending;
-
   return (
     <div className={styles.root}>
       <div className={styles.toolbar}>
-        <div className={styles.switcher}>
-          <button
-            className={`${styles.switcherBtn} ${activeTab === 'bot' ? styles.switcherBtnActive : ''}`}
-            onClick={() => setActiveTab('bot')}
-          >
-            Discord Bot
-            {data && <span className={styles.badge}>{data.bot.length}</span>}
-          </button>
-          <button
-            className={`${styles.switcherBtn} ${activeTab === 'webhook' ? styles.switcherBtnActive : ''}`}
-            onClick={() => setActiveTab('webhook')}
-          >
-            Webhook
-            {data && <span className={styles.badge}>{data.webhook.length}</span>}
-          </button>
-        </div>
-
-        <button className={styles.addBtn} onClick={() => setModalOpen(true)}>
+        <Tabs<GuildNotificationType> items={tabs} value={activeType} onChange={setActiveType} />
+        <button type="button" className={styles.addBtn} onClick={() => setIsAddOpen(true)}>
           <LuPlus size={14} />
-          Add Notification
+          Add notification
         </button>
       </div>
 
-      <div className={styles.content}>
-        {isLoading ? (
-          <div className={styles.center}><Loading /></div>
-        ) : activeTab === 'bot' ? (
-          <BotNotificationsList
-            items={data?.bot ?? []}
+      <div role="tabpanel" aria-label={GUILD_NOTIFICATION_TYPE_LABELS[activeType]}>
+        {activeType === GuildNotificationType.Bot ? (
+          <BotNotificationsTable
+            guildId={guildId}
+            data={botQuery.data}
+            isLoading={botQuery.isLoading}
+            page={botPage}
+            onPageChange={setBotPage}
             onEdit={(item) => setEditTarget({ type: 'bot', item })}
             onDelete={(item) => setDeleteTarget({ type: 'bot', item })}
           />
         ) : (
-          <WebhookNotificationsList
-            items={data?.webhook ?? []}
+          <WebhookNotificationsTable
+            data={webhookQuery.data}
+            isLoading={webhookQuery.isLoading}
+            page={webhookPage}
+            onPageChange={setWebhookPage}
             onEdit={(item) => setEditTarget({ type: 'webhook', item })}
             onDelete={(item) => setDeleteTarget({ type: 'webhook', item })}
           />
@@ -94,8 +96,8 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
 
       <AddNotificationModal
         guildId={guildId}
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
+        isOpen={isAddOpen}
+        onClose={() => setIsAddOpen(false)}
       />
 
       {editTarget && (
@@ -112,7 +114,7 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
         title="Delete notification"
         description="Are you sure you want to delete this notification? This action cannot be undone."
         isOpen={!!deleteTarget}
-        isLoading={isDeleting}
+        isLoading={deleteBot.isPending || deleteWebhook.isPending}
         onConfirm={handleConfirmDelete}
         onCancel={() => setDeleteTarget(null)}
         onClose={() => setDeleteTarget(null)}

@@ -4,6 +4,9 @@ import type { IDiscordChannelModel } from '../models/discord/discord-channel.mod
 import type { IDiscordRoleModel } from '../models/discord/discord-role.model';
 import type {
   IGuildNotificationsResponse,
+  IGuildNotificationsParams,
+  IGuildBotNotificationsResponse,
+  IGuildWebhookNotificationsResponse,
   IDiscordBotNotificationModel,
   IWebhookNotificationModel,
   ICreateDiscordNotificationPayload,
@@ -27,8 +30,18 @@ class DiscordService {
     return apiClient.get('/api/discord/guilds');
   }
 
-  static getGuildNotifications(discordGuildId: string): Promise<IGuildNotificationsResponse> {
-    return apiClient.get(`/api/twitch-notifications/discord/${discordGuildId}`);
+  static getGuildBotNotifications(
+    discordGuildId: string,
+    params: IGuildNotificationsParams,
+  ): Promise<IGuildBotNotificationsResponse> {
+    return apiClient.get(`/api/twitch-notifications/discord/${discordGuildId}/bot`, { params });
+  }
+
+  static getGuildWebhookNotifications(
+    discordGuildId: string,
+    params: IGuildNotificationsParams,
+  ): Promise<IGuildWebhookNotificationsResponse> {
+    return apiClient.get(`/api/twitch-notifications/discord/${discordGuildId}/webhook`, { params });
   }
 
   static getAllNotifications(): Promise<IGuildNotificationsResponse> {

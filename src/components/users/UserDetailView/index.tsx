@@ -12,7 +12,7 @@ const UserDetailView = ({ userId }: IUserDetailViewProps) => {
   const { data: user, isLoading } = useUserDetailQuery(userId);
 
   if (isLoading) {
-    return <div className={styles.state}><Loading /></div>;
+    return <Loading type="block" title="Loading user" />;
   }
 
   if (!user) {

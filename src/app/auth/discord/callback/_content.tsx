@@ -8,6 +8,7 @@ import { useAppDispatch } from '@/hooks/redux';
 import useDiscordCodeMutation from '@/hooks/mutations/auth/useDiscordCodeMutation';
 import useLinkDiscordMutation from '@/hooks/mutations/auth/useLinkDiscordMutation';
 import { DISCORD_LINK_INTENT_KEY } from '@/components/dashboard/DashboardUserCard/ProfileModal/tabs/ServicesTab';
+import Loading from '@/components/ui/Loading';
 
 type Status = 'loading' | 'success' | 'error';
 
@@ -85,15 +86,12 @@ export function DiscordCallbackContent() {
 
       <div className={styles.card}>
         {status === 'loading' && (
-          <div className={styles.loading}>
-            <div className={styles.spinner} />
-            <div>
-              <p className={styles.title}>
-                {isLinkIntent.current ? 'Linking Discord…' : 'Connecting Discord…'}
-              </p>
-              <p className={styles.sub}>Verifying your account, hold on.</p>
-            </div>
-          </div>
+          <Loading
+            type="card"
+            tone="discord"
+            title={isLinkIntent.current ? 'Linking Discord…' : 'Connecting Discord…'}
+            description="Verifying your account, hold on."
+          />
         )}
 
         {status === 'success' && (

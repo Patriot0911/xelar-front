@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { LuCheck, LuX, LuArrowLeft } from 'react-icons/lu';
 import styles from './page.module.scss';
 import useLinkTwitchMutation from '@/hooks/mutations/auth/useLinkTwitchMutation';
+import Loading from '@/components/ui/Loading';
 
 type Status = 'loading' | 'success' | 'error';
 
@@ -68,13 +69,12 @@ export function TwitchCallbackContent() {
 
       <div className={styles.card}>
         {status === 'loading' && (
-          <div className={styles.loading}>
-            <div className={styles.spinner} />
-            <div>
-              <p className={styles.title}>Linking Twitch…</p>
-              <p className={styles.sub}>Verifying your account, hold on.</p>
-            </div>
-          </div>
+          <Loading
+            type="card"
+            tone="twitch"
+            title="Linking Twitch…"
+            description="Verifying your account, hold on."
+          />
         )}
 
         {status === 'success' && (

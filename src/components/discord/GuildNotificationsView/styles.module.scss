@@ -3,64 +3,30 @@
   flex-direction: column;
   width: 100%;
   gap: 16px;
+  min-width: 0;
 }
 
-/* ── Toolbar: switcher + add button ── */
 .toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-}
 
-/* ── Pill/segment switcher ── */
-.switcher {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px;
-  gap: 2px;
-  border-radius: var(--radius-md);
-  background: var(--surface-3);
-  border: 1px solid var(--line);
-}
-
-.switcherBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  height: 28px;
-  padding: 0 12px;
-  border-radius: calc(var(--radius-md) - 2px);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink-2);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: color 0.12s, background 0.12s, box-shadow 0.12s;
-  font-family: var(--font-body);
-  white-space: nowrap;
-
-  &:hover {
-    color: var(--ink-1);
-  }
-
-  &.switcherBtnActive {
-    color: var(--ink-0);
-    background: var(--surface-1);
-    font-weight: 600;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  @media (max-width: 576px) {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 
-/* ── Add button ── */
 .addBtn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  height: 32px;
+  height: 34px;
   padding: 0 14px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
   font-size: 13px;
   font-weight: 600;
   color: #fff;
@@ -68,7 +34,6 @@
   border: none;
   cursor: pointer;
   transition: opacity 0.15s, box-shadow 0.15s;
-  font-family: var(--font-body);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
     0 1px 2px rgba(0, 0, 0, 0.3);
@@ -77,74 +42,10 @@
     opacity: 0.9;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.25),
-      0 4px 14px rgba(154, 107, 255, 0.20);
+      0 4px 14px var(--accent-glow);
   }
-}
 
-/* ── Badge inside switcher ── */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 17px;
-  height: 17px;
-  padding: 0 4px;
-  border-radius: var(--radius-full);
-  background: var(--surface-2);
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--ink-2);
-}
-
-.switcherBtnActive .badge {
-  background: var(--surface-3);
-  color: var(--ink-1);
-}
-
-/* ── Content area ── */
-.content {
-  min-height: 160px;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-  padding: 60px 0;
-}
-
-.empty {
-  display: flex;
-  justify-content: center;
-  padding: 48px 0;
-
-  p {
-    font-size: 14px;
-    color: var(--ink-2);
+  @media (max-width: 576px) {
+    width: 100%;
   }
-}
-
-/* ── Game filter badges ── */
-.gamesAll {
-  font-size: 12px;
-  color: var(--ink-3);
-}
-
-.gamesChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  max-width: 220px;
-}
-
-.gamesChip {
-  display: inline-flex;
-  align-items: center;
-  height: 20px;
-  padding: 0 8px;
-  border-radius: var(--radius-full);
-  background: var(--surface-3);
-  border: 1px solid var(--line);
-  font-size: 11px;
-  color: var(--ink-1);
-  white-space: nowrap;
 }

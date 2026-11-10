@@ -1,3 +1,5 @@
+import { IGenericList, IGenericPagination } from '@/lib/models/generic-response.model';
+
 export interface IStreamerRef {
   broadcasterId: string;
   twitchLogin: string;
@@ -10,11 +12,16 @@ export interface IStreamerEventRef {
   streamer: IStreamerRef;
 }
 
+export interface INotificationGuildRef {
+  discordGuildId: string;
+}
+
 // todo: rework interface
 export interface IDiscordBotNotificationModel {
   id: string;
   channelId: string;
   guildId: string;
+  guild?: INotificationGuildRef;
   costType: string;
   cost: number;
   status: 'active' | 'suspended';
@@ -41,6 +48,12 @@ export interface IGuildNotificationsResponse {
   bot: IDiscordBotNotificationModel[];
   webhook: IWebhookNotificationModel[];
 }
+
+export interface IGuildNotificationsParams extends IGenericPagination {}
+
+export interface IGuildBotNotificationsResponse extends IGenericList<IDiscordBotNotificationModel> {}
+
+export interface IGuildWebhookNotificationsResponse extends IGenericList<IWebhookNotificationModel> {}
 
 export type DiscordErrorCode = 'DISCORD_NOT_CONNECTED' | 'DISCORD_TOKEN_REVOKED';
 

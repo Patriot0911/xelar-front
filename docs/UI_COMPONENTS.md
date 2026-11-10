@@ -248,7 +248,20 @@ Gradient "X" + "elar" wordmark + glowing dot. `responsive` (default `true`) coll
 "Active workspace" card (gradient "X" mark + server name). Currently not rendered anywhere — kept for the dashboard sidebar.
 
 ### `Loading` — `ui/Loading`
-Spinner.
+The one loader for every waiting state (ring spinner from the OAuth callback screens). Renders `role="status"`; when there is no visible text it adds a screen-reader label.
+
+| Prop | Type | Default |
+|---|---|---|
+| `type` | `'spinner'` — bare ring (buttons, overlays, small slots) · `'inline'` — small ring + label in a row (table cells) · `'block'` — centred ring + title/description filling a content area (page / section loading, min-height 220px) · `'card'` — glowing card with ring + title/description (full-screen flows like OAuth callbacks) | `'spinner'` |
+| `tone` | `'accent' \| 'discord' \| 'twitch'` — ring and glow colour | `'accent'` |
+| `size` | `'sm' \| 'md' \| 'lg'` | per type: `inline` → `sm`, `spinner`/`block` → `md`, `card` → `lg` |
+| `title`, `description` | `string` — ignored by `spinner` (title becomes the a11y label) | — |
+| `className` | `string` | — |
+
+```tsx
+if (isLoading) return <Loading type="block" tone="discord" title="Loading servers" />;
+```
+Tables keep their own skeleton rows (`Table isLoading`); use `Loading` for everything else instead of a "Loading…" string.
 
 ---
 

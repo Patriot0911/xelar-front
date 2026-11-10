@@ -4,6 +4,7 @@ import Image from 'next/image';
 import useTopStreamersQuery from '@/hooks/queries/statistics/useTopStreamersQuery';
 import { ITopStreamerItem } from '@/lib/models/statistics/statistics.model';
 
+import Loading from '@/components/ui/Loading';
 import styles from './styles.module.scss';
 
 function StreamerRow({ streamer, rank, max }: { streamer: ITopStreamerItem; rank: number; max: number }) {
@@ -54,7 +55,7 @@ const TopStreamersCard = () => {
     <div className={styles.card}>
       <div className={styles.title}>Top Streamers</div>
 
-      {isLoading && <div className={styles.placeholder}>Loading…</div>}
+      {isLoading && <div className={styles.placeholder}><Loading size="sm" /></div>}
       {!isLoading && !data?.length && (
         <div className={styles.placeholder}>No data yet</div>
       )}

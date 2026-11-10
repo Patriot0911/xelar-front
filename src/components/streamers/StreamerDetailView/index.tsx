@@ -7,6 +7,7 @@ import useUpdateStreamerMutation from '@/hooks/mutations/streamers/useUpdateStre
 import useSyncStreamerMutation from '@/hooks/mutations/streamers/useSyncStreamerMutation';
 import Button from '@/components/ui/buttons/Button';
 import Switch from '@/components/ui/Switch';
+import Loading from '@/components/ui/Loading';
 
 import styles from './styles.module.scss';
 
@@ -67,7 +68,7 @@ function NotificationLogsCard({ streamerId }: { streamerId: string }) {
   return (
     <div className={`${styles.card} ${styles.fullWidthCard}`}>
       <p className={styles.cardTitle}>Notification Logs</p>
-      {isLoading && <span className={styles.noSessions}>Loading…</span>}
+      {isLoading && <Loading type="inline" title="Loading logs" />}
       {!isLoading && !logs?.length && (
         <span className={styles.noSessions}>No logs found</span>
       )}
@@ -109,7 +110,7 @@ export function StreamerDetailView({ streamerId }: { streamerId: string }) {
   const syncMutation = useSyncStreamerMutation();
 
   if (isLoading || !streamer) {
-    return <div style={{ padding: 24, color: 'var(--ink-3)', fontSize: 14 }}>Loading…</div>;
+    return <Loading type="block" title="Loading streamer" />;
   }
 
   return (
