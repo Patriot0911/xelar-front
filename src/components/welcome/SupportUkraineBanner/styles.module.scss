@@ -67,6 +67,10 @@ $ua-yellow: #ffd700;
   font-weight: 600;
   transition: filter 0.15s ease;
 
+  &:hover {
+    color: #0b0d1a;
+    background: $ua-blue;
+  }
 
   &:focus-visible {
     outline: 2px solid $ua-yellow;
