@@ -2,43 +2,15 @@
 
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import type { ITableColumn, ITableColumnsVisibility } from '@/components/ui/Table/Table';
+import { readStorage, subscribeStorage, writeStorage } from '@/lib/local-storage';
 
 const STORAGE_PREFIX = 'xelar:table-columns:';
 
 /** Only deviations from the column defaults are stored: `{ [columnKey]: isVisible }`. */
 type TStoredVisibility = Record<string, boolean>;
 
-// Same-tab writes don't fire `storage`, so the hook notifies its own subscribers.
-const listeners = new Set<() => void>();
-const notify = () => listeners.forEach((listener) => listener());
-
-const subscribe = (listener: () => void) => {
-  listeners.add(listener);
-  window.addEventListener('storage', listener);
-  return () => {
-    listeners.delete(listener);
-    window.removeEventListener('storage', listener);
-  };
-};
-
-// Storage can throw (private mode, blocked site data) — the table then just uses its defaults.
-const readRaw = (key: string): string | null => {
-  try {
-    return localStorage.getItem(key);
-  } catch {
-    return null;
-  }
-};
-
-const writeRaw = (key: string, value: TStoredVisibility) => {
-  try {
-    if (Object.keys(value).length) localStorage.setItem(key, JSON.stringify(value));
-    else localStorage.removeItem(key);
-  } catch {
-    // Not persisted — the choice is lost on reload, nothing else breaks.
-  }
-  notify();
-};
+const writeVisibility = (key: string, value: TStoredVisibility) =>
+  writeStorage(key, Object.keys(value).length ? JSON.stringify(value) : null);
 
 const parse = (raw: string | null): TStoredVisibility => {
   if (!raw) return {};
@@ -69,8 +41,8 @@ const useTableColumns = <T,>(
 
   // Server and first client render see `null` (defaults), so hydration matches; stored state applies right after.
   const raw = useSyncExternalStore(
-    subscribe,
-    () => (fullKey ? readRaw(fullKey) : null),
+    subscribeStorage,
+    () => (fullKey ? readStorage(fullKey) : null),
     () => null,
   );
   const stored = useMemo(() => parse(raw), [raw]);
@@ -94,11 +66,11 @@ const useTableColumns = <T,>(
     const value = { ...stored };
     if (next === isDefaultVisible(column)) delete value[key];
     else value[key] = next;
-    writeRaw(fullKey, value);
+    writeVisibility(fullKey, value);
   }, [columns, fullKey, isVisible, stored]);
 
   const reset = useCallback(() => {
-    if (fullKey) writeRaw(fullKey, {});
+    if (fullKey) writeVisibility(fullKey, {});
   }, [fullKey]);
 
   return useMemo(() => {

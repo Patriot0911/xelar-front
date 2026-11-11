@@ -121,8 +121,9 @@ hooks/
 ├── mutations/<area>/use<Action>Mutation.ts   # useMutation wrappers (+ toasts + invalidation)
 ├── redux/                                    # typed useAppDispatch / useAppSelector, selectors
 └── shared/                                   # generic hooks: useInView, useMediaQuery, useOnClickOutside,
-                                              # useIsAuthenticated, useHasPermission, useFilteredNavSections,
-                                              # useDebouncedValue, useListSearch, useClampPage, useTableColumns
+                                              # useIsAuthenticated, useHasPermission, useNavSections,
+                                              # useDebouncedValue, useListSearch, useClampPage, useTableColumns,
+                                              # useFavoriteGuilds
 ```
 
 ## Data layer
@@ -197,7 +198,7 @@ Never thrown or toasted: `unauthorized` (api-client refreshes or logs out), `can
 - `AuthProvider` dispatches `initAuth()` once on mount → status becomes `guest` or `authenticated`.
 - `AuthGuard` (in route layouts) waits while status is `init`, then redirects: dashboard → `/auth` for guests; `guestOnly` (auth pages) → `/dashboard` for signed-in users.
 - The current user, including `permissions`, comes from `useMeQuery()` (enabled only when authenticated).
-- `PermissionGuard` / `useHasPermission` check `Permission` values; `ADMIN` passes every check. The sidebar hides items via `useFilteredNavSections` using `requiredPermissions` in `components/dashboard/nav-data.ts`.
+- `PermissionGuard` / `useHasPermission` check `Permission` values; `ADMIN` passes every check. The sidebar hides items via `useNavSections` using `requiredPermissions` in `components/dashboard/nav-data.ts`.
 - Discord sign-in is a plain `<form method="post">` to `${NEXT_PUBLIC_API_URL}/api/auth/discord`; Discord redirects back to `/auth/discord/callback`, which exchanges the code (or links the account if a link intent is stored in `localStorage`).
 
 ## Styling system
@@ -210,3 +211,10 @@ Never thrown or toasted: `unauthorized` (api-client refreshes or logs out), `can
 - The theme is **dark only**.
 - Breakpoints (`abstracts/_breakpoints.scss`): `sm 576`, `md 768`, `lg 992`, `xl 1200`. A `mq($key)` mixin exists; most modules use plain `@media (max-width: …)` with the same numbers.
 - Recurring visual motifs: mono uppercase "eyebrow" labels with a glowing accent dot, accent gradient `linear-gradient(135deg, var(--accent), var(--accent-2))` for highlighted text and primary actions, blurred aura backgrounds (`AuthBgEffects`, `DashboardBgEffects`).
+
+## Browser storage
+
+Per-browser UI preferences live in `localStorage` through `lib/local-storage.ts` (`readStorage` / `writeStorage` / `subscribeStorage` — every access is try/catch, writes notify same-tab subscribers). Hooks read them with `useSyncExternalStore` and a `null` server snapshot, so SSR and hydration render the defaults. Keys use the `xelar:` prefix:
+
+- `xelar:table-columns:<key>` — column picker choice (`useTableColumns`).
+- `xelar:favorite-guilds` — JSON array of `IFavoriteGuild` (`{ id, name, iconUrl }`), at most `FAVORITE_GUILDS_LIMIT` (3); helpers in `lib/favorite-guilds.ts`, read / change through `useFavoriteGuilds`. The stored name / logo is refreshed whenever the server page loads.

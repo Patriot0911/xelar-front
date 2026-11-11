@@ -2,15 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { isActive, NAV_LIST } from '../../../nav-data';
+import { getActiveHref } from '../../../nav-data';
+import NavItemIcon from '../../../NavItemIcon';
 import styles from './styles.module.scss';
 import XelarLogo from '@/components/ui/logos/XelarLogo';
 import DashboardUserCard from '../../../DashboardUserCard';
-import { useFilteredNavSections } from '@/hooks/shared/useFilteredNavSections';
+import useNavSections from '@/hooks/shared/useNavSections';
 
 const DashboardSidebar = () => {
   const pathname = usePathname();
-  const filteredSections = useFilteredNavSections(NAV_LIST);
+  const sections = useNavSections();
+  const activeHref = getActiveHref(pathname, sections);
 
   return (
     <aside className={styles.sidebar}>
@@ -18,22 +20,23 @@ const DashboardSidebar = () => {
         <XelarLogo />
       </Link>
 
-      {filteredSections.map((section) => (
-        <nav className={styles.navSection} key={section.label}>
+      {sections.map((section) => (
+        <nav className={styles.navSection} key={section.key} aria-label={section.label}>
           <p className={styles.navGroupHead}>
             <span className={styles.roleDot} />
             <span className={styles.groupLabel}>{section.label}</span>
             <span className={styles.groupLine} />
           </p>
-          {section.items.map(({ label, href, icon: Icon }) => (
+          {section.items.map((item) => (
             <Link
-              key={href}
-              href={href}
-              className={`${styles.navItem} ${isActive(pathname, href) ? styles.active : ''}`}
+              key={item.href}
+              href={item.href}
+              aria-current={item.href === activeHref ? 'page' : undefined}
+              className={`${styles.navItem} ${item.href === activeHref ? styles.active : ''}`}
             >
-              <Icon size={16} />
-              <span className={styles.navLabel}>{label}</span>
-              <span className={styles.tooltip} aria-hidden="true">{label}</span>
+              <NavItemIcon item={item} />
+              <span className={styles.navLabel}>{item.label}</span>
+              <span className={styles.tooltip} aria-hidden="true">{item.label}</span>
             </Link>
           ))}
         </nav>

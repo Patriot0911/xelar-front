@@ -228,6 +228,5 @@ Older code does not always follow the rules above. Don't copy these patterns int
 | `Button` `size` prop has no matching styles (`sm` / `md` / `lg` look the same) | Size via `className` until sizes are implemented |
 | Local `formatDate` helpers (`StreamerDetailView`, `ProfileModal` tabs) | `formatDateTime` / `formatDate` from `lib/utils.ts` |
 | Hard-coded colours in some modules (`#2633c0` in `Button`) | Tokens |
-| `getInitials` duplicated in `lib/utils.ts` and `components/dashboard/nav-data.ts` | `lib/utils.ts` |
 | Both `next.config.ts` and `next.config.js` exist | One config file |
 | `components/shadcn/*` built with Tailwind classes | `ui/` + SCSS Modules |

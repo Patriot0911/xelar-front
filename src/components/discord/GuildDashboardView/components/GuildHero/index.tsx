@@ -1,8 +1,11 @@
 'use client';
 
+import { useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
 import { LuCircleDot, LuCopy, LuExternalLink, LuType } from 'react-icons/lu';
 import useDiscordGuildInfoQuery from '@/hooks/queries/discord/useDiscordGuildInfoQuery';
+import useFavoriteGuilds from '@/hooks/shared/useFavoriteGuilds';
+import { toFavoriteGuild } from '@/lib/favorite-guilds';
 import HeroBanner from '@/components/ui/HeroBanner';
 import ActionsMenu from '@/components/ui/ActionsMenu';
 import { IActionsMenuItem } from '@/components/ui/ActionsMenu/ActionsMenu';
@@ -10,6 +13,7 @@ import { getGuildBannerUrl, getGuildIconUrl } from '@/lib/guild-visuals';
 import { getInitials } from '@/lib/utils';
 import { getGuildAccessRole, GUILD_ACCESS_ROLE_LABELS } from '@/lib/guild-access';
 import GuildHeroStats from '../GuildHeroStats';
+import GuildFavoriteToggle from '../GuildFavoriteToggle';
 import { IGuildHeroProps } from './GuildHero';
 
 import styles from './styles.module.scss';
@@ -19,6 +23,13 @@ const GuildHero = ({ guildId }: IGuildHeroProps) => {
   const { data: guild } = useDiscordGuildInfoQuery(guildId);
   const iconUrl = getGuildIconUrl(guild.id, guild.icon, 256);
   const role = GUILD_ACCESS_ROLE_LABELS[getGuildAccessRole(guild)];
+  const favorite = useMemo(() => toFavoriteGuild(guild), [guild]);
+  const { update: updateFavorite } = useFavoriteGuilds();
+
+  // A saved server may have been renamed or got a new logo since — keep the nav entry current.
+  useEffect(() => {
+    updateFavorite(favorite);
+  }, [favorite, updateFavorite]);
 
   const copy = async (value: string, what: string) => {
     try {
@@ -42,6 +53,8 @@ const GuildHero = ({ guildId }: IGuildHeroProps) => {
 
   return (
     <section className={styles.hero} aria-labelledby="guild-hero-title">
+      <GuildFavoriteToggle guild={favorite} className={styles.favorite} />
+
       <HeroBanner
         seed={guild.id}
         imageUrl={getGuildBannerUrl(guild.id, guild.banner)}

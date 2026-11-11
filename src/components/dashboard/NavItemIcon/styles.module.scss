@@ -1,0 +1,24 @@
+.image,
+.fallback {
+  width: var(--nav-image-size);
+  height: var(--nav-image-size);
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.image {
+  object-fit: cover;
+  background: var(--bg-2);
+}
+
+.fallback {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: var(--ink-0);
+  font-family: var(--font-display);
+  font-size: 8.5px;
+  font-weight: 700;
+  line-height: 1;
+}

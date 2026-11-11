@@ -309,6 +309,14 @@
   padding: 8px 12px 5px;
 }
 
+.navLabel {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; // favorite server names can be long
+}
+
 .navItem {
   position: relative;
   display: flex;

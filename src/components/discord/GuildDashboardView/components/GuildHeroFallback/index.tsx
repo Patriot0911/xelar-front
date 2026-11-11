@@ -10,10 +10,10 @@ import styles from './styles.module.scss';
  * Error state in the hero's own shape: the id is known even when the request failed, so the server
  * keeps its generated banner and the error sits on top of it instead of replacing the whole block.
  */
-const GuildHeroFallback = ({ guildId, error, onRetry }: IGuildHeroFallbackProps) => (
+const GuildHeroFallback = ({ guildId, error, onRetry, children }: IGuildHeroFallbackProps) => (
   <HeroBanner seed={guildId} className={styles.banner} fadeInto="var(--panel)">
     <div className={styles.glass}>
-      <ErrorFallback error={error} onRetry={onRetry} compact className={styles.state} />
+      {children ?? <ErrorFallback error={error} onRetry={onRetry} compact className={styles.state} />}
     </div>
   </HeroBanner>
 );

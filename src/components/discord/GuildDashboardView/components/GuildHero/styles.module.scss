@@ -5,6 +5,19 @@
   min-width: 0;
 }
 
+// Bookmark box pinned to the banner's top-left corner (the stats sit top-right).
+.favorite {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 3;
+
+  @media (max-width: 768px) {
+    top: 12px;
+    left: 12px;
+  }
+}
+
 .banner {
   height: 232px;
   // Top of the page panel: only the top corners are rounded, the bottom fades into the panel.

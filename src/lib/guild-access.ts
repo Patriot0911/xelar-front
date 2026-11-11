@@ -1,4 +1,6 @@
 import { ADMINISTRATOR, hasBitFlagPermission } from './utils';
+import { toApiError } from './errors';
+import { ApiErrorKind } from './constants/errors';
 
 /** Discord "Manage Server" — required by Discord to add a bot to a server. */
 export const MANAGE_GUILD = 0x20;
@@ -39,3 +41,13 @@ export const compareGuildsForList = <G extends IGuildAccessLike & { hasBot: bool
   Number(b.hasBot) - Number(a.hasBot)
   || ROLE_RANK[getGuildAccessRole(a)] - ROLE_RANK[getGuildAccessRole(b)]
   || a.name.localeCompare(b.name);
+
+/**
+ * The server can't be opened for this user: it was deleted, the bot left, or the user lost access.
+ * The backend answers 403 or 404 depending on the case — the UI treats them the same.
+ */
+export const isGuildAccessError = (error: unknown): boolean => {
+  if (!error) return false;
+  const { kind } = toApiError(error);
+  return kind === ApiErrorKind.Forbidden || kind === ApiErrorKind.NotFound;
+};

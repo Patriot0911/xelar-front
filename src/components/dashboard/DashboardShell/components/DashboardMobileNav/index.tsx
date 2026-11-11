@@ -7,15 +7,17 @@ import {
   LuMenu,
   LuX,
 } from 'react-icons/lu';
-import { isActive, NAV_LIST } from '../../../nav-data';
+import { getActiveHref } from '../../../nav-data';
+import NavItemIcon from '../../../NavItemIcon';
 import styles from './styles.module.scss';
 import DashboardUserCard from '../../../DashboardUserCard';
-import { useFilteredNavSections } from '@/hooks/shared/useFilteredNavSections';
+import useNavSections from '@/hooks/shared/useNavSections';
 
 const DashboardMobileNav = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const pathname = usePathname();
-  const filteredSections = useFilteredNavSections(NAV_LIST);
+  const sections = useNavSections();
+  const activeHref = getActiveHref(pathname, sections);
 
   const closeDrawer = () => setDrawerOpen(false);
 
@@ -70,21 +72,22 @@ const DashboardMobileNav = () => {
           <span className={styles.wmX}>X</span>elar
         </span>
 
-        {filteredSections.length > 0 && (
+        {sections.length > 0 && (
           <nav className={styles.navSection}>
             <p className={styles.navGroupHead}>Main</p>
-            {filteredSections.map((section) => (
-              <div key={section.label}>
+            {sections.map((section) => (
+              <div key={section.key}>
                 <p className={styles.navGroupHead}>{section.label}</p>
-                {section.items.map(({ label, href, icon: Icon }) => (
+                {section.items.map((item) => (
                   <Link
-                    key={href}
-                    href={href}
-                    className={`${styles.navItem} ${isActive(pathname, href) ? styles.navActive : ''}`}
+                    key={item.href}
+                    href={item.href}
+                    aria-current={item.href === activeHref ? 'page' : undefined}
+                    className={`${styles.navItem} ${item.href === activeHref ? styles.navActive : ''}`}
                     onClick={closeDrawer}
                   >
-                    <Icon size={16} />
-                    {label}
+                    <NavItemIcon item={item} />
+                    <span className={styles.navLabel}>{item.label}</span>
                   </Link>
                 ))}
               </div>

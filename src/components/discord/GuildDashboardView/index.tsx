@@ -15,6 +15,10 @@ import SectionTabs from '@/components/ui/SectionTabs';
 import { ISectionTabItem } from '@/components/ui/SectionTabs/SectionTabs';
 import { LuBell, LuScrollText, LuSettings2 } from 'react-icons/lu';
 import GuildSettingsPanel from './components/GuildSettingsPanel';
+import GuildUnavailable from './components/GuildUnavailable';
+import useDiscordGuildInfoError from '@/hooks/queries/discord/useDiscordGuildInfoError';
+import useFavoriteGuilds from '@/hooks/shared/useFavoriteGuilds';
+import { isGuildAccessError } from '@/lib/guild-access';
 import { IGuildDashboardViewProps } from './GuildDashboardView';
 
 import styles from './styles.module.scss';
@@ -29,6 +33,19 @@ const renderDiscordAuthError = (error: unknown) => (isDiscordAuthError(error) ? 
 
 const GuildDashboardView = ({ guildId }: IGuildDashboardViewProps) => {
   const [activeTab, setActiveTab] = useState<GuildDashboardTab>(GuildDashboardTab.Notifications);
+  const { favorites } = useFavoriteGuilds();
+  const guildInfoError = useDiscordGuildInfoError(guildId);
+  const favorite = favorites.find((item) => item.id === guildId);
+
+  // A saved server that can't be opened anymore gets one explanatory screen instead of the hero and
+  // tab errors. Other servers keep the regular error states (with retry for transient failures).
+  if (favorite && isGuildAccessError(guildInfoError)) {
+    return (
+      <div className={styles.layout}>
+        <GuildUnavailable favorite={favorite} />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.layout}>
