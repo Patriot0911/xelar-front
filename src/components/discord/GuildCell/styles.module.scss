@@ -1,0 +1,56 @@
+.guild {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  min-width: 0;
+  color: var(--ink-0);
+  text-decoration: none;
+}
+
+a.guild:hover .name,
+a.guild:focus-visible .name {
+  text-decoration: underline;
+}
+
+.avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.avatarFallback {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  background: var(--surface-3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-1);
+  flex-shrink: 0;
+}
+
+.name {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fallback {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  color: var(--ink-1);
+}
+
+.muted {
+  color: var(--ink-3);
+  font-size: 12px;
+}

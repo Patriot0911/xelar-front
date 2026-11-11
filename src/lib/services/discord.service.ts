@@ -20,7 +20,7 @@ import { guildInfoResponseSchema } from '../models/discord/discord-guild-info.sc
 export enum DiscordQueryKey {
   Guilds             = 'discord-guilds',
   GuildNotifications = 'guild-notifications',
-  AllNotifications   = 'all-notifications',
+  MyNotifications    = 'my-notifications',
   GuildRoles         = 'discord-guild-roles',
   GuildChannels      = 'discord-guild-channels',
   GuildInfo          = 'discord-guild-info',

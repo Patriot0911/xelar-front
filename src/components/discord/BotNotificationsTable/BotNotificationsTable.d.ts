@@ -3,6 +3,8 @@ import { IDiscordBotNotificationModel, IGuildBotNotificationsResponse } from '@/
 export interface IBotNotificationsTableProps {
   /** Fallback guild for channel names when a row has no `guild` relation. */
   guildId?: string;
+  /** Adds a "Server" column — for lists that mix notifications from several servers. */
+  showGuild?: boolean;
   data?: IGuildBotNotificationsResponse;
   isLoading: boolean;
   /** Pagination is rendered only when both `page` and `onPageChange` are passed. */

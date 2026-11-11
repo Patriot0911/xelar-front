@@ -20,7 +20,7 @@ const useUpdateWebhookNotificationMutation = () => {
     onSuccess: () => {
       toast.success('Webhook notification updated');
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.GuildNotifications] });
-      queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.AllNotifications] });
+      queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.MyNotifications] });
     },
   });
 };

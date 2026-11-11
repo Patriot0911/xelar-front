@@ -73,7 +73,7 @@ components/
 ├── welcome/         # Welcome page sections
 ├── overview/        # Dashboard overview widgets
 ├── discord/         # Discord servers, guild dashboard, notification modals
-├── notifications/   # All-notifications view
+├── notifications/   # My-notifications view (current user, across servers)
 ├── streamers/       # Admin: streamers table + detail
 ├── users/           # Admin: users table + detail
 ├── roles/           # Admin: roles table + create/edit modal

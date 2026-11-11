@@ -21,7 +21,7 @@ import type { TGuildNotificationRef } from '@/lib/models/discord';
 import styles from './styles.module.scss';
 
 /** Every notification the current user created, across servers: search, bot / webhook tabs, pagination. */
-const AllNotificationsView = () => {
+const MyNotificationsView = () => {
   const [activeType, setActiveType] = useState<GuildNotificationType>(GuildNotificationType.Bot);
   const [botPage, setBotPage] = useState(1);
   const [webhookPage, setWebhookPage] = useState(1);
@@ -74,6 +74,7 @@ const AllNotificationsView = () => {
       <div role="tabpanel" aria-label={GUILD_NOTIFICATION_TYPE_LABELS[activeType]}>
         {activeType === GuildNotificationType.Bot ? (
           <BotNotificationsTable
+            showGuild
             data={botQuery.data}
             isLoading={botQuery.isLoading}
             page={botPage}
@@ -84,6 +85,7 @@ const AllNotificationsView = () => {
           />
         ) : (
           <WebhookNotificationsTable
+            showGuild
             data={webhookQuery.data}
             isLoading={webhookQuery.isLoading}
             page={webhookPage}
@@ -119,4 +121,4 @@ const AllNotificationsView = () => {
   );
 };
 
-export default AllNotificationsView;
+export default MyNotificationsView;

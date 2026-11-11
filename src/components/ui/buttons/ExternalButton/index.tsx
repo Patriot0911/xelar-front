@@ -4,7 +4,7 @@ import { IExternalButtonProps } from '../buttons';
 
 import buttonStyles from '../Button/styles.module.scss';
 
-/** Link that leaves the app — rendered as the cyan `neon-external` button. */
+/** Link that leaves the app — rendered as the indigo `neon-external` button. */
 const ExternalButton = ({ href, label }: IExternalButtonProps) => {
   return (
     <a

@@ -15,7 +15,7 @@ const useCreateDiscordNotificationMutation = () => {
     onSuccess: () => {
       toast.success('Notification created');
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.GuildNotifications] });
-      queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.AllNotifications] });
+      queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.MyNotifications] });
     },
   });
 };

@@ -1,17 +1,17 @@
 import PageHeader from '@/components/ui/PageHeader';
 import PageContent from '@/components/ui/PageContent';
-import AllNotificationsView from '@/components/notifications/AllNotificationsView';
+import MyNotificationsView from '@/components/notifications/MyNotificationsView';
 
 export default function NotificationsPage() {
   return (
     <>
       <PageHeader
         eyebrow="Notifications"
-        title="All Notifications"
-        description="All your Discord Bot and Webhook notifications across all servers."
+        title="My Notifications"
+        description="Discord Bot and Webhook notifications you created, across all servers."
       />
       <PageContent>
-        <AllNotificationsView />
+        <MyNotificationsView />
       </PageContent>
     </>
   );

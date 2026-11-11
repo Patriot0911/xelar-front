@@ -20,7 +20,7 @@ const useUpdateDiscordNotificationMutation = () => {
     onSuccess: () => {
       toast.success('Notification updated');
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.GuildNotifications] });
-      queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.AllNotifications] });
+      queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.MyNotifications] });
     },
   });
 };

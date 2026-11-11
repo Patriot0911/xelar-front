@@ -20,7 +20,7 @@ A `<button type="button">` with variants and loading state. Extends all native b
 
 | Prop | Type | Default |
 |---|---|---|
-| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'success' \| 'neon' \| 'neon-external'` — `neon` is the lilac→violet→blue glowing CTA for a page's / list's main action (Add role, Add app, Add notification, Load); `neon-external` is the outlined cyan neon for actions that leave the app (Invite bot, provider console). Both neon variants carry their own toolbar geometry (`--control-height-sm`, `--radius-sm`, 13px) — don't resize them via `className` | `'primary'` |
+| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'success' \| 'neon' \| 'neon-external'` — `neon` is the lilac→violet→blue glowing CTA for a page's / list's main action (Add role, Add app, Add notification, Load); `neon-external` is the outlined indigo neon for actions that leave the app (Invite bot, provider console). Both neon variants carry their own toolbar geometry (`--control-height-sm`, `--radius-sm`, 13px) — don't resize them via `className` | `'primary'` |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` |
 | `isLoading` | `boolean` — shows a spinner, disables, sets `aria-busy` | `false` |
 | `leftIcon` / `rightIcon` | `ReactNode` | — |

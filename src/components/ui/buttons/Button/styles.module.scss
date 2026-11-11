@@ -111,30 +111,30 @@
 }
 
 .neon-external {
-  color: var(--neon-cyan-ink);
+  color: var(--neon-indigo-ink);
   font-weight: 600;
-  background-color: var(--neon-cyan-soft);
+  background-color: var(--neon-indigo-soft);
   box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--neon-cyan) 45%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--neon-indigo) 45%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 0 16px color-mix(in srgb, var(--neon-cyan) 14%, transparent);
-  text-shadow: 0 0 10px color-mix(in srgb, var(--neon-cyan) 35%, transparent);
+    0 0 16px color-mix(in srgb, var(--neon-indigo) 14%, transparent);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--neon-indigo) 35%, transparent);
 
   .icon {
-    color: var(--neon-cyan);
+    color: var(--neon-indigo);
   }
 
   &:hover:not(:disabled) {
     transform: translateY(-1px);
-    background-color: color-mix(in srgb, var(--neon-cyan) 16%, transparent);
+    background-color: color-mix(in srgb, var(--neon-indigo) 16%, transparent);
     box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, var(--neon-cyan) 70%, transparent),
+      inset 0 0 0 1px color-mix(in srgb, var(--neon-indigo) 70%, transparent),
       inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      0 8px 26px var(--neon-cyan-glow);
+      0 8px 26px var(--neon-indigo-glow);
   }
 
   &:focus-visible {
-    outline-color: var(--neon-cyan);
+    outline-color: var(--neon-indigo);
   }
 }
 

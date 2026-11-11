@@ -38,7 +38,7 @@ export const NAV_MAIN: NavItem[] = [
 
 export const NAV_NOTIFICATIONS: NavItem[] = [
   {
-    label: 'All Notifications',
+    label: 'My Notifications',
     href: '/dashboard/notifications',
     icon: LuBell
   },

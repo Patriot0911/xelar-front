@@ -12,18 +12,26 @@ import useTableColumns from '@/hooks/shared/useTableColumns';
 import { cn, formatDate, formatDateTime } from '@/lib/utils';
 import StreamerCell from '@/components/discord/StreamerCell';
 import ChannelCell from '@/components/discord/ChannelCell';
+import GuildCell from '@/components/discord/GuildCell';
 import GameFiltersCell from '@/components/discord/GameFiltersCell';
 import { IBotNotificationsTableProps } from './BotNotificationsTable';
 
 import styles from './styles.module.scss';
 
-const getColumns = (guildId?: string): ITableColumn<IDiscordBotNotificationModel>[] => [
+const getColumns = (guildId?: string, showGuild?: boolean): ITableColumn<IDiscordBotNotificationModel>[] => [
   {
     key: 'streamer',
     title: 'Streamer',
     render: (row) => <StreamerCell streamer={row.streamerEvent?.streamer} />,
     hideable: false,
   },
+  ...(showGuild
+    ? [{
+      key: 'guild',
+      title: 'Server',
+      render: (row: IDiscordBotNotificationModel) => <GuildCell guild={row.guild} />,
+    }]
+    : []),
   {
     key: 'event',
     title: 'Event',
@@ -60,6 +68,7 @@ const getColumns = (guildId?: string): ITableColumn<IDiscordBotNotificationModel
 
 const BotNotificationsTable = ({
   guildId,
+  showGuild,
   data,
   isLoading,
   page,
@@ -70,7 +79,7 @@ const BotNotificationsTable = ({
   onDelete,
   onDuplicate,
 }: IBotNotificationsTableProps) => {
-  const columns = useMemo(() => getColumns(guildId), [guildId]);
+  const columns = useMemo(() => getColumns(guildId, showGuild), [guildId, showGuild]);
   const columnsVisibility = useTableColumns(columnsStorageKey, columns);
 
   const actions: ITableAction<IDiscordBotNotificationModel>[] = [

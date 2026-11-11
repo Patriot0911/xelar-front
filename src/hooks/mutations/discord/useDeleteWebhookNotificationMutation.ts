@@ -11,7 +11,7 @@ const useDeleteWebhookNotificationMutation = () => {
     onSuccess: () => {
       toast.success('Notification deleted');
       queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.GuildNotifications] });
-      queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.AllNotifications] });
+      queryClient.invalidateQueries({ queryKey: [DiscordQueryKey.MyNotifications] });
     },
   });
 };

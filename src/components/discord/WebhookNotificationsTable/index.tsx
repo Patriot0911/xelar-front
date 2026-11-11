@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { LuCopyPlus, LuPencil, LuTrash2 } from 'react-icons/lu';
 import Table from '@/components/ui/Table';
 import TablePagination from '@/components/ui/Table/TablePagination';
@@ -11,17 +12,25 @@ import useTableColumns from '@/hooks/shared/useTableColumns';
 import { formatDate, formatDateTime } from '@/lib/utils';
 import StreamerCell from '@/components/discord/StreamerCell';
 import GameFiltersCell from '@/components/discord/GameFiltersCell';
+import GuildCell from '@/components/discord/GuildCell';
 import { IWebhookNotificationsTableProps } from './WebhookNotificationsTable';
 
 import styles from './styles.module.scss';
 
-const columns: ITableColumn<IWebhookNotificationModel>[] = [
+const getColumns = (showGuild?: boolean): ITableColumn<IWebhookNotificationModel>[] => [
   {
     key: 'streamer',
     title: 'Streamer',
     render: (row) => <StreamerCell streamer={row.streamerEvent?.streamer} />,
     hideable: false,
   },
+  ...(showGuild
+    ? [{
+      key: 'guild',
+      title: 'Server',
+      render: (row: IWebhookNotificationModel) => <GuildCell guild={row.guild} />,
+    }]
+    : []),
   {
     key: 'event',
     title: 'Event',
@@ -52,6 +61,7 @@ const columns: ITableColumn<IWebhookNotificationModel>[] = [
 ];
 
 const WebhookNotificationsTable = ({
+  showGuild,
   data,
   isLoading,
   page,
@@ -62,6 +72,7 @@ const WebhookNotificationsTable = ({
   onDelete,
   onDuplicate,
 }: IWebhookNotificationsTableProps) => {
+  const columns = useMemo(() => getColumns(showGuild), [showGuild]);
   const columnsVisibility = useTableColumns(columnsStorageKey, columns);
   const actions: ITableAction<IWebhookNotificationModel>[] = [
     ...(onDuplicate
