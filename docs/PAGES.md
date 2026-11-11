@@ -63,7 +63,7 @@ Error and 404 routes (see [STRUCTURE.md → Error handling](./STRUCTURE.md#error
 | `HeroSection` | server | `h1`, lead text, primary CTA + "See how it works" anchor, reuses `AuthVisual` |
 | `HowItWorksSection` | server, `next/dynamic` | `SectionHeading`, `LazyFlowDiagram`, `HowItWorksSteps` (ordered list — the crawlable text version of the diagram) |
 | `TrustSection` | server, `next/dynamic` | Grid of `TrustCard` from `WELCOME_TRUST_POINTS` |
-| `RoadmapSection` | server, `next/dynamic` | Three-column release timeline from `ROADMAP_RELEASES` (`RoadmapRelease` → `RoadmapStatusBadge`, `RoadmapFeature`) |
+| `RoadmapSection` | server, `next/dynamic` | Three-column release timeline from `ROADMAP_RELEASES` (`RoadmapRelease` → `RoadmapStatusBadge`, `RoadmapFeature`). Track per release: done — solid green blending into the next release's colour (`nextStatus` → `data-next`), in progress — accent fading out, planned — dashed. A done release's card gets a light green tint |
 | `JoinSection` | server, `next/dynamic` | Final CTA + "Add bot to Discord" (only if `DISCORD_BOT_INVITE_URL` is set) |
 | `WelcomeFooter` | server, `next/dynamic` | Logo, anchor links, copyright |
 

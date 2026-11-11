@@ -5,11 +5,18 @@
   --node-size: 16px;
   --track-offset: calc(var(--node-size) / 2 - 1px);
 
+  // Colour of the next release's node — what a finished segment flows into.
+  --next-release-color: var(--release-color);
+
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 20px;
   min-width: 0;
+
+  &[data-next='done'] { --next-release-color: var(--status-ok); }
+  &[data-next='in-progress'] { --next-release-color: var(--accent); }
+  &[data-next='planned'] { --next-release-color: var(--ink-3); }
 
   &::before {
     content: '';
@@ -124,12 +131,27 @@
 // ─── Status variants ─────────────────────────────────────────────────────────
 .done {
   --release-color: var(--status-ok);
-  --track: var(--status-ok);
+  // Solid all the way: green flows into the next release's colour instead of fading out —
+  // a finished stage leads straight into the next one.
+  --track: linear-gradient(90deg, var(--status-ok) 0%, var(--status-ok) 35%, var(--next-release-color) 100%);
+
+  @media (max-width: 992px) {
+    --track: linear-gradient(180deg, var(--status-ok) 0%, var(--status-ok) 35%, var(--next-release-color) 100%);
+  }
 
   .node {
     color: var(--bg-0);
     background: var(--status-ok);
     box-shadow: 0 0 10px rgba(93, 211, 158, 0.5);
+  }
+
+  // A light green tint — reads as "finished" without outshining the in-progress card.
+  .card {
+    border-color: color-mix(in srgb, var(--status-ok) 26%, transparent);
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--status-ok) 9%, transparent), color-mix(in srgb, var(--status-ok) 2%, transparent)),
+      var(--card);
+    box-shadow: 0 0 36px color-mix(in srgb, var(--status-ok) 8%, transparent);
   }
 }
 

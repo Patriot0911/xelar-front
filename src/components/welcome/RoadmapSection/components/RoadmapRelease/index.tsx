@@ -7,11 +7,11 @@ import { IRoadmapReleaseProps } from './RoadmapRelease';
 
 import styles from './styles.module.scss';
 
-const RoadmapRelease = ({ version, title, summary, status, features }: IRoadmapReleaseProps) => {
+const RoadmapRelease = ({ version, title, summary, status, nextStatus, features }: IRoadmapReleaseProps) => {
   const titleId = `roadmap-release-${version.replace(/\W/g, '-')}`;
 
   return (
-    <li className={cn(styles.release, styles[status])}>
+    <li className={cn(styles.release, styles[status])} data-next={nextStatus}>
       <span className={styles.node} aria-hidden="true">
         {status === RoadmapStatus.Done && <LuCheck size={10} strokeWidth={3} />}
       </span>

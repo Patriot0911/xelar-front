@@ -95,7 +95,7 @@ export const ROADMAP_RELEASES: IRoadmapRelease[] = [
     version: '1.0',
     title: 'The bridge',
     summary: 'Everything you need to announce streams in Discord automatically.',
-    status: RoadmapStatus.InProgress,
+    status: RoadmapStatus.Done,
     features: [
       { id: 'go-live',   label: 'Go-live alerts from Twitch to your Discord channels', status: RoadmapStatus.Done },
       { id: 'webhooks',  label: 'Delivery through the Xelar bot or a Discord webhook', status: RoadmapStatus.Done },

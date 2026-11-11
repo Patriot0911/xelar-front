@@ -17,8 +17,8 @@ const RoadmapSection = () => {
         description="What is available today and what the next releases will bring."
       />
       <ol className={styles.timeline}>
-        {ROADMAP_RELEASES.map(({ id, ...release }) => (
-          <RoadmapRelease key={id} {...release} />
+        {ROADMAP_RELEASES.map(({ id, ...release }, index) => (
+          <RoadmapRelease key={id} {...release} nextStatus={ROADMAP_RELEASES[index + 1]?.status} />
         ))}
       </ol>
     </WelcomeSection>
