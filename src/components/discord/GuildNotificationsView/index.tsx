@@ -13,7 +13,7 @@ import { TabItem } from '@/components/ui/Tabs/Tabs';
 import AddNotificationModal from '@/components/discord/AddNotificationModal';
 import EditNotificationModal from '@/components/discord/EditNotificationModal';
 import ConfirmModal from '@/components/common/ConfirmModal';
-import { GUILD_NOTIFICATION_TYPE_LABELS, GuildNotificationType } from '@/lib/constants/guild-notifications';
+import { GUILD_NOTIFICATION_TYPE_LABELS, GuildNotificationType, getGuildNotificationsColumnsKey } from '@/lib/constants/guild-notifications';
 import BotNotificationsTable from '@/components/discord/BotNotificationsTable';
 import WebhookNotificationsTable from '@/components/discord/WebhookNotificationsTable';
 import { IGuildNotificationsViewProps, TNotificationTarget } from './GuildNotificationsView';
@@ -85,6 +85,7 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
             isLoading={botQuery.isLoading}
             page={botPage}
             onPageChange={setBotPage}
+            columnsStorageKey={getGuildNotificationsColumnsKey(guildId, GuildNotificationType.Bot)}
             onEdit={(item) => setEditTarget({ type: 'bot', item })}
             onDelete={(item) => setDeleteTarget({ type: 'bot', item })}
             onDuplicate={(item) => openAdd({ type: 'bot', item })}
@@ -95,6 +96,7 @@ const GuildNotificationsView = ({ guildId }: IGuildNotificationsViewProps) => {
             isLoading={webhookQuery.isLoading}
             page={webhookPage}
             onPageChange={setWebhookPage}
+            columnsStorageKey={getGuildNotificationsColumnsKey(guildId, GuildNotificationType.Webhook)}
             onEdit={(item) => setEditTarget({ type: 'webhook', item })}
             onDelete={(item) => setDeleteTarget({ type: 'webhook', item })}
             onDuplicate={(item) => openAdd({ type: 'webhook', item })}

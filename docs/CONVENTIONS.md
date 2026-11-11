@@ -171,7 +171,7 @@ Rules:
 - **Detail pages** (a server, a user, a streamer) follow one layout — the whole page is one `--panel` surface with `--radius-panel` corners (subtle, 8px), the hero banner fades into it (`HeroBanner fadeInto="var(--panel)"`), and the route renders a skeleton of the same footprint while loading: a full-width hero (`HeroBanner` + neon-ringed avatar overlapping its bottom edge + an `ActionsMenu` for secondary/destructive actions) → details as grouped label/value grids (no box per field; a group is a mono-dot title + thin top rule) → `SectionTabs` for the data sections, each tab in its own `AsyncBoundary`; a secondary switch inside a tab uses segmented `Tabs`.
 - Destructive or rare actions (block, delete…) live in `ActionsMenu`, not as standalone buttons; disruptive ones confirm with `ConfirmModal`.
 - `Panel` (solid `--card`, `--radius-md`) is for classic list/admin sections without a hero. Never leave a section transparent.
-- Dates in tables and detail views: `formatDateTime` from `lib/utils.ts`.
+- Dates in tables and detail views: `formatDateTime` from `lib/utils.ts`; where only the day matters (e.g. "Last sent") `formatDate` (`dd.mm.yyyy`) with the full time in `title`.
 - Waiting states: `Loading` with the matching `type` (`block` for a page/section, `inline` in a cell, `card` for full-screen flows) — never a bare "Loading…" string. Tables use their skeleton rows.
 - Global styles (`.react-flow …`) from inside a module: `:global(.class)` nested under a local class.
 - Respect `prefers-reduced-motion` for looping animations; wrap framer-motion trees in `MotionConfig reducedMotion="user"` where appropriate.
@@ -226,7 +226,7 @@ Older code does not always follow the rules above. Don't copy these patterns int
 | Small helper components defined inside a view file (e.g. inline helpers in `StreamerDetailView`; `UserStatusBadge` is the extracted example) | Own folder under `components/` once reused or non-trivial |
 | Some modules use non-existent `--surface-1` (renders transparent) | Tokens from `_colors.scss` (`--surface`, `--surface-2`, `--card`) |
 | `Button` `size` prop has no matching styles (`sm` / `md` / `lg` look the same) | Size via `className` until sizes are implemented |
-| Local `formatDate` helpers (`StreamerDetailView`, `ProfileModal` tabs) | `formatDateTime` from `lib/utils.ts` |
+| Local `formatDate` helpers (`StreamerDetailView`, `ProfileModal` tabs) | `formatDateTime` / `formatDate` from `lib/utils.ts` |
 | Hard-coded colours in some modules (`#2633c0` in `Button`) | Tokens |
 | `getInitials` duplicated in `lib/utils.ts` and `components/dashboard/nav-data.ts` | `lib/utils.ts` |
 | Both `next.config.ts` and `next.config.js` exist | One config file |

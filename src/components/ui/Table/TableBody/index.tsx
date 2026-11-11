@@ -10,6 +10,7 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
   const {
     columns,
     actions,
+    trailingWidth,
     data,
     rowKey,
     isLoading,
@@ -21,7 +22,7 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
     loadingComponent,
   } = useTableContext<T>();
 
-  const colSpan = columns.length + (actions?.length ? 1 : 0);
+  const colSpan = columns.length + (trailingWidth ? 1 : 0);
   // Single-cell states (empty / custom loading) stretch to the height of `minRows` rows.
   const stateStyle = minRows > 0 ? { height: `calc(var(--table-row-height) * ${minRows})` } : undefined;
 
@@ -69,9 +70,7 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
                 <div className={styles['skeleton-bar']} />
               </td>
             ))}
-            {actions?.length ? (
-              <td style={{ width: actions.length * 32 + 8 }} />
-            ) : null}
+            {trailingWidth ? <td style={{ width: trailingWidth }} /> : null}
           </tr>
         ))}
       </tbody>
@@ -113,7 +112,7 @@ export const TableBody = <T,>({ className }: ITableBodyProps) => {
           ))}
           {actions?.length ? (
             <TableActionCell actions={actions} row={row} />
-          ) : null}
+          ) : trailingWidth ? <td aria-hidden /> : null}
         </tr>
       ))}
       {renderFillerRows(minRows - data.length)}

@@ -1,4 +1,5 @@
 
+import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import styles from './styles.module.scss';
 
@@ -20,13 +21,27 @@ const Table = <T,>({
   emptyComponent,
   loadingComponent,
   onRowClick,
+  columnsVisibility,
   className,
   children,
 }: ITableProps<T>) => {
+  const visibleColumns = useMemo(
+    () => (columnsVisibility ? columns.filter((col) => columnsVisibility.isVisible(col.key)) : columns),
+    [columns, columnsVisibility],
+  );
+
+  // Row actions and the column picker share one trailing cell.
+  const trailingWidth = actions?.length
+    ? Math.max(actions.length * 32 + 8, columnsVisibility ? 52 : 0)
+    : (columnsVisibility ? 52 : 0);
+
   return (
     <TableContext.Provider
       value={{
-        columns,
+        columns: visibleColumns,
+        allColumns: columns,
+        columnsVisibility,
+        trailingWidth,
         actions,
         data,
         rowKey,

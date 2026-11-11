@@ -6,6 +6,8 @@ export interface IWebhookNotificationsTableProps {
   /** Pagination is rendered only when both `page` and `onPageChange` are passed. */
   /** Overrides the default empty message (e.g. "Nothing matches …" while searching). */
   emptyText?: string;
+  /** Enables the column picker; the choice is stored under this key (see `useTableColumns`). */
+  columnsStorageKey?: string;
   page?: number;
   onPageChange?: (page: number) => void;
   onEdit: (item: IWebhookNotificationModel) => void;

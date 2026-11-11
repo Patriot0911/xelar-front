@@ -20,3 +20,9 @@
 .align-left   { text-align: left; }
 .align-center { text-align: center; }
 .align-right  { text-align: right; }
+
+// Trailing cell (above row actions): holds the column picker, right-aligned like the actions.
+.trailing {
+  padding: 4px 12px;
+  text-align: right;
+}

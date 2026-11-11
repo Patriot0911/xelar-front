@@ -7,7 +7,7 @@ import Modal from '@/components/ui/Modal';
 import FormInput from '@/components/ui/FormInput';
 import Button from '@/components/ui/buttons/Button';
 import Switch from '@/components/ui/Switch';
-import { NotificationCostType, TWITCH_EVENT_LABELS, TwitchStreamerEvent } from '@/lib/constants/notifications';
+import { NotificationCostType, getTwitchEventLabel } from '@/lib/constants/notifications';
 import useUpdateDiscordNotificationMutation from '@/hooks/mutations/discord/useUpdateDiscordNotificationMutation';
 import useUpdateWebhookNotificationMutation from '@/hooks/mutations/discord/useUpdateWebhookNotificationMutation';
 import PayloadSection from '../AddNotificationModal/PayloadSection';
@@ -120,7 +120,7 @@ const EditNotificationModal = ({ type, notification, guildId, isOpen, onClose }:
   };
 
   const streamer  = notification.streamerEvent?.streamer?.displayName ?? '—';
-  const eventLabel = TWITCH_EVENT_LABELS[notification.streamerEvent?.event as TwitchStreamerEvent] ?? notification.streamerEvent?.event ?? '—';
+  const eventLabel = getTwitchEventLabel(notification.streamerEvent?.event);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isLoading={isPending}>

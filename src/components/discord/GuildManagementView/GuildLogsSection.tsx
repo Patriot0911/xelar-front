@@ -6,19 +6,24 @@ import Table from '@/components/ui/Table';
 import TablePagination from '@/components/ui/Table/TablePagination';
 import type { INotificationLogModel } from '@/lib/models/notification-log.model';
 import type { ITableColumn } from '@/components/ui/Table/Table';
+import { cn, formatDateTime } from '@/lib/utils';
+import {
+  getTwitchEventLabel,
+  NOTIFICATION_LOG_STATUS_LABELS,
+  NOTIFICATION_LOG_TYPE_LABELS,
+} from '@/lib/constants/notifications';
+
 import styles from './styles.module.scss';
 
 const PAGE_SIZE = 20;
 
+// User-facing view: delivery outcome only. `errorMessage` / `requestPayload` are deliberately not shown —
+// they may hold internal details; admins see them in the user / streamer logs.
 const columns: ITableColumn<INotificationLogModel>[] = [
   {
     key: 'createdAt',
     title: 'Time',
-    render: (row) => (
-      <span title={new Date(row.createdAt).toLocaleString()}>
-        {new Date(row.createdAt).toLocaleString()}
-      </span>
-    ),
+    render: (row) => <time dateTime={row.createdAt}>{formatDateTime(row.createdAt)}</time>,
   },
   {
     key: 'streamerLogin',
@@ -28,14 +33,14 @@ const columns: ITableColumn<INotificationLogModel>[] = [
   {
     key: 'eventType',
     title: 'Event',
-    dataBind: 'eventType',
+    render: (row) => getTwitchEventLabel(row.eventType),
   },
   {
     key: 'type',
     title: 'Type',
     render: (row) => (
-      <span className={`${styles.badge} ${row.notificationType === 'discord' ? styles.badgeDiscord : styles.badgeWebhook}`}>
-        {row.notificationType}
+      <span className={cn(styles.badge, row.notificationType === 'discord' ? styles.badgeDiscord : styles.badgeWebhook)}>
+        {NOTIFICATION_LOG_TYPE_LABELS[row.notificationType] ?? row.notificationType}
       </span>
     ),
   },
@@ -43,17 +48,10 @@ const columns: ITableColumn<INotificationLogModel>[] = [
     key: 'status',
     title: 'Status',
     render: (row) => (
-      <span className={`${styles.badge} ${row.status === 'sent' ? styles.badgeSent : styles.badgeFailed}`}>
-        {row.status}
+      <span className={cn(styles.badge, row.status === 'sent' ? styles.badgeSent : styles.badgeFailed)}>
+        {NOTIFICATION_LOG_STATUS_LABELS[row.status] ?? row.status}
       </span>
     ),
-  },
-  {
-    key: 'error',
-    title: 'Error',
-    render: (row) => row.errorMessage
-      ? <span title={row.errorMessage} style={{ color: 'var(--ink-2)', fontSize: 12 }}>{row.errorMessage.slice(0, 60)}</span>
-      : <span style={{ color: 'var(--ink-3)' }}>—</span>,
   },
 ];
 

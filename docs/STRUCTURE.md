@@ -121,7 +121,7 @@ hooks/
 ├── redux/                                    # typed useAppDispatch / useAppSelector, selectors
 └── shared/                                   # generic hooks: useInView, useMediaQuery, useOnClickOutside,
                                               # useIsAuthenticated, useHasPermission, useFilteredNavSections,
-                                              # useDebouncedValue, useListSearch, useClampPage
+                                              # useDebouncedValue, useListSearch, useClampPage, useTableColumns
 ```
 
 ## Data layer

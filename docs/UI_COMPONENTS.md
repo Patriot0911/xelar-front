@@ -242,7 +242,7 @@ Context-driven table. Configure with props, render with parts.
 
 | Prop | Purpose |
 |---|---|
-| `columns: ITableColumn<T>[]` | `{ key, title, dataBind?, render?(row, i), width?, align?, className? }` |
+| `columns: ITableColumn<T>[]` | `{ key, title, dataBind?, render?(row, i), width?, align?, className?, hideable?, defaultVisible?, pickerLabel? }` — the last three only matter with `columnsVisibility` |
 | `data: T[]`, `rowKey` | Rows and key (`keyof T` or `(row) => string`) |
 | `actions?: ITableAction<T>[]` | Row action buttons: `{ key, icon, label, variant?, disabled?, onClick(row) }` |
 | `isLoading`, `skeletonRows` (default `pageSize`, else 5) | Skeleton rows while loading |
@@ -250,6 +250,7 @@ Context-driven table. Configure with props, render with parts.
 | `minRows` (default `pageSize`, else `skeletonRows`) | Height the body always reserves, in rows: a short page is padded with non-interactive filler rows, and the empty / custom-loading state stretches to the same height — so the table never jumps between loading, empty and pages. Every body row is at least `--table-row-height` (49px) tall. |
 | `emptyText` / `emptyComponent` / `loadingComponent` | States |
 | `onRowClick(row)` | Makes rows clickable |
+| `columnsVisibility?: ITableColumnsVisibility` | Optional column picker (from `useTableColumns`): a "Columns" button in the header's trailing cell (above row actions) with a checkbox per column + "Reset to default"; a neon dot on the button means the choice differs from the defaults. Hidden columns aren't rendered. `hideable: false` columns are always shown and not listed; the last visible column can't be switched off. |
 
 ```tsx
 <Table<IUserListItem> columns={columns} data={data?.items ?? []} rowKey="id" isLoading={isLoading} pageSize={PAGE_SIZE}>
@@ -259,6 +260,12 @@ Context-driven table. Configure with props, render with parts.
 <TablePagination page={page} pageSize={PAGE_SIZE} total={data?.meta.count ?? 0} onChange={setPage} />
 ```
 Define `columns` as a module-level constant typed `ITableColumn<Row>[]`. For a paginated table pass `pageSize={PAGE_SIZE}` — the same constant as `TablePagination` (it sets `skeletonRows` and `minRows`), always render the `Table` (let it show loading / empty itself) and always render `TablePagination`, so the block keeps one height.
+
+**Column picker** — `useTableColumns(storageKey, columns)` (`hooks/shared`) keeps the choice in `localStorage` (`xelar:table-columns:<storageKey>`, only deviations from `defaultVisible` are stored, so new columns show up with their default). No stored value → defaults; no `storageKey` → returns `undefined` and the table has no picker. Make the key unique per table **and** per entity, e.g. `getGuildNotificationsColumnsKey(guildId, type)` → `guild:<id>:bot-notifications`. Keep the primary identifying column `hideable: false`.
+```tsx
+const columnsVisibility = useTableColumns(columnsStorageKey, columns); // columns must be stable (module constant / useMemo)
+<Table<Row> columns={columns} columnsVisibility={columnsVisibility} … />
+```
 
 ### `Tabs<T>` — `ui/Tabs`
 Segmented tabs: `items: { key: T; label; count? }[]`, `value: T`, `onChange(key)`. Below 576px the tabs stretch to the full width (each tab `flex: 1`).

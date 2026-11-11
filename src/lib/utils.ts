@@ -20,6 +20,15 @@ export const hasBitFlagPermission = (permissions: string, flag: number): boolean
   return (BigInt(permissions) & BigInt(flag)) === BigInt(flag);
 };
 
+/** Date only, `dd.mm.yyyy`. */
+export const formatDate = (date: string | Date): string => {
+  return new Date(date).toLocaleDateString('uk-UA', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+};
+
 export const formatDateTime = (date: string | Date): string => {
   return new Date(date).toLocaleString('uk-UA', {
     day: '2-digit',

@@ -7,7 +7,9 @@ import TablePagination from '@/components/ui/Table/TablePagination';
 import { ITableAction, ITableColumn } from '@/components/ui/Table/Table';
 import { IDiscordBotNotificationModel } from '@/lib/models/discord';
 import { GUILD_NOTIFICATIONS_PAGE_SIZE } from '@/lib/constants/guild-notifications';
-import { cn, formatDateTime } from '@/lib/utils';
+import { getTwitchEventLabel } from '@/lib/constants/notifications';
+import useTableColumns from '@/hooks/shared/useTableColumns';
+import { cn, formatDate, formatDateTime } from '@/lib/utils';
 import StreamerCell from '@/components/discord/StreamerCell';
 import ChannelCell from '@/components/discord/ChannelCell';
 import GameFiltersCell from '@/components/discord/GameFiltersCell';
@@ -20,11 +22,12 @@ const getColumns = (guildId?: string): ITableColumn<IDiscordBotNotificationModel
     key: 'streamer',
     title: 'Streamer',
     render: (row) => <StreamerCell streamer={row.streamerEvent?.streamer} />,
+    hideable: false,
   },
   {
     key: 'event',
     title: 'Event',
-    render: (row) => <span className={styles.mono}>{row.streamerEvent?.event ?? '—'}</span>,
+    render: (row) => getTwitchEventLabel(row.streamerEvent?.event),
   },
   {
     key: 'channel',
@@ -42,6 +45,13 @@ const getColumns = (guildId?: string): ITableColumn<IDiscordBotNotificationModel
     render: (row) => <GameFiltersCell gameFilters={row.gameFilters} />,
   },
   {
+    key: 'lastSentAt',
+    title: 'Last sent',
+    render: (row) => (row.lastSentAt
+      ? <time className={styles.mono} dateTime={row.lastSentAt} title={formatDateTime(row.lastSentAt)}>{formatDate(row.lastSentAt)}</time>
+      : <span className={styles.muted}>Never</span>),
+  },
+  {
     key: 'createdAt',
     title: 'Created',
     render: (row) => <span className={styles.mono}>{formatDateTime(row.createdAt)}</span>,
@@ -55,11 +65,13 @@ const BotNotificationsTable = ({
   page,
   onPageChange,
   emptyText,
+  columnsStorageKey,
   onEdit,
   onDelete,
   onDuplicate,
 }: IBotNotificationsTableProps) => {
   const columns = useMemo(() => getColumns(guildId), [guildId]);
+  const columnsVisibility = useTableColumns(columnsStorageKey, columns);
 
   const actions: ITableAction<IDiscordBotNotificationModel>[] = [
     ...(onDuplicate
@@ -74,6 +86,7 @@ const BotNotificationsTable = ({
       <Table<IDiscordBotNotificationModel>
         columns={columns}
         actions={actions}
+        columnsVisibility={columnsVisibility}
         data={data?.items ?? []}
         rowKey="id"
         isLoading={isLoading}

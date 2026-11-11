@@ -29,6 +29,8 @@ export interface IDiscordBotNotificationModel {
   isDisabled: boolean;
   gameFilters: string[];
   createdAt: string;
+  /** Latest successful delivery; `null` if it has never been sent. */
+  lastSentAt: string | null;
   streamerEvent: IStreamerEventRef;
 }
 
@@ -43,6 +45,8 @@ export interface IWebhookNotificationModel {
   isDisabled: boolean;
   gameFilters: string[];
   createdAt: string;
+  /** Latest successful delivery; `null` if it has never been sent. */
+  lastSentAt: string | null;
   streamerEvent: IStreamerEventRef;
 }
 

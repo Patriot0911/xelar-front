@@ -1,10 +1,14 @@
+'use client';
+
 import { LuCopyPlus, LuPencil, LuTrash2 } from 'react-icons/lu';
 import Table from '@/components/ui/Table';
 import TablePagination from '@/components/ui/Table/TablePagination';
 import { ITableAction, ITableColumn } from '@/components/ui/Table/Table';
 import { IWebhookNotificationModel } from '@/lib/models/discord';
 import { GUILD_NOTIFICATIONS_PAGE_SIZE } from '@/lib/constants/guild-notifications';
-import { formatDateTime } from '@/lib/utils';
+import { getTwitchEventLabel } from '@/lib/constants/notifications';
+import useTableColumns from '@/hooks/shared/useTableColumns';
+import { formatDate, formatDateTime } from '@/lib/utils';
 import StreamerCell from '@/components/discord/StreamerCell';
 import GameFiltersCell from '@/components/discord/GameFiltersCell';
 import { IWebhookNotificationsTableProps } from './WebhookNotificationsTable';
@@ -16,11 +20,12 @@ const columns: ITableColumn<IWebhookNotificationModel>[] = [
     key: 'streamer',
     title: 'Streamer',
     render: (row) => <StreamerCell streamer={row.streamerEvent?.streamer} />,
+    hideable: false,
   },
   {
     key: 'event',
     title: 'Event',
-    render: (row) => <span className={styles.mono}>{row.streamerEvent?.event ?? '—'}</span>,
+    render: (row) => getTwitchEventLabel(row.streamerEvent?.event),
   },
   {
     key: 'type',
@@ -31,6 +36,13 @@ const columns: ITableColumn<IWebhookNotificationModel>[] = [
     key: 'games',
     title: 'Games',
     render: (row) => <GameFiltersCell gameFilters={row.gameFilters} />,
+  },
+  {
+    key: 'lastSentAt',
+    title: 'Last sent',
+    render: (row) => (row.lastSentAt
+      ? <time className={styles.mono} dateTime={row.lastSentAt} title={formatDateTime(row.lastSentAt)}>{formatDate(row.lastSentAt)}</time>
+      : <span className={styles.muted}>Never</span>),
   },
   {
     key: 'createdAt',
@@ -45,10 +57,12 @@ const WebhookNotificationsTable = ({
   page,
   onPageChange,
   emptyText,
+  columnsStorageKey,
   onEdit,
   onDelete,
   onDuplicate,
 }: IWebhookNotificationsTableProps) => {
+  const columnsVisibility = useTableColumns(columnsStorageKey, columns);
   const actions: ITableAction<IWebhookNotificationModel>[] = [
     ...(onDuplicate
       ? [{ key: 'duplicate', icon: <LuCopyPlus size={13} />, label: 'Duplicate', variant: 'primary' as const, onClick: onDuplicate }]
@@ -62,6 +76,7 @@ const WebhookNotificationsTable = ({
       <Table<IWebhookNotificationModel>
         columns={columns}
         actions={actions}
+        columnsVisibility={columnsVisibility}
         data={data?.items ?? []}
         rowKey="id"
         isLoading={isLoading}

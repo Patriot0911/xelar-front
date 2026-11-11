@@ -8,6 +8,23 @@ export interface ITableColumn<T> {
   width?: string | number;
   align?: 'left' | 'center' | 'right';
   className?: string;
+  /** `false` keeps the column always shown and out of the column picker. Default `true`. */
+  hideable?: boolean;
+  /** Shown until the user changes the column choice. Default `true`. */
+  defaultVisible?: boolean;
+  /** Name in the column picker when `title` isn't plain text. */
+  pickerLabel?: string;
+};
+
+/** Column visibility state for `Table` — produced by `useTableColumns`. */
+export interface ITableColumnsVisibility {
+  isVisible: (key: string) => boolean;
+  canToggle: (key: string) => boolean;
+  toggle: (key: string) => void;
+  /** Back to every column's `defaultVisible`. */
+  reset: () => void;
+  /** The choice differs from the defaults. */
+  isCustomized: boolean;
 };
 
 export interface ITableAction<T> {
@@ -44,6 +61,8 @@ export interface ITableProps<T> {
   emptyComponent?: ReactNode;
   loadingComponent?: ReactNode;
   onRowClick?: (row: T) => void;
+  /** Enables the column picker in the header's trailing cell (from `useTableColumns`). Hidden columns aren't rendered. */
+  columnsVisibility?: ITableColumnsVisibility;
   className?: string;
   children: ReactNode;
 };

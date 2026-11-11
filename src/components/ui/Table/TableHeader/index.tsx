@@ -1,11 +1,12 @@
 import { ITableHeaderProps } from '../Table';
 import { useTableContext } from '../context';
 import { cn } from '@/lib/utils';
+import TableColumnsMenu from '../TableColumnsMenu';
 
 import styles from './styles.module.scss';
 
 export const TableHeader = <T,>({ className }: ITableHeaderProps) => {
-  const { columns, actions } = useTableContext<T>();
+  const { columns, allColumns, columnsVisibility, trailingWidth } = useTableContext<T>();
 
   return (
     <thead className={className}>
@@ -22,11 +23,13 @@ export const TableHeader = <T,>({ className }: ITableHeaderProps) => {
             {col.title}
           </th>
         ))}
-        {actions?.length ? (
+        {trailingWidth ? (
           <th
-            className={styles['table-header-row']}
-            style={{ width: actions.length * 32 + 8 }}
-          />
+            className={cn(styles['table-header-row'], styles.trailing)}
+            style={{ width: trailingWidth }}
+          >
+            {columnsVisibility && <TableColumnsMenu columns={allColumns} visibility={columnsVisibility} />}
+          </th>
         ) : null}
       </tr>
     </thead>

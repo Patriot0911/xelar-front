@@ -1,8 +1,14 @@
 import { createContext, ReactNode, useContext } from 'react';
-import { ITableAction, ITableColumn } from './Table';
+import { ITableAction, ITableColumn, ITableColumnsVisibility } from './Table';
 
 interface ITableContext<T = unknown> {
+  /** Visible columns only. */
   columns: ITableColumn<T>[];
+  /** Every column, including hidden ones — for the column picker. */
+  allColumns: ITableColumn<T>[];
+  columnsVisibility?: ITableColumnsVisibility;
+  /** Width of the trailing cell (row actions and / or the column picker); 0 when there is none. */
+  trailingWidth: number;
   actions?: ITableAction<T>[];
   data: T[];
   isLoading: boolean;
