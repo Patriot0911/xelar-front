@@ -13,8 +13,7 @@ const AddTwitchApp = () => {
         isOpen={isOpenAppModal}
         onClose={() => setIsOpenAppModal(false)}
       />
-      <Button onClick={() => setIsOpenAppModal(true)}>
-        <LuPlus size={16} />
+      <Button variant="neon" leftIcon={<LuPlus size={15} />} onClick={() => setIsOpenAppModal(true)}>
         Add App
       </Button>
     </>

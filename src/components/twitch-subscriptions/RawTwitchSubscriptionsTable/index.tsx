@@ -155,7 +155,7 @@ const RawTwitchSubscriptionsTable = () => {
           onChange={(e) => setClientId(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         />
-        <Button onClick={handleSearch} disabled={!clientId.trim()}>
+        <Button variant="neon" onClick={handleSearch} disabled={!clientId.trim()}>
           Load
         </Button>
       </div>

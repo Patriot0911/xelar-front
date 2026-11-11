@@ -9,8 +9,7 @@ const AddRole = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <>
-      <Button onClick={() => setIsModalOpen(true)}>
-        <LuPlus size={16} />
+      <Button variant="neon" leftIcon={<LuPlus size={15} />} onClick={() => setIsModalOpen(true)}>
         New Role
       </Button>
       <CreateRoleModal

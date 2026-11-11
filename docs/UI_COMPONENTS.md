@@ -20,7 +20,7 @@ A `<button type="button">` with variants and loading state. Extends all native b
 
 | Prop | Type | Default |
 |---|---|---|
-| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'success' \| 'neon'` — `neon` is the lilac→violet→blue glowing CTA for a page's main action | `'primary'` |
+| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'success' \| 'neon' \| 'neon-external'` — `neon` is the lilac→violet→blue glowing CTA for a page's / list's main action (Add role, Add app, Add notification, Load); `neon-external` is the outlined cyan neon for actions that leave the app (Invite bot, provider console). Both neon variants carry their own toolbar geometry (`--control-height-sm`, `--radius-sm`, 13px) — don't resize them via `className` | `'primary'` |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` |
 | `isLoading` | `boolean` — shows a spinner, disables, sets `aria-busy` | `false` |
 | `leftIcon` / `rightIcon` | `ReactNode` | — |
@@ -62,7 +62,7 @@ Square icon-only button for compact inline actions (edit pencil, add plus). Exte
 Full-width Discord-branded button (logo + label + arrow). Props: native button attributes + `label` (default `"Continue with Discord"`). Used inside a POST `<form>` for Discord OAuth.
 
 ### `ExternalButton`
-Small dark link to an external site with an external-link icon. Props: `href`, `label`.
+Link to an external site (`target="_blank"`), styled as `Button variant="neon-external"` with a trailing external-link icon. Props: `href`, `label`. Use it for every "leave the app" action in a page header (Discord "Invite Bot", "Twitch Dev Console").
 
 ---
 

@@ -162,6 +162,7 @@ Rules:
 - Typography roles: headings `--font-display` (700, negative letter-spacing), body `--font-body`, eyebrows/labels/badges `--font-mono` uppercase with wide letter-spacing (0.14–0.18em).
 - Status colours: `--status-ok` (done/success), `--status-warn`, `--status-error`; accent for "active / in progress".
 - Neon (`--neon`, `--neon-soft`, `--neon-glow`, `--neon-gradient` — a brighter lilac from the accent's violet family, never pink; other alphas via `color-mix(in srgb, var(--neon) N%, transparent)`) marks live / active Discord surfaces and a page's primary call to action (`Button variant="neon"`). Use it sparingly — one neon CTA per view.
+- Neon cyan (`--neon-cyan`, `--neon-cyan-ink`, `--neon-cyan-soft`, `--neon-cyan-glow`) is the cool counterpart: actions that lead out of the app (`Button variant="neon-external"` / `ExternalButton`). It is outlined, so it sits next to a lilac CTA without competing with it. List / page action buttons (Add …, Invite …, Load) always use one of the two neon variants, never `primary` / `secondary`.
 - Glass surfaces over imagery: dark tint (≈50%) + `backdrop-filter: blur(16–20px) saturate(160%+)` + a 1px inner top highlight. The tint is what keeps text readable; don't drop it below ~45%.
 - Discord images: build URLs with `getGuildIconUrl` / `getGuildBannerUrl`. Entities without a banner get `getSeedGradient(id)` via `HeroBanner` (stable per id — snowflake or UUID — analogous hues, never dark).
 - State via `data-*` attributes or modifier classes: `&[data-active='true']`, `styles[variant]`, `styles[status]`.

@@ -1,20 +1,22 @@
 import { LuExternalLink } from 'react-icons/lu';
+import { cn } from '@/lib/utils';
 import { IExternalButtonProps } from '../buttons';
 
-import styles from './styles.module.scss';
+import buttonStyles from '../Button/styles.module.scss';
 
+/** Link that leaves the app — rendered as the cyan `neon-external` button. */
 const ExternalButton = ({ href, label }: IExternalButtonProps) => {
   return (
     <a
-      className={styles['external-button']}
+      className={cn(buttonStyles.button, buttonStyles['neon-external'])}
       href={href}
-      target={'_blank'}
-      rel={'noreferrer'}
+      target="_blank"
+      rel="noreferrer"
     >
-      <LuExternalLink size={16} style={{ marginRight: 6 }} />
-      <span>{label}</span>
+      <span className={buttonStyles.content}>{label}</span>
+      <span className={buttonStyles.icon}><LuExternalLink size={14} /></span>
     </a>
   );
-}
+};
 
 export default ExternalButton;

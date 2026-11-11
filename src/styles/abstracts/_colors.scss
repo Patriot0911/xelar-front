@@ -41,6 +41,13 @@
   --neon-glow:     rgba(192, 132, 252, 0.38);
   --neon-gradient: linear-gradient(135deg, var(--neon) 0%, var(--accent) 55%, var(--accent-2) 100%);
 
+  // Neon cyan — the cool counterpart to the lilac neon. Marks actions that lead *out* of the app
+  // (invite the bot, open a provider console), so they read as secondary to the primary lilac CTA.
+  --neon-cyan:      #5EE7FF;
+  --neon-cyan-ink:  #D4F8FF;
+  --neon-cyan-soft: rgba(94, 231, 255, 0.10);
+  --neon-cyan-glow: rgba(94, 231, 255, 0.30);
+
   // Service colors
   --twitch:       #A371F7;
   --discord:      #5865F2;

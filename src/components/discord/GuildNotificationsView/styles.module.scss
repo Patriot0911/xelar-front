@@ -19,11 +19,6 @@
 }
 
 .addBtn {
-  height: 38px;
-  padding: 0 18px;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-
   @media (max-width: 576px) {
     width: 100%;
   }

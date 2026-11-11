@@ -10,7 +10,10 @@ export type ButtonVariant =
   | 'ghost'
   | 'danger'
   | 'success'
-  | 'neon';
+  /** Primary list/page action (create, add, load) — lilac neon, filled. */
+  | 'neon'
+  /** Action that leaves the app (invite bot, provider console) — cyan neon, outlined. */
+  | 'neon-external';
 
 export type ButtonSize =
   | 'sm'
