@@ -7,6 +7,7 @@ import DiscordGuildCard from '../DiscordGuildCard';
 import Tabs from '@/components/ui/Tabs';
 import type { TabItem } from '@/components/ui/Tabs/Tabs';
 import Input from '@/components/ui/Input';
+import { compareGuildsForList } from '@/lib/guild-access';
 
 import styles from './styles.module.scss';
 
@@ -38,7 +39,7 @@ const DiscordGuildGrid = () => {
       if (filter === 'needs-bot' && guild.hasBot) return false;
       if (query && !guild.name.toLowerCase().includes(query)) return false;
       return true;
-    }).sort((a, b) => a.hasBot === b.hasBot ? 0 : a.hasBot ? -1 : 1);
+    }).sort(compareGuildsForList);
   }, [data, filter, search]);
 
   if (!data.length) {

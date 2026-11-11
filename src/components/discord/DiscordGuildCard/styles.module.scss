@@ -1,25 +1,65 @@
-/* ── Base card shell ──────────────────────────────────────── */
+/* ── Card shell ──────────────────────────────────────────── */
 .card {
   position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line-strong);
+  background: var(--bg-2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  color: inherit;
   text-decoration: none;
   overflow: hidden;
-  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  isolation: isolate;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s, background-color 0.18s;
 
-  &:hover {
-    background: var(--surface-2);
-    border-color: var(--line-strong);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28);
+  &:focus-visible {
+    outline: 2px solid var(--neon-glow);
+    outline-offset: 2px;
+  }
+}
+
+.cardConnected {
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--neon) 45%, transparent);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 10px 32px color-mix(in srgb, var(--neon) 18%, transparent);
 
     .arrow {
       opacity: 1;
       transform: translateX(0);
-      color: var(--accent);
+      color: var(--neon);
+    }
+
+    .banner {
+      transform: scale(1.04);
+    }
+  }
+}
+
+// No bot yet: quieter — dashed edge, slightly desaturated logo; full colour on hover with the invite overlay.
+.cardIdle {
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.12);
+  background: color-mix(in srgb, var(--bg-2) 80%, var(--bg-1));
+
+  .avatar {
+    filter: saturate(0.55) brightness(0.9);
+  }
+
+  &:hover,
+  &:focus-within {
+    border-color: color-mix(in srgb, var(--neon) 40%, transparent);
+
+    .avatar {
+      filter: none;
     }
 
     .overlay {
@@ -29,61 +69,88 @@
   }
 }
 
-/* Active (bot present) card gets accent top-bar + purple glow on hover */
-.cardActive {
-  cursor: pointer;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent) 0%, var(--neon) 100%);
-    z-index: 1;
-  }
-
-  &:hover {
-    box-shadow: 0 4px 28px rgba(154, 107, 255, 0.22), 0 1px 6px rgba(0, 0, 0, 0.25);
-  }
-}
-
-/* ── Header: icon + name + badges ─────────────────────────── */
-.top {
+/* ── Head: banner (only if the server has one) + logo + name ── */
+.head {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px 16px 14px;
+  gap: 14px;
+  min-height: 96px;
+  padding: 18px 16px 14px;
 }
 
-.icon {
+.banner {
+  position: absolute;
+  inset: 0;
+  z-index: -2; // under the fade (::before, z -1)
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+// Fade the banner into the card so the name stays readable.
+.withBanner .head::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(10, 13, 32, 0.82) 0%, rgba(10, 13, 32, 0.45) 60%, rgba(10, 13, 32, 0.25) 100%),
+    linear-gradient(180deg, transparent 55%, var(--bg-2) 100%);
+}
+
+.avatar {
+  position: relative;
   flex-shrink: 0;
-  width: 46px;
-  height: 46px;
-  border-radius: 10px;
-  overflow: hidden;
-  background: linear-gradient(135deg, rgba(154, 107, 255, 0.25) 0%, color-mix(in srgb, var(--neon) 18%, transparent) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(154, 107, 255, 0.22);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, rgba(154, 107, 255, 0.28) 0%, color-mix(in srgb, var(--neon) 18%, transparent) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  transition: filter 0.18s;
 
   img {
     width: 100%;
     height: 100%;
+    border-radius: inherit;
     object-fit: cover;
   }
 }
 
-.initials {
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--accent-ink);
-  letter-spacing: 0.02em;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+.cardConnected .avatar {
+  border-color: color-mix(in srgb, var(--neon) 55%, transparent);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--neon) 12%, transparent),
+    0 6px 20px color-mix(in srgb, var(--neon) 22%, transparent);
 }
 
-.nameMeta {
+.initials {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--accent-ink);
+}
+
+// "Bot is here" marker on the logo corner.
+.botPip {
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--neon-gradient);
+  border: 2px solid var(--bg-2);
+  box-shadow: 0 0 10px var(--neon-glow);
+}
+
+.info {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -93,181 +160,119 @@
 
 .name {
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--ink-0);
   letter-spacing: -0.01em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
 }
 
-.badges {
+.meta {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
+  min-width: 0;
 }
 
-.badge {
+.metaItem {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  height: 17px;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-1);
+}
+
+.role {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
   padding: 0 7px;
   border-radius: var(--radius-full);
-  border: 1px solid transparent;
   font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  font-size: 9.5px;
   font-weight: 600;
-  width: fit-content;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-1);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line-strong);
 }
 
-.badgeOwner {
-  background: rgba(154, 107, 255, 0.13);
-  border-color: rgba(154, 107, 255, 0.28);
+.owner {
   color: var(--accent-ink);
-}
-
-.badgeMember {
-  background: var(--surface-2);
-  border-color: var(--line);
-  color: var(--ink-2);
-}
-
-.badgeActive {
-  background: rgba(59, 165, 92, 0.12);
-  border-color: rgba(59, 165, 92, 0.28);
-  color: #4ec87a;
-}
-
-.badgeInactive {
-  background: var(--surface-2);
-  border-color: var(--line);
-  color: var(--ink-3);
-}
-
-.badgeDot {
-  fill: currentColor;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 32%, transparent);
 }
 
 .arrow {
   flex-shrink: 0;
-  color: var(--ink-3);
+  align-self: center;
+  color: var(--ink-2);
   opacity: 0;
   transform: translateX(-5px);
   transition: opacity 0.15s, transform 0.15s, color 0.15s;
 }
 
-/* ── Separator between header and body ───────────────────── */
-.divider {
-  height: 1px;
-  background: var(--line);
-  flex-shrink: 0;
-}
-
-/* ── Stats row (bot-active) ───────────────────────────────── */
-.stats {
-  flex: 1;
-  display: flex;
-  align-items: stretch;
-  background: rgba(0, 0, 0, 0.12);
-}
-
-.stat {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 12px 8px;
-}
-
-.statDivider {
-  width: 1px;
-  background: var(--line);
-  flex-shrink: 0;
-}
-
-.statIcon {
-  color: var(--ink-3);
-  margin-bottom: 3px;
-}
-
-.statIconOnline {
-  color: #4ec87a;
-  fill: #4ec87a;
-}
-
-.statValue {
-  font-family: var(--font-mono);
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--ink-0);
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-.statLabel {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-/* ── Placeholder body (no bot) ───────────────────────────── */
-.placeholder {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 14px 18px;
-  background: rgba(0, 0, 0, 0.12);
-}
-
-.placeholderIcon {
+/* ── Status strip: is Xelar on the server ─────────────────── */
+.status {
+  margin-top: auto;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-sm);
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  color: var(--ink-3);
-  margin-bottom: 2px;
-}
-
-.placeholderTitle {
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
   font-size: 12px;
+}
+
+.statusLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-weight: 600;
-  color: var(--ink-2);
 }
 
-.placeholderMeta {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--ink-3);
-  letter-spacing: 0.03em;
+.connected {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--neon) 10%, transparent) 0%, transparent 80%);
+
+  .statusLabel {
+    color: var(--ink-0);
+  }
 }
 
-/* ── Hover overlay (invite bot) ──────────────────────────── */
+.liveDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--status-ok);
+  box-shadow: 0 0 8px var(--status-ok);
+}
+
+.disconnected {
+  border-top-style: dashed;
+
+  .statusLabel {
+    color: var(--ink-2);
+  }
+}
+
+/* ── Hover overlay (no bot) ──────────────────────────────── */
 .overlay {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 24px;
+  gap: 12px;
+  padding: 18px 24px;
   text-align: center;
-  background: rgba(10, 14, 31, 0.62);
+  background: rgba(10, 14, 31, 0.72);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   opacity: 0;
@@ -276,36 +281,13 @@
 }
 
 .overlayText {
+  margin: 0;
+  max-width: 260px;
   font-size: 13px;
   line-height: 1.5;
   color: var(--ink-0);
-  max-width: 220px;
-}
 
-.overlayBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 34px;
-  padding: 0 16px;
-  border-radius: var(--radius-md);
-  font-size: 12px;
-  font-weight: 600;
-  color: #fff;
-  background: var(--neon-gradient);
-  border: none;
-  text-decoration: none;
-  cursor: pointer;
-  font-family: var(--font-body);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 4px 16px rgba(154, 107, 255, 0.38);
-  transition: opacity 0.15s, box-shadow 0.15s;
-
-  &:hover {
-    opacity: 0.9;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.2),
-      0 6px 22px rgba(154, 107, 255, 0.5);
+  strong {
+    color: var(--neon);
   }
 }

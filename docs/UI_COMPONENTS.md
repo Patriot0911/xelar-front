@@ -317,6 +317,14 @@ Gradient "X" + "elar" wordmark + glowing dot. `responsive` (default `true`) coll
 ### `WorkspaceCard` — `ui/WorkspaceCard`
 "Active workspace" card (gradient "X" mark + server name). Currently not rendered anywhere — kept for the dashboard sidebar.
 
+### `Notice` — `ui/Notice`
+Highlighted "important to know" block (rules, prerequisites, limits) above the content it explains — not a toast and not an error. Props: `title`, `children` (a sentence or a `<ul>`; `<strong>` is highlighted), `tone` (`'info'` neon — default, `'warning'` amber), `icon`, `className`.
+```tsx
+<Notice title="Who can add Xelar to a server">
+  <ul><li>Discord lets you invite a bot only with the <strong>Manage Server</strong> permission…</li></ul>
+</Notice>
+```
+
 ### `ErrorState` — `ui/ErrorState`
 Presentational error block (counterpart of `Loading type="block"`): icon, `title`, `description`, optional "Try again" button and `actions`. Domain-agnostic — for API errors use `ErrorFallback`.
 

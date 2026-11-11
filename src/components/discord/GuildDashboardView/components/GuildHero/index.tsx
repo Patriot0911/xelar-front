@@ -7,7 +7,8 @@ import HeroBanner from '@/components/ui/HeroBanner';
 import ActionsMenu from '@/components/ui/ActionsMenu';
 import { IActionsMenuItem } from '@/components/ui/ActionsMenu/ActionsMenu';
 import { getGuildBannerUrl, getGuildIconUrl } from '@/lib/guild-visuals';
-import { ADMINISTRATOR, getInitials, hasBitFlagPermission } from '@/lib/utils';
+import { getInitials } from '@/lib/utils';
+import { getGuildAccessRole, GUILD_ACCESS_ROLE_LABELS } from '@/lib/guild-access';
 import GuildHeroStats from '../GuildHeroStats';
 import { IGuildHeroProps } from './GuildHero';
 
@@ -17,9 +18,7 @@ import styles from './styles.module.scss';
 const GuildHero = ({ guildId }: IGuildHeroProps) => {
   const { data: guild } = useDiscordGuildInfoQuery(guildId);
   const iconUrl = getGuildIconUrl(guild.id, guild.icon, 256);
-  const role = guild.owner
-    ? 'Owner'
-    : hasBitFlagPermission(guild.permissions, ADMINISTRATOR) ? 'Admin' : 'Manager';
+  const role = GUILD_ACCESS_ROLE_LABELS[getGuildAccessRole(guild)];
 
   const copy = async (value: string, what: string) => {
     try {

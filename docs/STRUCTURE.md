@@ -106,6 +106,7 @@ lib/
 ├── errors/           # ApiError, toApiError, getErrorMessage, query error policy, response contract checks
 ├── utils.ts          # cn(), getInitials(), bit-flag helpers
 ├── guild-visuals.ts  # Discord CDN icon/banner URLs
+├── guild-access.ts   # our role on a server (owner/admin/manager), canInviteBot, servers list order
 ├── seed-gradient.ts  # getSeedGradient(id): stable vivid gradient for banners without an image
 ├── services/         # One object/class per backend resource: <resource>.service.ts
 ├── models/           # API request/response types: <area>/<entity>.model.ts (+ index.ts barrel)
