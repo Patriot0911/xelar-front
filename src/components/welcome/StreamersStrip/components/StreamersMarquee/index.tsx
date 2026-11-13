@@ -25,7 +25,7 @@ const StreamersMarquee = ({ streamers, activityWindowDays }: IStreamersMarqueePr
   );
 
   return (
-    <div className={styles.viewport} data-animated={isAnimated} aria-label="Streamers on Xelar" role="region">
+    <div className={styles.viewport} data-animated={isAnimated}>
       <div className={styles.track} style={style}>
         {renderList(false)}
         {isAnimated && renderList(true)}

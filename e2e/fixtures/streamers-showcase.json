@@ -1,0 +1,144 @@
+{
+  "streamers": [
+    {
+      "twitchLogin": "aurora",
+      "displayName": "Aurora",
+      "profileImageUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='96' height='96' fill='%239A6BFF'/%3E%3Ctext x='48' y='60' font-size='40' text-anchor='middle' fill='white' font-family='sans-serif'%3EA%3C/text%3E%3C/svg%3E",
+      "isPartner": true,
+      "rank": 1,
+      "isTopActive": true,
+      "notificationsDelivered": 4200,
+      "communitiesReached": 40,
+      "lastNotifiedAt": "2026-11-12T18:00:00.000Z"
+    },
+    {
+      "twitchLogin": "blitz",
+      "displayName": "Blitz",
+      "profileImageUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='96' height='96' fill='%236B86FF'/%3E%3Ctext x='48' y='60' font-size='40' text-anchor='middle' fill='white' font-family='sans-serif'%3EB%3C/text%3E%3C/svg%3E",
+      "isPartner": false,
+      "rank": 2,
+      "isTopActive": false,
+      "notificationsDelivered": 2100,
+      "communitiesReached": 37,
+      "lastNotifiedAt": "2026-11-12T18:00:00.000Z"
+    },
+    {
+      "twitchLogin": "cinder",
+      "displayName": "Cinder",
+      "profileImageUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='96' height='96' fill='%23C084FC'/%3E%3Ctext x='48' y='60' font-size='40' text-anchor='middle' fill='white' font-family='sans-serif'%3EC%3C/text%3E%3C/svg%3E",
+      "isPartner": false,
+      "rank": 3,
+      "isTopActive": false,
+      "notificationsDelivered": 1400,
+      "communitiesReached": 34,
+      "lastNotifiedAt": "2026-11-12T18:00:00.000Z"
+    },
+    {
+      "twitchLogin": "drift",
+      "displayName": "Drift",
+      "profileImageUrl": null,
+      "isPartner": true,
+      "rank": 4,
+      "isTopActive": false,
+      "notificationsDelivered": 1050,
+      "communitiesReached": 31,
+      "lastNotifiedAt": "2026-11-12T18:00:00.000Z"
+    },
+    {
+      "twitchLogin": "echo",
+      "displayName": "Echo",
+      "profileImageUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='96' height='96' fill='%23F2C94C'/%3E%3Ctext x='48' y='60' font-size='40' text-anchor='middle' fill='white' font-family='sans-serif'%3EE%3C/text%3E%3C/svg%3E",
+      "isPartner": false,
+      "rank": 5,
+      "isTopActive": false,
+      "notificationsDelivered": 840,
+      "communitiesReached": 28,
+      "lastNotifiedAt": "2026-11-12T18:00:00.000Z"
+    },
+    {
+      "twitchLogin": "flux",
+      "displayName": "Flux",
+      "profileImageUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='96' height='96' fill='%237F7CFF'/%3E%3Ctext x='48' y='60' font-size='40' text-anchor='middle' fill='white' font-family='sans-serif'%3EF%3C/text%3E%3C/svg%3E",
+      "isPartner": false,
+      "rank": 6,
+      "isTopActive": false,
+      "notificationsDelivered": 700,
+      "communitiesReached": 25,
+      "lastNotifiedAt": "2026-11-12T18:00:00.000Z"
+    },
+    {
+      "twitchLogin": "glimmer",
+      "displayName": "Glimmer",
+      "profileImageUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='96' height='96' fill='%239A6BFF'/%3E%3Ctext x='48' y='60' font-size='40' text-anchor='middle' fill='white' font-family='sans-serif'%3EG%3C/text%3E%3C/svg%3E",
+      "isPartner": true,
+      "rank": 7,
+      "isTopActive": false,
+      "notificationsDelivered": 600,
+      "communitiesReached": 22,
+      "lastNotifiedAt": "2026-11-12T18:00:00.000Z"
+    },
+    {
+      "twitchLogin": "halo",
+      "displayName": "Halo",
+      "profileImageUrl": null,
+      "isPartner": false,
+      "rank": 8,
+      "isTopActive": false,
+      "notificationsDelivered": 525,
+      "communitiesReached": 19,
+      "lastNotifiedAt": "2026-11-12T18:00:00.000Z"
+    },
+    {
+      "twitchLogin": "ion",
+      "displayName": "Ion",
+      "profileImageUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='96' height='96' fill='%23C084FC'/%3E%3Ctext x='48' y='60' font-size='40' text-anchor='middle' fill='white' font-family='sans-serif'%3EI%3C/text%3E%3C/svg%3E",
+      "isPartner": false,
+      "rank": 9,
+      "isTopActive": false,
+      "notificationsDelivered": 467,
+      "communitiesReached": 16,
+      "lastNotifiedAt": "2026-11-12T18:00:00.000Z"
+    },
+    {
+      "twitchLogin": "jinx",
+      "displayName": "Jinx",
+      "profileImageUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='96' height='96' fill='%235DD39E'/%3E%3Ctext x='48' y='60' font-size='40' text-anchor='middle' fill='white' font-family='sans-serif'%3EJ%3C/text%3E%3C/svg%3E",
+      "isPartner": true,
+      "rank": 10,
+      "isTopActive": false,
+      "notificationsDelivered": 420,
+      "communitiesReached": 13,
+      "lastNotifiedAt": "2026-11-12T18:00:00.000Z"
+    },
+    {
+      "twitchLogin": "kestrel",
+      "displayName": "Kestrel",
+      "profileImageUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='96' height='96' fill='%23F2C94C'/%3E%3Ctext x='48' y='60' font-size='40' text-anchor='middle' fill='white' font-family='sans-serif'%3EK%3C/text%3E%3C/svg%3E",
+      "isPartner": false,
+      "rank": 11,
+      "isTopActive": false,
+      "notificationsDelivered": 382,
+      "communitiesReached": 10,
+      "lastNotifiedAt": "2026-11-12T18:00:00.000Z"
+    },
+    {
+      "twitchLogin": "lumen",
+      "displayName": "Lumen",
+      "profileImageUrl": null,
+      "isPartner": false,
+      "rank": 12,
+      "isTopActive": false,
+      "notificationsDelivered": 350,
+      "communitiesReached": 7,
+      "lastNotifiedAt": "2026-11-12T18:00:00.000Z"
+    }
+  ],
+  "stats": {
+    "totalStreamers": 137,
+    "notificationsDelivered": 128450,
+    "notificationsDeliveredRecent": 9312,
+    "communitiesReached": 412
+  },
+  "activityWindowDays": 30,
+  "generatedAt": "2026-11-13T12:00:00.000Z"
+}

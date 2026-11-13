@@ -43,6 +43,7 @@ npm install
 npm run start:dev   # dev server on http://localhost:4001
 npm run build       # production build (also runs the TypeScript check)
 npm run start       # production server on :4000
+npm run test:e2e    # Playwright UI tests against a mocked API (see CONVENTIONS.md → UI tests)
 ```
 
 Environment variables (see `.env.example`):

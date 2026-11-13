@@ -1,0 +1,45 @@
+.strip {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0 0 24px;
+}
+
+.caption {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1160px;
+  padding-inline: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+
+  strong {
+    font-weight: 600;
+    color: var(--ink-0);
+  }
+
+  @media (max-width: 768px) {
+    padding-inline: 16px;
+  }
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--status-ok);
+  box-shadow: 0 0 8px rgba(93, 211, 158, 0.7);
+}
+
+.sep {
+  color: var(--ink-3);
+}

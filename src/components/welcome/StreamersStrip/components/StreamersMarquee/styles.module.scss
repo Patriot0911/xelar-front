@@ -1,4 +1,4 @@
-$gap: 16px;
+$gap: 12px;
 $edge-fade: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
 
 // Full-bleed: break out of the 1160px column so cards scroll in from the screen edges.
@@ -25,7 +25,7 @@ $edge-fade: linear-gradient(to right, transparent, #000 8%, #000 92%, transparen
 .track {
   display: flex;
   width: max-content;
-  padding-block: 8px; // room for hover lift / top-card glow
+  padding-block: 4px; // room for the top card glow
 
   .viewport:not([data-animated='true']) & {
     margin-inline: auto;

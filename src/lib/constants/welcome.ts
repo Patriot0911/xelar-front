@@ -9,7 +9,6 @@ import {
 
 export enum WelcomeSectionId {
   Hero       = 'hero',
-  Streamers  = 'streamers',
   HowItWorks = 'how-it-works',
   Trust      = 'why-xelar',
   Roadmap    = 'roadmap',
@@ -29,7 +28,7 @@ export const STREAMERS_SHOWCASE_TIMEOUT_MS = 3000;
 /** Below this the marquee would repeat the same few cards — render a static row instead. */
 export const STREAMERS_MARQUEE_MIN_ITEMS = 6;
 /** Seconds one card takes to scroll by; total duration scales with the number of cards. */
-export const STREAMERS_MARQUEE_SECONDS_PER_ITEM = 4;
+export const STREAMERS_MARQUEE_SECONDS_PER_ITEM = 8;
 
 export const ROADMAP_STATUS_LABELS: Record<RoadmapStatus, string> = {
   [RoadmapStatus.Done]:       'Shipped',

@@ -212,6 +212,16 @@ Rules:
 
 ---
 
+## UI tests
+
+Playwright tests against a mocked backend live in `e2e/` (`npm run test:e2e`).
+
+- **Write them only for new UI (elements or patterns that didn't exist before) or complex designs** — not for routine styling tweaks. Don't verify UI with ad-hoc browser screenshots; a test is the check.
+- `playwright.config.ts` starts `e2e/mocks/api-server.mjs` (mock `api`) and `next dev` on port 4010 with `NEXT_PUBLIC_API_URL` pointing at the mock. Server components fetch from the Next server, so `page.route` can't intercept them — add the endpoint to the mock's `routes` with a JSON fixture in `e2e/fixtures/`. Client-side requests may use `page.route`.
+- Layout: `e2e/<area>/<feature>.spec.ts`. Prefer role/label locators; assert behaviour (counts, links, ARIA, computed styles), then one `toHaveScreenshot` of the new block.
+- Screenshots: CSS animations are frozen automatically; hide the dev indicator with `page.addStyleTag({ content: 'nextjs-portal { display: none !important; }' })`; use deterministic data (inline `data:` images, fixed dates). Baselines are per platform (`*-darwin.png`); update them with `npm run test:e2e:update` after an intentional design change and review the diff.
+- Projects: `desktop` (1440×900) and `mobile` (Pixel 7) — every spec runs on both.
+
 ## Known inconsistencies
 
 Older code does not always follow the rules above. Don't copy these patterns into new code; fix them opportunistically when touching the file.
