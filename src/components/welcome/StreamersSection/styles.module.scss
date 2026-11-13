@@ -1,0 +1,8 @@
+// The marquee bleeds to the viewport edges on its own; keep the section a bit tighter than the others.
+.section {
+  padding-block: 64px;
+
+  @media (max-width: 768px) {
+    padding-block: 48px;
+  }
+}

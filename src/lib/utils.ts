@@ -38,3 +38,8 @@ export const formatDateTime = (date: string | Date): string => {
     minute: '2-digit',
   });
 };
+
+const compactNumberFormat = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 });
+
+/** `1234` → `1.2K`. For public-facing counters where precision doesn't matter. */
+export const formatCompactNumber = (value: number): string => compactNumberFormat.format(value);

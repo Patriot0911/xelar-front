@@ -140,7 +140,7 @@ Component ──► use<Thing>Query / use<Action>Mutation ──► <Resource>Se
 - Unwraps the backend envelope `{ status, message, data }` → resolves with **`data` directly**. Service return types are therefore the payload type, not `AxiosResponse`.
 - Rejects with an **`ApiError`** (`lib/errors/api-error.ts`) — never a raw Axios error or backend body. `error.message` is always safe to show.
 
-**Services** (`lib/services/*.service.ts`) — thin, typed wrappers, one method per endpoint:
+**Services** (`lib/services/*.service.ts`) — thin, typed wrappers, one method per endpoint. Exception: `public.service.ts` is server-only and uses `fetch` with `next.revalidate` (ISR) for unauthenticated `/api/public/*` data on the welcome page; it returns `null` on any failure instead of throwing.
 
 ```ts
 const StreamersService = {

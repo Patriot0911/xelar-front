@@ -3,6 +3,7 @@ import AuthBgEffects from '@/components/auth/AuthBgEffects';
 import SupportUkraineBanner from '../SupportUkraineBanner';
 import WelcomeHeader from '../WelcomeHeader';
 import HeroSection from '../HeroSection';
+import StreamersSection from '../StreamersSection';
 import WelcomeJsonLd from '../WelcomeJsonLd';
 
 import styles from './styles.module.scss';
@@ -26,6 +27,8 @@ const WelcomeView = () => {
 
       <main className={styles.main}>
         <HeroSection />
+        {/* Async server component — fetched and cached (ISR) on the server, hidden if the API is unavailable. */}
+        <StreamersSection />
         <HowItWorksSection />
         <TrustSection />
         <RoadmapSection />

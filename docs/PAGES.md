@@ -61,6 +61,7 @@ Error and 404 routes (see [STRUCTURE.md → Error handling](./STRUCTURE.md#error
 | `AuthBgEffects` | server | Reused fixed aura background |
 | `WelcomeHeader` | server | Sticky header: logo, anchor nav (`WELCOME_NAV_LINKS`), `WelcomeCtaLink` |
 | `HeroSection` | server | `h1`, lead text, primary CTA + "See how it works" anchor, reuses `AuthVisual` |
+| `StreamersSection` | async server | Public streamers showcase: `ShowcaseStats` (reuses `StatCard`) + `StreamersMarquee` of `StreamerCard`s (top 20 by deliveries in the last 30 days, #1 marked "Top active"). Data from `PublicService.getStreamersShowcase()` — server `fetch`, ISR every 600s; renders nothing if the API is down or the list is empty, so it is **not** in the nav. Marquee is pure CSS (list rendered twice), pauses on hover/focus, static swipeable row with reduced motion or < 6 streamers |
 | `HowItWorksSection` | server, `next/dynamic` | `SectionHeading`, `LazyFlowDiagram`, `HowItWorksSteps` (ordered list — the crawlable text version of the diagram) |
 | `TrustSection` | server, `next/dynamic` | Grid of `TrustCard` from `WELCOME_TRUST_POINTS` |
 | `RoadmapSection` | server, `next/dynamic` | Three-column release timeline from `ROADMAP_RELEASES` (`RoadmapRelease` → `RoadmapStatusBadge`, `RoadmapFeature`). Track per release: done — solid green blending into the next release's colour (`nextStatus` → `data-next`), in progress — accent fading out, planned — dashed. A done release's card gets a light green tint |
@@ -72,6 +73,7 @@ Key details:
 - `FlowDiagram` graph is defined in `FlowDiagram/flow.config.ts` (`buildFlowGraph(direction)`), with a custom `service` node (`components/ServiceNode`). It mirrors the real backend pipeline: Twitch EventSub → Receiver (verify, dedupe) → Message queue → Router (filter, template, log) → Xelar bot / Webhook → Discord server.
 - `WelcomeCtaLink` is the only client component in the static sections: it reads auth status and links to `/auth` ("Get started") or `/dashboard` ("Open dashboard").
 - Section anchors come from the `WelcomeSectionId` enum; every section is `<section id aria-labelledby>` via `WelcomeSection`.
+- Live data on the public page goes through `lib/services/public.service.ts` (server-only `fetch` to `/api/public/*`, cached by Next, failures → `null`), never through `apiClient`.
 - **All copy and data live in `lib/constants/welcome.ts`**; types in `lib/models/welcome`. Edit content there, not in components.
 
 ---

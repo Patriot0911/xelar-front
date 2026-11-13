@@ -1,0 +1,89 @@
+$gap: 16px;
+$edge-fade: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+
+// Full-bleed: break out of the 1160px column so cards scroll in from the screen edges.
+.viewport {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &[data-animated='true'] {
+    overflow-x: hidden;
+    scroll-snap-type: none;
+    -webkit-mask-image: $edge-fade;
+    mask-image: $edge-fade;
+  }
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  padding-block: 8px; // room for hover lift / top-card glow
+
+  .viewport:not([data-animated='true']) & {
+    margin-inline: auto;
+    padding-inline: 20px;
+
+    @media (max-width: 768px) {
+      padding-inline: 16px;
+    }
+  }
+
+  .viewport[data-animated='true'] & {
+    animation: marquee var(--marquee-duration, 80s) linear infinite;
+  }
+
+  .viewport[data-animated='true']:hover &,
+  .viewport[data-animated='true']:focus-within & {
+    animation-play-state: paused;
+  }
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: $gap;
+
+  // Each copy carries a trailing gap so that sliding by exactly one copy (-50%) loops seamlessly.
+  .viewport[data-animated='true'] & {
+    padding-right: $gap;
+  }
+}
+
+.item {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewport[data-animated='true'] {
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .viewport[data-animated='true'] .track {
+    animation: none;
+    padding-inline: 20px;
+  }
+
+  .list[data-clone='true'] {
+    display: none;
+  }
+}
